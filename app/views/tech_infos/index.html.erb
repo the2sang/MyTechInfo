@@ -41,5 +41,24 @@
         </div>
       <% end %>
     </div>
+
+    <div class="pagination">
+      <div class="pagination__info">
+        <%= @total %>건 중 <%= [(@page - 1) * 5 + 1, @total].min %>–<%= [@page * 5, @total].min %>
+      </div>
+      <div class="pagination__nav">
+        <% if @page > 1 %>
+          <%= link_to "← 이전", tech_infos_path(page: @page - 1), class: "btn btn--secondary" %>
+        <% else %>
+          <span class="btn btn--secondary btn--disabled">← 이전</span>
+        <% end %>
+        <span class="pagination__pages"><%= @page %> / <%= @total_pages %></span>
+        <% if @page < @total_pages %>
+          <%= link_to "다음 →", tech_infos_path(page: @page + 1), class: "btn btn--secondary" %>
+        <% else %>
+          <span class="btn btn--secondary btn--disabled">다음 →</span>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>

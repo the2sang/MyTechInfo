@@ -62,4 +62,52 @@
           form: { data: { turbo_confirm: "이 기술정보를 삭제하시겠습니까?" } } %>
     </div>
   <% end %>
+
+  <%# Comments section %>
+  <div class="comments">
+    <h2 class="comments__title">댓글 <span class="comments__count"><%= @tech_info.comments.count %></span></h2>
+
+    <% if @tech_info.comments.any? %>
+      <div class="comment-list">
+        <% @tech_info.comments.includes(:user).oldest.each do |comment| %>
+          <div class="comment">
+            <div class="comment__header">
+              <div class="comment__avatar"><%= comment.user.email_address.first.upcase %></div>
+              <div class="comment__meta">
+                <span class="comment__author"><%= comment.user.email_address %></span>
+                <span class="comment__date"><%= comment.created_at.strftime("%Y.%m.%d %H:%M") %></span>
+              </div>
+              <% if authenticated? && Current.session&.user == comment.user %>
+                <%= button_to "삭제", tech_info_comment_path(@tech_info, comment), method: :delete,
+                    class: "comment__delete",
+                    form: { data: { turbo_confirm: "댓글을 삭제하시겠습니까?" } } %>
+              <% end %>
+            </div>
+            <div class="comment__body"><%= simple_format(comment.body) %></div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="comments__empty">아직 댓글이 없습니다. 첫 번째 댓글을 남겨보세요.</p>
+    <% end %>
+
+    <% if authenticated? %>
+      <div class="comment-form">
+        <%= form_with url: tech_info_comments_path(@tech_info), scope: :comment, class: "form" do |form| %>
+          <div class="form__field">
+            <%= form.label :body, "댓글 작성", class: "form__label" %>
+            <%= form.textarea :body, class: "form__textarea comment-form__textarea",
+                placeholder: "댓글을 입력하세요 (최대 1000자)", maxlength: 1000, rows: 3 %>
+          </div>
+          <div class="form__actions">
+            <%= form.submit "댓글 등록", class: "btn btn--primary" %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="comments__login-prompt">
+        댓글을 작성하려면 <%= link_to "로그인", new_session_path %>하세요.
+      </p>
+    <% end %>
+  </div>
 </div>

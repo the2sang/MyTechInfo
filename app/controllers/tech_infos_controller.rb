@@ -3,8 +3,15 @@ class TechInfosController < ApplicationController
   before_action :set_tech_info, only: %i[ show edit update destroy ]
   before_action :authorize_tech_info!, only: %i[ edit update destroy ]
 
+  PER_PAGE = 5
+
   def index
+    @page       = [params[:page].to_i, 1].max
+    @total      = TechInfo.count
+    @total_pages = (@total / PER_PAGE.to_f).ceil
     @tech_infos = TechInfo.includes(:user).recent
+                          .limit(PER_PAGE)
+                          .offset((@page - 1) * PER_PAGE)
   end
 
   def show
