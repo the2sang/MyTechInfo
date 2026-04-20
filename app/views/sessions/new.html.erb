@@ -1,0 +1,43 @@
+<% content_for :title, "Sign In" %>
+
+<div class="page page--narrow">
+  <div class="auth-card">
+    <div class="auth-card__header">
+      <div class="nav__logo-mark" style="width:32px;height:32px;font-size:14px;">T</div>
+      <h1 class="page__title" style="margin-top:16px;">Sign in</h1>
+      <p style="font-size:13px;color:var(--color-text-muted);margin-top:6px;">Welcome back.</p>
+    </div>
+
+    <% if flash[:alert].present? %>
+      <div class="flash flash--alert"><%= flash[:alert] %></div>
+    <% end %>
+
+    <%= form_with url: session_path, class: "form" do |form| %>
+      <div class="form__field">
+        <%= form.label :email_address, "Email address", class: "form__label" %>
+        <%= form.email_field :email_address, class: "form__input",
+            placeholder: "you@example.com",
+            autocomplete: "email",
+            autofocus: true,
+            value: params[:email_address] %>
+      </div>
+
+      <div class="form__field">
+        <%= form.label :password, "Password", class: "form__label" %>
+        <%= form.password_field :password, class: "form__input",
+            placeholder: "Your password",
+            autocomplete: "current-password",
+            maxlength: 72 %>
+      </div>
+
+      <div class="form__actions" style="flex-direction:column;gap:12px;">
+        <%= form.submit "Sign in", class: "btn btn--primary", style: "width:100%;justify-content:center;" %>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-muted);">
+          <%= link_to "Forgot password?", new_password_path %>
+          &nbsp;·&nbsp;
+          <%= link_to "Create account", new_registration_path %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

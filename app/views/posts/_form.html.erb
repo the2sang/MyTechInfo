@@ -1,0 +1,24 @@
+<%= form_with(model: post, class: "form") do |form| %>
+  <% if post.errors.any? %>
+    <div class="form__errors">
+      <div class="form__errors-title">
+        <%= pluralize(post.errors.count, "error") %> prevented this post from being saved:
+      </div>
+      <ul class="form__errors-list">
+        <% post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form__field">
+    <%= form.label :title, "Content", class: "form__label" %>
+    <%= form.textarea :title, class: "form__textarea", placeholder: "What's on your mind?" %>
+  </div>
+
+  <div class="form__actions">
+    <%= form.submit post.new_record? ? "Post" : "Update", class: "btn btn--primary" %>
+    <%= link_to "Cancel", post.new_record? ? posts_path : post, class: "btn btn--ghost" %>
+  </div>
+<% end %>

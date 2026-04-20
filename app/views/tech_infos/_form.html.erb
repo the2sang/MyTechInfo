@@ -1,0 +1,105 @@
+<%= form_with(model: tech_info, class: "form") do |form| %>
+  <% if tech_info.errors.any? %>
+    <div class="form__errors">
+      <div class="form__errors-title">
+        <%= pluralize(tech_info.errors.count, "error") %> prevented this record from being saved:
+      </div>
+      <ul class="form__errors-list">
+        <% tech_info.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form__field">
+    <%= form.label :title, "기술정보 (제목)", class: "form__label" %>
+    <%= form.text_field :title, class: "form__input", placeholder: "기술 제목을 입력하세요", maxlength: 200 %>
+  </div>
+
+  <div class="form__field">
+    <%= form.label :reference_url, "참고 URL", class: "form__label" %>
+    <%= form.url_field :reference_url, class: "form__input", placeholder: "https://example.com" %>
+  </div>
+
+  <div class="form__field">
+    <%= form.label :related_tech, "관련 기술", class: "form__label" %>
+    <%= form.text_field :related_tech, class: "form__input", placeholder: "Rails, Ruby, SQLite (쉼표로 구분)" %>
+  </div>
+
+  <div class="form__field content-editor"
+       data-controller="content-editor">
+
+    <%# Top bar: label left, format toggle right %>
+    <div class="content-editor__header">
+      <%= form.label :content, "상세 내용", class: "form__label" %>
+      <div class="content-editor__format-toggle">
+        <label class="content-editor__format-option content-editor__format-option--markdown">
+          <%= form.radio_button :content_format, "markdown",
+              data: { "content-editor-target": "formatMarkdown", action: "change->content-editor#onFormatChange" },
+              checked: (tech_info.content_format.blank? || tech_info.content_format == "markdown") %>
+          <span>Markdown</span>
+        </label>
+        <label class="content-editor__format-option content-editor__format-option--html">
+          <%= form.radio_button :content_format, "html",
+              data: { "content-editor-target": "formatHtml", action: "change->content-editor#onFormatChange" },
+              checked: tech_info.content_format == "html" %>
+          <span>HTML</span>
+        </label>
+      </div>
+    </div>
+
+    <%# Edit / Preview tab bar %>
+    <div class="content-editor__tabs">
+      <button type="button" class="content-editor__tab content-editor__tab--active"
+              data-content-editor-target="editTab"
+              data-action="click->content-editor#showEdit">
+        편집
+      </button>
+      <button type="button" class="content-editor__tab"
+              data-content-editor-target="previewTab"
+              data-action="click->content-editor#showPreview">
+        미리 보기
+      </button>
+    </div>
+
+    <%# Edit pane %>
+    <div data-content-editor-target="editPane">
+      <%= form.textarea :content,
+          class: "form__textarea form__textarea--editor",
+          placeholder: "내용을 입력하세요 (Markdown 또는 HTML)",
+          cols: 108,
+          data: { "content-editor-target": "textarea" } %>
+    </div>
+
+    <%# Preview pane (hidden by default) %>
+    <div data-content-editor-target="previewPane" hidden>
+      <div class="content-preview prose"
+           data-content-editor-target="previewPanel">
+        <span class="content-preview__empty">미리 보기할 내용을 입력하세요</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="form__field">
+    <%= form.label :extra_info, "부가 정보", class: "form__label" %>
+    <%= form.textarea :extra_info, class: "form__textarea", placeholder: "추가 정보 (선택)" %>
+  </div>
+
+  <div class="form__field">
+    <%= form.label :usefulness, "유용성", class: "form__label" %>
+    <div class="star-rating-input">
+      <% (5).downto(1) do |n| %>
+        <%= form.radio_button :usefulness, n, class: "star-rating-input__radio" %>
+        <%= form.label :usefulness, "★", value: n, class: "star-rating-input__label", title: "#{n}점" %>
+      <% end %>
+    </div>
+    <span style="font-size:12px;color:var(--color-text-muted);">별 1~5개 선택</span>
+  </div>
+
+  <div class="form__actions">
+    <%= form.submit tech_info.new_record? ? "등록" : "수정", class: "btn btn--primary" %>
+    <%= link_to "취소", tech_info.new_record? ? tech_infos_path : tech_info, class: "btn btn--ghost" %>
+  </div>
+<% end %>

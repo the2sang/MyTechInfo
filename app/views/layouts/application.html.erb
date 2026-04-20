@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title><%= content_for(:title) || "MyTechInfo" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="MyTechInfo">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="nav__inner">
+        <%= link_to root_path, class: "nav__logo" do %>
+          <span class="nav__logo-mark">T</span>
+          MyTechInfo
+        <% end %>
+
+        <ul class="nav__links">
+          <li><%= link_to "Home", root_path %></li>
+          <li><%= link_to "Posts", posts_path %></li>
+          <li><%= link_to "기술정보", tech_infos_path %></li>
+        </ul>
+
+        <div class="nav__actions">
+          <% if authenticated? %>
+            <%= link_to "New Post", new_post_path, class: "btn btn--primary" %>
+            <%= button_to "Sign out", session_path, method: :delete, class: "btn btn--ghost" %>
+          <% else %>
+            <%= link_to "Sign in", new_session_path, class: "btn btn--secondary" %>
+            <%= link_to "Sign up", new_registration_path, class: "btn btn--primary" %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <main class="site-content">
+      <% if notice.present? %>
+        <div class="page">
+          <div class="flash flash--notice"><%= notice %></div>
+        </div>
+      <% end %>
+      <% if alert.present? %>
+        <div class="page">
+          <div class="flash flash--alert"><%= alert %></div>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__inner">
+        <span class="footer__copy">&copy; <%= Time.current.year %> MyTechInfo</span>
+        <ul class="footer__links">
+          <li><%= link_to "Home", root_path %></li>
+          <li><%= link_to "Posts", posts_path %></li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>

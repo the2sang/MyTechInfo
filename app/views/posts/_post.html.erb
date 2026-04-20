@@ -1,0 +1,23 @@
+<div class="post-card" id="<%= dom_id post %>">
+  <div class="post-card__avatar">
+    <%= post.user.email_address.first.upcase %>
+  </div>
+
+  <div class="post-card__body">
+    <div class="post-card__meta">
+      <span class="post-card__author"><%= post.user.email_address %></span>
+    </div>
+
+    <div class="post-card__content"><%= post.title %></div>
+
+    <div class="post-card__actions">
+      <%= link_to "View", post, class: "post-card__action-link" %>
+      <% if authenticated? && Current.session&.user == post.user %>
+        <%= link_to "Edit", edit_post_path(post), class: "post-card__action-link" %>
+        <%= button_to "Delete", post, method: :delete,
+            class: "post-card__action-link",
+            form: { data: { turbo_confirm: "Delete this post?" } } %>
+      <% end %>
+    </div>
+  </div>
+</div>

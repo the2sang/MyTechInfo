@@ -1,0 +1,65 @@
+<% content_for :title, @tech_info.title %>
+
+<div class="page page--narrow">
+  <%= link_to "기술정보 목록", tech_infos_path, class: "back-link" %>
+
+  <div class="tech-detail">
+    <div class="tech-detail__header">
+      <h1 class="tech-detail__title"><%= @tech_info.title %></h1>
+      <div class="tech-detail__stars">
+        <%= render "stars", usefulness: @tech_info.usefulness %>
+      </div>
+    </div>
+
+    <% if @tech_info.related_tech_list.any? %>
+      <div class="tech-detail__tags">
+        <% @tech_info.related_tech_list.each do |tag| %>
+          <span class="tech-tag"><%= tag %></span>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="tech-detail__meta">
+      <span><%= @tech_info.user.email_address %></span>
+      <span>&middot;</span>
+      <span><%= @tech_info.created_at.strftime("%Y년 %m월 %d일") %></span>
+    </div>
+
+    <% if @tech_info.reference_url.present? %>
+      <div class="tech-detail__section">
+        <div class="tech-detail__label">참고 URL</div>
+        <div class="tech-detail__value">
+          <%= link_to @tech_info.reference_url, @tech_info.reference_url, target: "_blank", rel: "noopener noreferrer" %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="tech-detail__section">
+      <div class="tech-detail__label">
+        상세 내용
+        <span class="tech-detail__format-badge tech-detail__format-badge--<%= @tech_info.content_format %>">
+          <%= @tech_info.content_format&.upcase %>
+        </span>
+      </div>
+      <div class="tech-detail__value tech-detail__value--rendered prose">
+        <%= render_tech_content(@tech_info) %>
+      </div>
+    </div>
+
+    <% if @tech_info.extra_info.present? %>
+      <div class="tech-detail__section">
+        <div class="tech-detail__label">부가 정보</div>
+        <div class="tech-detail__value tech-detail__value--content"><%= simple_format(@tech_info.extra_info) %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if authenticated? && Current.session&.user == @tech_info.user %>
+    <div class="form__actions" style="margin-top:24px;">
+      <%= link_to "수정", edit_tech_info_path(@tech_info), class: "btn btn--secondary" %>
+      <%= button_to "삭제", @tech_info, method: :delete,
+          class: "btn btn--danger",
+          form: { data: { turbo_confirm: "이 기술정보를 삭제하시겠습니까?" } } %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,5 @@
+<span class="star-display" title="유용성 <%= usefulness %>점">
+  <% (1..5).each do |n| %>
+    <span class="star-display__star <%= n <= usefulness ? 'star-display__star--filled' : 'star-display__star--empty' %>">★</span>
+  <% end %>
+</span>

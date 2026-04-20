@@ -1,0 +1,26 @@
+<% content_for :title, "Post" %>
+
+<div class="page page--narrow">
+  <%= link_to "Back to posts", posts_path, class: "back-link" %>
+
+  <div class="post-detail">
+    <div class="post-detail__field">
+      <div class="post-detail__label">Author</div>
+      <div class="post-detail__value"><%= @post.user.email_address %></div>
+    </div>
+
+    <div class="post-detail__field">
+      <div class="post-detail__label">Content</div>
+      <div class="post-detail__value post-detail__value--title"><%= @post.title %></div>
+    </div>
+  </div>
+
+  <% if authenticated? && Current.session&.user == @post.user %>
+    <div class="form__actions">
+      <%= link_to "Edit", edit_post_path(@post), class: "btn btn--secondary" %>
+      <%= button_to "Delete", @post, method: :delete,
+          class: "btn btn--danger",
+          form: { data: { turbo_confirm: "Delete this post?" } } %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,16 @@
+<% content_for :title, "Posts" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="page__title">Posts</h1>
+    <% if authenticated? %>
+      <%= link_to "New Post", new_post_path, class: "btn btn--primary" %>
+    <% end %>
+  </div>
+
+  <div class="post-feed" id="posts">
+    <% @posts.each do |post| %>
+      <%= render post %>
+    <% end %>
+  </div>
+</div>

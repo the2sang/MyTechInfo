@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "Bash(gh api:*)",
+      "Bash(python3:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:gist.github.com)",
+      "WebFetch(domain:docs.github.com)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:claude.com)",
+      "WebFetch(domain:code.claude.com)",
+      "WebFetch(domain:www.builder.io)",
+      "WebFetch(domain:dev.to)",
+      "WebFetch(domain:medium.com)",
+      "Bash(bundle install:*)",
+      "Bash(bin/rails db:migrate)",
+      "Bash(bin/rails db:migrate:status)",
+      "Bash(bin/rails db:seed)",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot"
+    ]
+  }
+}

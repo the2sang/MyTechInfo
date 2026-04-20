@@ -1,0 +1,45 @@
+<% content_for :title, "기술정보" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="page__title">기술정보</h1>
+    <% if authenticated? %>
+      <%= link_to "새 기술정보", new_tech_info_path, class: "btn btn--primary" %>
+    <% end %>
+  </div>
+
+  <% if @tech_infos.empty? %>
+    <div class="empty-state">
+      <p class="empty-state__text">등록된 기술정보가 없습니다.</p>
+    </div>
+  <% else %>
+    <div class="tech-info-list">
+      <% @tech_infos.each do |tech_info| %>
+        <div class="tech-info-card">
+          <div class="tech-info-card__header">
+            <div class="tech-info-card__title">
+              <%= link_to tech_info.title, tech_info %>
+            </div>
+            <div class="tech-info-card__stars">
+              <%= render "tech_infos/stars", usefulness: tech_info.usefulness %>
+            </div>
+          </div>
+
+          <% if tech_info.related_tech_list.any? %>
+            <div class="tech-info-card__tags">
+              <% tech_info.related_tech_list.each do |tag| %>
+                <span class="tech-tag"><%= tag %></span>
+              <% end %>
+            </div>
+          <% end %>
+
+          <div class="tech-info-card__meta">
+            <span><%= tech_info.user.email_address %></span>
+            <span>&middot;</span>
+            <span><%= tech_info.created_at.strftime("%Y.%m.%d") %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
