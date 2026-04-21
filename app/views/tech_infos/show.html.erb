@@ -41,7 +41,7 @@
           <%= @tech_info.content_format&.upcase %>
         </span>
       </div>
-      <div class="tech-detail__value tech-detail__value--rendered prose">
+      <div class="tech-detail__value tech-detail__value--rendered <%= @tech_info.content_format == 'html' ? 'lexxy-content' : 'prose' %>">
         <%= render_tech_content(@tech_info) %>
       </div>
     </div>

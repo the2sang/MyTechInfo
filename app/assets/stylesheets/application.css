@@ -155,6 +155,27 @@ body {
   gap: 16px;
 }
 
+.page__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Import form: hidden file input, label styled as button */
+.import-form {
+  display: inline-flex;
+}
+
+.import-form__file {
+  display: none;
+}
+
+.import-form__label {
+  cursor: pointer;
+  margin: 0;
+}
+
 .page__title {
   font-size: 22px;
   font-weight: 600;
@@ -764,45 +785,15 @@ a:hover {
   margin-bottom: 8px;
 }
 
-/* Format toggle (Markdown / HTML) — sky blue active */
-.content-editor__format-toggle {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  background-color: #e0f2fe;
-  border: 1px solid #7dd3fc;
-  border-radius: var(--radius-md);
-  padding: 3px;
-}
-
-.content-editor__format-option {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #0369a1;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: background-color 0.12s, color 0.12s;
-  user-select: none;
-}
-
-.content-editor__format-option input[type="radio"] {
-  display: none;
-}
-
-.content-editor__format-option--markdown:has(input:checked) {
-  background-color: #0284c7;
-  color: #ffffff;
-  box-shadow: 0 1px 3px rgb(2 132 199 / 0.35);
-}
-
-.content-editor__format-option--html:has(input:checked) {
-  background-color: #0369a1;
-  color: #ffffff;
-  box-shadow: 0 1px 3px rgb(3 105 161 / 0.35);
+/* Lexxy rich text editor field */
+lexxy-editor.lexxy-editor-field {
+  display: block;
+  min-height: 280px;
+  border: 1px solid var(--color-border);
+  border-top: none;
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  background-color: var(--color-bg);
 }
 
 /* Edit / Preview tab bar */

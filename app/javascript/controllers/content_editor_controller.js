@@ -1,8 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
-import { marked } from "marked"
 
 export default class extends Controller {
-  static targets = ["textarea", "editPane", "previewPane", "editTab", "previewTab", "formatMarkdown", "formatHtml", "previewPanel"]
+  static targets = ["editor", "editPane", "previewPane", "editTab", "previewTab", "previewPanel"]
 
   connect() {
     this.showEdit()
@@ -24,24 +23,13 @@ export default class extends Controller {
   }
 
   renderPreview() {
-    const content = this.textareaTarget.value
-    const isMarkdown = this.formatMarkdownTarget.checked
+    const html = this.editorTarget.value || ""
 
-    if (content.trim() === "") {
+    if (html.trim() === "" || html.trim() === "<p></p>") {
       this.previewPanelTarget.innerHTML = '<span class="content-preview__empty">미리 보기할 내용을 입력하세요</span>'
       return
     }
 
-    if (isMarkdown) {
-      this.previewPanelTarget.innerHTML = marked.parse(content)
-    } else {
-      this.previewPanelTarget.innerHTML = content
-    }
-  }
-
-  onFormatChange() {
-    if (!this.previewPaneTarget.hidden) {
-      this.renderPreview()
-    }
+    this.previewPanelTarget.innerHTML = html
   }
 }

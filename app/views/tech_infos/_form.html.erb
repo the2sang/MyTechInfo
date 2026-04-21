@@ -30,23 +30,8 @@
   <div class="form__field content-editor"
        data-controller="content-editor">
 
-    <%# Top bar: label left, format toggle right %>
     <div class="content-editor__header">
       <%= form.label :content, "상세 내용", class: "form__label" %>
-      <div class="content-editor__format-toggle">
-        <label class="content-editor__format-option content-editor__format-option--markdown">
-          <%= form.radio_button :content_format, "markdown",
-              data: { "content-editor-target": "formatMarkdown", action: "change->content-editor#onFormatChange" },
-              checked: (tech_info.content_format.blank? || tech_info.content_format == "markdown") %>
-          <span>Markdown</span>
-        </label>
-        <label class="content-editor__format-option content-editor__format-option--html">
-          <%= form.radio_button :content_format, "html",
-              data: { "content-editor-target": "formatHtml", action: "change->content-editor#onFormatChange" },
-              checked: tech_info.content_format == "html" %>
-          <span>HTML</span>
-        </label>
-      </div>
     </div>
 
     <%# Edit / Preview tab bar %>
@@ -63,23 +48,24 @@
       </button>
     </div>
 
-    <%# Edit pane %>
+    <%# Edit pane: Lexxy rich text editor %>
     <div data-content-editor-target="editPane">
-      <%= form.textarea :content,
-          class: "form__textarea form__textarea--editor",
-          placeholder: "내용을 입력하세요 (Markdown 또는 HTML)",
-          cols: 108,
-          data: { "content-editor-target": "textarea" } %>
+      <lexxy-editor
+        name="tech_info[content]"
+        class="lexxy-editor-field"
+        placeholder="내용을 입력하세요"
+        data-content-editor-target="editor"><%= sanitize(tech_info.content, tags: %w[p br b i u strong em h1 h2 h3 h4 h5 h6 ul ol li a pre code blockquote table thead tbody tr th td hr span div figure figcaption], attributes: %w[href src alt class target rel]) %></lexxy-editor>
     </div>
 
     <%# Preview pane (hidden by default) %>
     <div data-content-editor-target="previewPane" hidden>
-      <div class="content-preview prose"
+      <div class="content-preview lexxy-content"
            data-content-editor-target="previewPanel">
         <span class="content-preview__empty">미리 보기할 내용을 입력하세요</span>
       </div>
     </div>
 
+    <%= form.hidden_field :content_format, value: "html" %>
   </div>
 
   <div class="form__field">

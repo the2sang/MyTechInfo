@@ -4,7 +4,16 @@
   <div class="page__header">
     <h1 class="page__title">기술정보</h1>
     <% if authenticated? %>
-      <%= link_to "새 기술정보", new_tech_info_path, class: "btn btn--primary" %>
+      <div class="page__header-actions">
+        <%= link_to "새 기술정보", new_tech_info_path, class: "btn btn--primary" %>
+        <%= link_to "Export JSON", export_tech_infos_path, class: "btn btn--secondary" %>
+        <%= form_with url: import_tech_infos_path, multipart: true, class: "import-form",
+                      data: { controller: "import-form" } do |f| %>
+          <%= f.label :import_file, "Import JSON", class: "btn btn--ghost import-form__label" %>
+          <%= f.file_field :import_file, accept: ".json", class: "import-form__file",
+                           data: { action: "change->import-form#submit" } %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 

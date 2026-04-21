@@ -46,6 +46,22 @@ class TechInfosController < ApplicationController
     redirect_to tech_infos_path, notice: "기술정보가 삭제되었습니다."
   end
 
+  def export
+    json = ::TechInfos::ExportService.call(user: Current.session.user)
+    filename = "tech_infos_#{Date.today.strftime('%Y%m%d')}.json"
+    send_data json, filename: filename, type: "application/json", disposition: "attachment"
+  end
+
+  def import
+    result = ::TechInfos::ImportService.call(file: params[:import_file], user: Current.session.user)
+
+    if result.errors.any?
+      redirect_to tech_infos_path, alert: result.errors.first
+    else
+      redirect_to tech_infos_path, notice: "#{result.imported}건 가져옴, #{result.skipped}건 건너뜀"
+    end
+  end
+
   private
 
   def set_tech_info

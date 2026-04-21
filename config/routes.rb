@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   resources :posts
   resources :tech_infos do
     resources :comments, only: %i[ create destroy ]
+    collection do
+      get  :export
+      post :import
+    end
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
