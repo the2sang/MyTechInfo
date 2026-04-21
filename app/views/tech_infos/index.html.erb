@@ -1,15 +1,27 @@
 <% content_for :title, "기술정보" %>
 
-<div class="page">
+<div class="page" data-controller="export-select">
   <div class="page__header">
     <h1 class="page__title">기술정보</h1>
     <% if authenticated? %>
       <div class="page__header-actions">
         <%= link_to "새 기술정보", new_tech_info_path, class: "btn btn--primary" %>
-        <%= link_to "Export JSON", export_tech_infos_path, class: "btn btn--secondary" %>
+        <button hidden
+                class="btn btn--secondary"
+                data-export-select-target="exportBtn"
+                data-base-url="<%= export_tech_infos_path %>"
+                data-action="click->export-select#exportSelected">
+          <i class="fa-solid fa-file-export"></i>
+          선택 Export (<span data-export-select-target="count">0</span>)
+        </button>
+        <%= link_to export_tech_infos_path, class: "btn btn--secondary" do %>
+          <i class="fa-solid fa-download"></i> Export JSON
+        <% end %>
         <%= form_with url: import_tech_infos_path, multipart: true, class: "import-form",
                       data: { controller: "import-form" } do |f| %>
-          <%= f.label :import_file, "Import JSON", class: "btn btn--ghost import-form__label" %>
+          <%= f.label :import_file, class: "btn btn--ghost import-form__label" do %>
+            <i class="fa-solid fa-upload"></i> Import JSON
+          <% end %>
           <%= f.file_field :import_file, accept: ".json", class: "import-form__file",
                            data: { action: "change->import-form#submit" } %>
         <% end %>
@@ -24,13 +36,22 @@
   <% else %>
     <div class="tech-info-list">
       <% @tech_infos.each do |tech_info| %>
-        <div class="tech-info-card">
+        <div class="tech-info-card" data-tech-info-id="<%= tech_info.id %>">
           <div class="tech-info-card__header">
             <div class="tech-info-card__title">
               <%= link_to tech_info.title, tech_info %>
             </div>
-            <div class="tech-info-card__stars">
-              <%= render "tech_infos/stars", usefulness: tech_info.usefulness %>
+            <div class="tech-info-card__right">
+              <div class="tech-info-card__stars">
+                <%= render "tech_infos/stars", usefulness: tech_info.usefulness %>
+              </div>
+              <% if authenticated? %>
+                <button class="export-toggle-btn"
+                        title="익스포트 선택"
+                        data-action="click->export-select#toggle">
+                  <i class="fa-regular fa-square"></i>
+                </button>
+              <% end %>
             </div>
           </div>
 

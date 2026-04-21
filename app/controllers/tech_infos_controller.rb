@@ -47,7 +47,7 @@ class TechInfosController < ApplicationController
   end
 
   def export
-    json = ::TechInfos::ExportService.call(user: Current.session.user)
+    json = ::TechInfos::ExportService.call(user: Current.session.user, ids: params[:ids])
     filename = "tech_infos_#{Date.today.strftime('%Y%m%d')}.json"
     send_data json, filename: filename, type: "application/json", disposition: "attachment"
   end

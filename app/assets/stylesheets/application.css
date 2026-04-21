@@ -593,11 +593,51 @@ a:hover {
   padding-top: 0;
 }
 
+.tech-info-card--selected {
+  background-color: #f5f9ff;
+  border-radius: var(--radius-md);
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
 .tech-info-card__header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
+}
+
+.tech-info-card__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.export-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 15px;
+  padding: 0;
+  transition: color 0.15s ease;
+  border-radius: var(--radius-md);
+}
+
+.export-toggle-btn:hover {
+  color: var(--color-primary);
+}
+
+.tech-info-card--selected .export-toggle-btn {
+  color: var(--color-primary);
 }
 
 .tech-info-card__title {
