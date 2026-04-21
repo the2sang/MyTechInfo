@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :posts
   resources :tech_infos do
     resources :comments, only: %i[ create destroy ]
+    resource :reaction, only: %i[ create destroy ], controller: "tech_info_reactions"
     collection do
       get  :export
       post :import

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_21_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_21_084003) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -36,6 +36,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_000000) do
     t.string "user_agent"
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "tech_info_reactions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "kind", null: false
+    t.integer "tech_info_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["tech_info_id"], name: "index_tech_info_reactions_on_tech_info_id"
+    t.index ["user_id", "tech_info_id"], name: "index_tech_info_reactions_on_user_id_and_tech_info_id", unique: true
+    t.index ["user_id"], name: "index_tech_info_reactions_on_user_id"
   end
 
   create_table "tech_infos", force: :cascade do |t|
@@ -64,5 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_000000) do
   add_foreign_key "comments", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "tech_info_reactions", "tech_infos"
+  add_foreign_key "tech_info_reactions", "users"
   add_foreign_key "tech_infos", "users"
 end

@@ -1,6 +1,7 @@
 class TechInfo < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
+  has_many :reactions, class_name: "TechInfoReaction", dependent: :destroy
 
   validates :title, presence: true, length: { maximum: 200 }
   validates :content, presence: true

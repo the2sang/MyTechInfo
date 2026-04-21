@@ -65,7 +65,7 @@ class TechInfosController < ApplicationController
   private
 
   def set_tech_info
-    @tech_info = TechInfo.find(params[:id])
+    @tech_info = TechInfo.includes(:reactions).find(params[:id])
   end
 
   def authorize_tech_info!

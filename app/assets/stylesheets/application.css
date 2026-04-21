@@ -1226,3 +1226,60 @@ lexxy-editor.lexxy-editor-field {
     gap: 10px;
   }
 }
+
+/* ── Tech Reactions ─────────────────────────────────────── */
+.tech-reactions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.reaction-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.reaction-btn:hover {
+  border-color: var(--color-text-muted);
+  color: var(--color-text);
+}
+
+.reaction-btn--active.reaction-btn--good {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #eff6ff;
+}
+
+.reaction-btn--active.reaction-btn--bad {
+  border-color: #dc2626;
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.reaction-btn--readonly {
+  cursor: default;
+}
+
+.reaction-btn__count {
+  font-weight: 600;
+  font-size: 13px;
+  min-width: 14px;
+  text-align: center;
+}
+
+.reaction-btn form {
+  display: contents;
+}

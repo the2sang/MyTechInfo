@@ -1,0 +1,31 @@
+<% good_count  = tech_info.reactions.count { |r| r.good? }
+   bad_count   = tech_info.reactions.count { |r| r.bad? }
+   my_reaction = current_user && tech_info.reactions.find { |r| r.user_id == current_user.id } %>
+
+<div class="tech-reactions" id="tech_info_<%= tech_info.id %>_reactions">
+  <% if current_user %>
+    <%= button_to tech_info_reaction_path(tech_info, kind: :good),
+          method: :post,
+          class: "reaction-btn #{"reaction-btn--active reaction-btn--good" if my_reaction&.good?}",
+          data: { turbo_stream: true } do %>
+      <i class="fa-solid fa-thumbs-up"></i>
+      <span class="reaction-btn__count"><%= good_count %></span>
+    <% end %>
+    <%= button_to tech_info_reaction_path(tech_info, kind: :bad),
+          method: :post,
+          class: "reaction-btn #{"reaction-btn--active reaction-btn--bad" if my_reaction&.bad?}",
+          data: { turbo_stream: true } do %>
+      <i class="fa-solid fa-thumbs-down"></i>
+      <span class="reaction-btn__count"><%= bad_count %></span>
+    <% end %>
+  <% else %>
+    <span class="reaction-btn reaction-btn--readonly">
+      <i class="fa-solid fa-thumbs-up"></i>
+      <span class="reaction-btn__count"><%= good_count %></span>
+    </span>
+    <span class="reaction-btn reaction-btn--readonly">
+      <i class="fa-solid fa-thumbs-down"></i>
+      <span class="reaction-btn__count"><%= bad_count %></span>
+    </span>
+  <% end %>
+</div>
