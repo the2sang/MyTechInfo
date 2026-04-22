@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token, only: %i[ new create edit update ]
   resource :registration, only: %i[ new create ]
 
+  resources :memos
   resources :posts
   resources :tech_infos do
     resources :comments, only: %i[ create destroy ]
@@ -15,5 +16,5 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
-  root "posts#index"
+  root "tech_infos#index"
 end

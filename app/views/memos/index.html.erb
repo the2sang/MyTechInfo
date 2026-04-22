@@ -1,0 +1,64 @@
+<% content_for :title, "메모" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="page__title">메모</h1>
+    <% if authenticated? %>
+      <button class="btn btn--primary"
+              data-controller="toggle"
+              data-action="click->toggle#toggle"
+              data-toggle-target="trigger">
+        <i class="fa-solid fa-plus"></i> 메모추가
+      </button>
+    <% end %>
+  </div>
+
+  <% unless authenticated? %>
+    <div class="memo-auth-notice">
+      <i class="fa-solid fa-lock memo-auth-notice__icon"></i>
+      <p class="memo-auth-notice__text">로그인 후 확인 가능합니다.</p>
+      <%= link_to "로그인", new_session_path, class: "btn btn--primary btn--sm" %>
+    </div>
+  <% end %>
+
+  <%# New memo form (collapsible) %>
+  <% if authenticated? && defined?(@new_memo) %>
+    <div class="memo-new-panel" data-controller="toggle" id="memo-new-panel" hidden>
+      <div class="memo-new-panel__inner">
+        <h2 class="memo-new-panel__title">새 메모</h2>
+        <%= render "form", memo: @new_memo %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if authenticated? && @memos.empty? %>
+    <div class="empty-state">
+      <p class="empty-state__text">등록된 메모가 없습니다.</p>
+    </div>
+  <% elsif authenticated? %>
+    <div class="memo-grid">
+      <% @memos.each do |memo| %>
+        <%= render "memo", memo: memo %>
+      <% end %>
+    </div>
+
+    <div class="pagination">
+      <div class="pagination__info">
+        <%= @total %>건 중 <%= [(@page - 1) * 9 + 1, @total].min %>–<%= [@page * 9, @total].min %>
+      </div>
+      <div class="pagination__nav">
+        <% if @page > 1 %>
+          <%= link_to "← 이전", memos_path(page: @page - 1), class: "btn btn--secondary" %>
+        <% else %>
+          <span class="btn btn--secondary btn--disabled">← 이전</span>
+        <% end %>
+        <span class="pagination__pages"><%= @page %> / <%= [@total_pages, 1].max %></span>
+        <% if @page < @total_pages %>
+          <%= link_to "다음 →", memos_path(page: @page + 1), class: "btn btn--secondary" %>
+        <% else %>
+          <span class="btn btn--secondary btn--disabled">다음 →</span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

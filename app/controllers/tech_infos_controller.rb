@@ -5,10 +5,14 @@ class TechInfosController < ApplicationController
 
   before_action :require_public_or_authenticated!, only: %i[ show ]
 
-  PER_PAGE = 5
+  PER_PAGE = 10
 
   def index
     base = authenticated? ? TechInfo.all : TechInfo.public_only
+    if params[:q].present?
+      base = base.where("title LIKE ?", "%#{params[:q]}%")
+    end
+    @search_query = params[:q]
     @page        = [ params[:page].to_i, 1 ].max
     @total       = base.count
     @total_pages = (@total / PER_PAGE.to_f).ceil

@@ -1,0 +1,8 @@
+<%= turbo_frame_tag "memo_#{@memo.id}" do %>
+  <div class="memo-card memo-card--editing">
+    <div class="memo-card__accent" style="background: <%= @memo.accent_color %>;"></div>
+    <div class="memo-card__body">
+      <%= render "form", memo: @memo %>
+    </div>
+  </div>
+<% end %>

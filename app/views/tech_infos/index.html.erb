@@ -37,11 +37,32 @@
     <div class="tech-info-list">
       <% @tech_infos.each do |tech_info| %>
         <div class="tech-info-card" data-tech-info-id="<%= tech_info.id %>">
-          <div class="tech-info-card__header">
-            <div class="tech-info-card__title">
-              <%= link_to tech_info.title, tech_info %>
+          <div class="tech-info-card__title">
+            <%= link_to tech_info, class: "tech-info-card__title-link" do %>
+              <% if @search_query.present? %>
+                <%= highlight(tech_info.title, @search_query,
+                      highlighter: '<mark class="search-hl">\1</mark>') %>
+              <% else %>
+                <%= tech_info.title %>
+              <% end %>
+            <% end %>
+          </div>
+
+          <% if tech_info.related_tech_list.any? %>
+            <div class="tech-info-card__tags">
+              <% tech_info.related_tech_list.each do |tag| %>
+                <span class="tech-tag tech-tag--sm"><%= tag %></span>
+              <% end %>
             </div>
-            <div class="tech-info-card__right">
+          <% end %>
+
+          <div class="tech-info-card__footer">
+            <div class="tech-info-card__meta">
+              <span><%= tech_info.user.nickname %></span>
+              <span>&middot;</span>
+              <span><%= tech_info.created_at.strftime("%Y.%m.%d") %></span>
+            </div>
+            <div class="tech-info-card__controls">
               <div class="tech-info-card__stars">
                 <%= render "tech_infos/stars", usefulness: tech_info.usefulness %>
               </div>
@@ -57,27 +78,13 @@
               <% end %>
             </div>
           </div>
-
-          <% if tech_info.related_tech_list.any? %>
-            <div class="tech-info-card__tags">
-              <% tech_info.related_tech_list.each do |tag| %>
-                <span class="tech-tag tech-tag--sm"><%= tag %></span>
-              <% end %>
-            </div>
-          <% end %>
-
-          <div class="tech-info-card__meta">
-            <span><%= tech_info.user.nickname %></span>
-            <span>&middot;</span>
-            <span><%= tech_info.created_at.strftime("%Y.%m.%d") %></span>
-          </div>
         </div>
       <% end %>
     </div>
 
     <div class="pagination">
       <div class="pagination__info">
-        <%= @total %>건 중 <%= [(@page - 1) * 5 + 1, @total].min %>–<%= [@page * 5, @total].min %>
+        <%= @total %>건 중 <%= [(@page - 1) * 10 + 1, @total].min %>–<%= [@page * 10, @total].min %>
       </div>
       <div class="pagination__nav">
         <% if @page > 1 %>

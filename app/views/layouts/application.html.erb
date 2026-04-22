@@ -13,12 +13,11 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 
-    <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="shortcut icon" href="/icon.svg">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "lexxy", "data-turbo-track": "reload" %>
@@ -28,24 +27,49 @@
   <body>
     <nav class="nav">
       <div class="nav__inner">
-        <%= link_to root_path, class: "nav__logo" do %>
-          <span class="nav__logo-mark">T</span>
-          MyTechInfo
-        <% end %>
+        <div class="nav__left">
+          <%= link_to root_path, class: "nav__logo" do %>
+            <span class="nav__logo-mark">T</span>
+            <span class="nav__logo-text">MyTechInfo</span>
+          <% end %>
+        </div>
 
-        <ul class="nav__links">
-          <li><%= link_to "Home", root_path %></li>
-          <li><%= link_to "Posts", posts_path %></li>
-          <li><%= link_to "기술정보", tech_infos_path %></li>
-        </ul>
+        <div class="nav__center">
+          <%= form_with url: tech_infos_path, method: :get, class: "nav-search" do |f| %>
+            <i class="fa-solid fa-magnifying-glass nav-search__icon"></i>
+            <%= f.text_field :q,
+                class: "nav-search__input",
+                placeholder: "기술정보 검색...",
+                value: params[:q],
+                autocomplete: "off",
+                data: { controller: "nav-search" } %>
+            <span class="nav-search__hint"><kbd>⌘K</kbd></span>
+          <% end %>
+        </div>
 
-        <div class="nav__actions">
+        <div class="nav__right">
+          <%= link_to root_path, class: "nav__icon-btn", title: "Home" do %>
+            <i class="fa-solid fa-house"></i>
+          <% end %>
+          <%= link_to tech_infos_path, class: "nav__icon-btn", title: "Tech Info" do %>
+            <i class="fa-solid fa-database"></i>
+          <% end %>
+          <%= link_to memos_path, class: "nav__icon-btn", title: "메모" do %>
+            <i class="fa-solid fa-note-sticky"></i>
+          <% end %>
+          <a href="https://github.com/the2sang/MyTechInfo"
+             class="nav__icon-btn" title="GitHub"
+             target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <div class="nav__divider"></div>
           <% if authenticated? %>
-            <%= link_to "New Post", new_post_path, class: "btn btn--primary" %>
-            <%= button_to "Sign out", session_path, method: :delete, class: "btn btn--ghost" %>
+            <%= link_to "New Tech", new_tech_info_path, class: "btn btn--primary btn--sm" %>
+            <span class="nav__nickname"><%= Current.session.user.nickname %></span>
+            <%= button_to "로그아웃", session_path, method: :delete, class: "btn btn--logout btn--sm" %>
           <% else %>
-            <%= link_to "Sign in", new_session_path, class: "btn btn--secondary" %>
-            <%= link_to "Sign up", new_registration_path, class: "btn btn--primary" %>
+            <%= link_to "로그인", new_session_path, class: "btn btn--secondary btn--sm" %>
+            <%= link_to "가입하기", new_registration_path, class: "btn btn--primary btn--sm" %>
           <% end %>
         </div>
       </div>
