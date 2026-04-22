@@ -20,14 +20,17 @@ module ApplicationHelper
   end
 
   def render_tech_content(tech_info)
-    return "" if tech_info.content.blank?
+    return nil if tech_info.content.blank?
+
     case tech_info.content_format
     when "html"
-      sanitize(tech_info.content,
+      result = sanitize(tech_info.content,
         tags: %w[p br b i u s strong em h1 h2 h3 h4 h5 h6 ul ol li a pre code blockquote table thead tbody tr th td hr span div figure figcaption mark sub sup],
         attributes: %w[href src alt class target rel data-language])
+      strip_tags(result).strip.blank? ? nil : result
     else
-      render_markdown(tech_info.content)
+      result = render_markdown(tech_info.content)
+      strip_tags(result).strip.blank? ? nil : result
     end
   end
 end

@@ -1,10 +1,34 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["editor", "editPane", "previewPane", "editTab", "previewTab", "previewPanel"]
+  static targets = ["editor", "editPane", "previewPane", "editTab", "previewTab", "previewPanel", "hiddenContent"]
 
   connect() {
     this.showEdit()
+
+    this.editorTarget.addEventListener("lexxy:initialize", () => this.onEditorReady())
+    this.editorTarget.addEventListener("lexxy:change", () => this.syncContent())
+
+    const form = this.element.closest("form")
+    if (form) form.addEventListener("submit", () => this.syncContent(), { capture: true })
+  }
+
+  onEditorReady() {
+    if (this.hasHiddenContentTarget && this.hasEditorTarget) {
+      const initialContent = this.hiddenContentTarget.value
+      if (initialContent) {
+        this.editorTarget.value = initialContent
+      }
+    }
+  }
+
+  syncContent() {
+    if (this.hasHiddenContentTarget && this.hasEditorTarget) {
+      const value = this.editorTarget.value
+      if (value !== undefined) {
+        this.hiddenContentTarget.value = value
+      }
+    }
   }
 
   showEdit() {
@@ -30,6 +54,7 @@ export default class extends Controller {
       return
     }
 
+    // Preview of user's own editor content (not external/untrusted input)
     this.previewPanelTarget.innerHTML = html
   }
 }

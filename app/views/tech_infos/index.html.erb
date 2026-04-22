@@ -1,8 +1,8 @@
-<% content_for :title, "기술정보" %>
+<% content_for :title, "Tech Info" %>
 
 <div class="page" data-controller="export-select">
   <div class="page__header">
-    <h1 class="page__title">기술정보</h1>
+    <h1 class="page__title">Tech Info</h1>
     <% if authenticated? %>
       <div class="page__header-actions">
         <%= link_to "새 기술정보", new_tech_info_path, class: "btn btn--primary" %>
@@ -45,6 +45,9 @@
               <div class="tech-info-card__stars">
                 <%= render "tech_infos/stars", usefulness: tech_info.usefulness %>
               </div>
+              <span class="badge badge--<%= tech_info.is_public? ? 'public' : 'private' %>">
+                <%= tech_info.is_public? ? "공개" : "비공개" %>
+              </span>
               <% if authenticated? %>
                 <button class="export-toggle-btn"
                         title="익스포트 선택"
@@ -58,13 +61,13 @@
           <% if tech_info.related_tech_list.any? %>
             <div class="tech-info-card__tags">
               <% tech_info.related_tech_list.each do |tag| %>
-                <span class="tech-tag"><%= tag %></span>
+                <span class="tech-tag tech-tag--sm"><%= tag %></span>
               <% end %>
             </div>
           <% end %>
 
           <div class="tech-info-card__meta">
-            <span><%= tech_info.user.email_address %></span>
+            <span><%= tech_info.user.nickname %></span>
             <span>&middot;</span>
             <span><%= tech_info.created_at.strftime("%Y.%m.%d") %></span>
           </div>

@@ -31,6 +31,14 @@
       </div>
 
       <div class="form__field">
+        <%= form.label :nickname, "닉네임", class: "form__label" %>
+        <%= form.text_field :nickname, class: "form__input",
+            placeholder: "닉네임 (2~30자)",
+            autocomplete: "nickname",
+            maxlength: 30 %>
+      </div>
+
+      <div class="form__field">
         <%= form.label :password, "Password", class: "form__label" %>
         <%= form.password_field :password, class: "form__input",
             placeholder: "Minimum 8 characters",

@@ -9,7 +9,8 @@ class TechInfo < ApplicationRecord
   validates :content_format, presence: true, inclusion: { in: %w[markdown html] }
   validates :reference_url, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), message: "must be a valid URL" }, allow_blank: true
 
-  scope :recent, -> { order(created_at: :desc) }
+  scope :recent,      -> { order(created_at: :desc) }
+  scope :public_only, -> { where(is_public: true) }
 
   def related_tech_list
     related_tech.to_s.split(",").map(&:strip).reject(&:blank?)

@@ -3,15 +3,18 @@ class TechInfosController < ApplicationController
   before_action :set_tech_info, only: %i[ show edit update destroy ]
   before_action :authorize_tech_info!, only: %i[ edit update destroy ]
 
+  before_action :require_public_or_authenticated!, only: %i[ show ]
+
   PER_PAGE = 5
 
   def index
-    @page       = [params[:page].to_i, 1].max
-    @total      = TechInfo.count
+    base = authenticated? ? TechInfo.all : TechInfo.public_only
+    @page        = [ params[:page].to_i, 1 ].max
+    @total       = base.count
     @total_pages = (@total / PER_PAGE.to_f).ceil
-    @tech_infos = TechInfo.includes(:user).recent
-                          .limit(PER_PAGE)
-                          .offset((@page - 1) * PER_PAGE)
+    @tech_infos  = base.includes(:user).recent
+                       .limit(PER_PAGE)
+                       .offset((@page - 1) * PER_PAGE)
   end
 
   def show
@@ -72,7 +75,14 @@ class TechInfosController < ApplicationController
     redirect_to root_path, alert: "권한이 없습니다." unless @tech_info.user == Current.session.user
   end
 
+  def require_public_or_authenticated!
+    return if authenticated?
+    return if @tech_info.is_public?
+
+    redirect_to tech_infos_path, alert: "로그인이 필요합니다."
+  end
+
   def tech_info_params
-    params.expect(tech_info: [ :title, :reference_url, :related_tech, :content, :content_format, :extra_info, :usefulness ])
+    params.require(:tech_info).permit(:title, :reference_url, :related_tech, :content, :content_format, :extra_info, :usefulness, :is_public)
   end
 end
