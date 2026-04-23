@@ -94,7 +94,7 @@ body {
 }
 
 .nav__left  { display: flex; align-items: center; flex-shrink: 0; }
-.nav__center { flex: 1; max-width: 420px; }
+.nav__center { display: flex; align-items: center; flex: 1; max-width: 420px; }
 .nav__right { display: flex; align-items: center; gap: 6px; margin-left: auto; flex-shrink: 0; }
 
 .nav__logo {
@@ -126,12 +126,34 @@ body {
   flex-shrink: 0;
 }
 
+/* ── Nav Logo Text ─────────────────────────────────────── */
+.nav__logo-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 /* ── Nav Search ────────────────────────────────────────── */
 .nav-search {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.25s ease;
+  flex-shrink: 0;
+}
+
+.nav-search--open {
+  max-width: 360px;
+  opacity: 1;
+  overflow: visible;
 }
 
 .nav-search__icon {
@@ -181,6 +203,27 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 3px;
   line-height: 1.4;
+}
+
+/* ── Nav Search Toggle ─────────────────────────────────── */
+[data-nav-search-target="toggle"] {
+  background: transparent !important;
+  border: none;
+  box-shadow: none;
+  transition: opacity 0.2s ease, width 0.3s ease, padding 0.3s ease;
+  flex-shrink: 0;
+}
+
+[data-nav-search-target="toggle"]:hover {
+  background: transparent !important;
+}
+
+[data-nav-search-target="toggle"].nav-search__toggle--hidden {
+  opacity: 0;
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 /* ── Nav Icon Buttons ──────────────────────────────────── */
@@ -280,6 +323,56 @@ body {
   color: var(--hcp-black);
   line-height: 1.19;
   font-feature-settings: "kern";
+}
+
+/* ── Collage Title (Tech Info index) ───────────────────── */
+.title-collage {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  line-height: 1;
+  margin: 0;
+}
+
+.tc-word-gap { width: 12px; }
+
+.tc-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  padding: 6px 10px;
+  font-family: 'Ultra', Georgia, serif;
+  font-size: 29px;
+  font-weight: 400;
+  line-height: 1;
+  border-radius: 4px;
+  position: relative;
+}
+
+.tc-1 { background: #d4b588; color: #3d2b1a; transform: rotate(-2.5deg); }
+.tc-2 { background: #c49a6c; color: #ffffff; transform: rotate(1.8deg);  }
+.tc-3 { background: #e8ddd0; color: #6b5344; transform: rotate(-1.2deg); }
+.tc-4 { background: #8b7355; color: #ffffff; transform: rotate(2.8deg);  }
+.tc-5 { background: #c49a6c; color: #ffffff; transform: rotate(-2deg);   }
+.tc-6 { background: #d4b588; color: #3d2b1a; transform: rotate(1.4deg);  }
+.tc-7 { background: #6b5344; color: #ffffff; transform: rotate(-1.8deg); }
+.tc-8 { background: #e8ddd0; color: #6b5344; transform: rotate(2.2deg);  }
+
+/* Memo page */
+.tc-m1 { background: #8b7355; color: #ffffff; transform: rotate(-2deg);   }
+.tc-m2 { background: #e8ddd0; color: #6b5344; transform: rotate(1.5deg);  }
+.tc-m3 { background: #d4b588; color: #3d2b1a; transform: rotate(-1.2deg); }
+.tc-m4 { background: #6b5344; color: #ffffff; transform: rotate(2.5deg);  }
+
+@media (max-width: 640px) {
+  .tc-letter { font-size: 22px; min-width: 26px; padding: 4px 7px; }
+}
+
+@media (max-width: 480px) {
+  .tc-letter { font-size: 18px; min-width: 20px; padding: 3px 5px; }
+  .tc-word-gap { width: 8px; }
 }
 
 /* ── Uppercase Section Label ───────────────────────────── */
@@ -1616,10 +1709,34 @@ lexxy-editor.lexxy-editor-field {
   display: block;
 }
 
+/* ── Mobile Utility Classes ────────────────────────────── */
+.nav-only-mobile { display: none; }
+.nav-hide-mobile { display: inline; }
+.nav-hide-xs     { display: flex; }
+
 /* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-search__hint { display: none; }
+  .nav-search__input { padding-right: 10px; }
+  .nav-search--open { max-width: 220px; }
+}
+
 @media (max-width: 640px) {
   .page { padding: 24px 16px; }
-  .nav  { padding: 0 16px; }
+  .nav  { padding: 0 12px; }
+
+  /* Logo: hide text, keep T mark */
+  .nav__logo-text { display: none; }
+
+  /* Search: reduce size on mobile */
+  .nav-search--open { max-width: 160px; }
+
+  /* Auth buttons: icon only */
+  .nav-only-mobile { display: inline; }
+  .nav-hide-mobile { display: none; }
+
+  /* Nav: hide less-important icon buttons on small screens */
+  .nav-hide-xs { display: none !important; }
 
   .nav__links { display: none; }
 
@@ -1629,11 +1746,60 @@ lexxy-editor.lexxy-editor-field {
     gap: 12px;
   }
 
+  /* Tech info card: stack controls on new line when narrow */
+  .tech-info-card__footer {
+    flex-wrap: wrap;
+  }
+
+  /* Page header: allow wrapping */
+  .page__header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .page__header-actions {
+    flex-wrap: wrap;
+  }
+
+  /* Detail page: full width */
+  .page--editor { max-width: 100%; }
+
+  /* Detail meta: wrap on mobile */
+  .tech-detail__meta {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tech-detail__title { font-size: 22px; }
+  .page__title        { font-size: 20px; }
+
   .post-card {
     grid-template-columns: 32px 1fr;
     gap: 10px;
   }
+}
 
-  .tech-detail__title { font-size: 26px; }
-  .page__title        { font-size: 22px; }
+@media (max-width: 480px) {
+  .nav__center { max-width: 140px; }
+
+  /* Stack card meta and controls vertically */
+  .tech-info-card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .tech-info-card__controls {
+    align-self: flex-end;
+  }
+
+  /* Pagination: compact */
+  .pagination__nav {
+    gap: 6px;
+  }
+
+  .btn--secondary, .btn--primary, .btn--ghost {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
 }

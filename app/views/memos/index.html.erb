@@ -1,8 +1,10 @@
-<% content_for :title, "메모" %>
+<% content_for :title, "Memo" %>
 
 <div class="page">
   <div class="page__header">
-    <h1 class="page__title">메모</h1>
+    <h1 class="title-collage" aria-label="Memo">
+      <span class="tc-letter tc-m1">M</span><span class="tc-letter tc-m2">e</span><span class="tc-letter tc-m3">m</span><span class="tc-letter tc-m4">o</span>
+    </h1>
     <% if authenticated? %>
       <button class="btn btn--primary"
               data-controller="toggle"

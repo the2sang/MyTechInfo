@@ -13,7 +13,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Ultra&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
 
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
@@ -30,25 +30,32 @@
         <div class="nav__left">
           <%= link_to root_path, class: "nav__logo" do %>
             <span class="nav__logo-mark">T</span>
-            <span class="nav__logo-text">MyTechInfo</span>
+            <span class="nav__logo-text nav-hide-mobile">My Tech Info</span>
           <% end %>
         </div>
 
-        <div class="nav__center">
-          <%= form_with url: tech_infos_path, method: :get, class: "nav-search" do |f| %>
+        <div class="nav__center" data-controller="nav-search">
+          <button class="nav__icon-btn"
+                  aria-label="검색 열기"
+                  data-nav-search-target="toggle"
+                  data-action="click->nav-search#open">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+          <%= form_with url: tech_infos_path, method: :get, class: "nav-search",
+                data: { "nav-search-target": "form" } do |f| %>
             <i class="fa-solid fa-magnifying-glass nav-search__icon"></i>
             <%= f.text_field :q,
                 class: "nav-search__input",
                 placeholder: "기술정보 검색...",
                 value: params[:q],
                 autocomplete: "off",
-                data: { controller: "nav-search" } %>
+                data: { "nav-search-target": "input" } %>
             <span class="nav-search__hint"><kbd>⌘K</kbd></span>
           <% end %>
         </div>
 
         <div class="nav__right">
-          <%= link_to root_path, class: "nav__icon-btn", title: "Home" do %>
+          <%= link_to root_path, class: "nav__icon-btn nav-hide-xs", title: "Home" do %>
             <i class="fa-solid fa-house"></i>
           <% end %>
           <%= link_to tech_infos_path, class: "nav__icon-btn", title: "Tech Info" do %>
@@ -58,18 +65,30 @@
             <i class="fa-solid fa-note-sticky"></i>
           <% end %>
           <a href="https://github.com/the2sang/MyTechInfo"
-             class="nav__icon-btn" title="GitHub"
+             class="nav__icon-btn nav-hide-xs" title="GitHub"
              target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-github"></i>
           </a>
           <div class="nav__divider"></div>
           <% if authenticated? %>
-            <%= link_to "New Tech", new_tech_info_path, class: "btn btn--primary btn--sm" %>
-            <span class="nav__nickname"><%= Current.session.user.nickname %></span>
-            <%= button_to "로그아웃", session_path, method: :delete, class: "btn btn--logout btn--sm" %>
+            <%= link_to new_tech_info_path, class: "btn btn--primary btn--sm" do %>
+              <i class="fa-solid fa-plus nav-only-mobile"></i>
+              <span class="nav-hide-mobile">New Tech</span>
+            <% end %>
+            <span class="nav__nickname nav-hide-mobile"><%= Current.session.user.nickname %></span>
+            <%= button_to session_path, method: :delete, class: "btn btn--logout btn--sm" do %>
+              <i class="fa-solid fa-right-from-bracket nav-only-mobile"></i>
+              <span class="nav-hide-mobile">로그아웃</span>
+            <% end %>
           <% else %>
-            <%= link_to "로그인", new_session_path, class: "btn btn--secondary btn--sm" %>
-            <%= link_to "가입하기", new_registration_path, class: "btn btn--primary btn--sm" %>
+            <%= link_to new_session_path, class: "btn btn--secondary btn--sm" do %>
+              <i class="fa-solid fa-right-to-bracket nav-only-mobile"></i>
+              <span class="nav-hide-mobile">로그인</span>
+            <% end %>
+            <%= link_to new_registration_path, class: "btn btn--primary btn--sm" do %>
+              <i class="fa-solid fa-user-plus nav-only-mobile"></i>
+              <span class="nav-hide-mobile">가입하기</span>
+            <% end %>
           <% end %>
         </div>
       </div>
@@ -93,10 +112,6 @@
     <footer class="footer">
       <div class="footer__inner">
         <span class="footer__copy">&copy; <%= Time.current.year %> MyTechInfo</span>
-        <ul class="footer__links">
-          <li><%= link_to "Home", root_path %></li>
-          <li><%= link_to "Posts", posts_path %></li>
-        </ul>
       </div>
     </footer>
   </body>
