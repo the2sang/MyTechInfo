@@ -366,6 +366,82 @@ body {
 .tc-m3 { background: #d4b588; color: #3d2b1a; transform: rotate(-1.2deg); }
 .tc-m4 { background: #6b5344; color: #ffffff; transform: rotate(2.5deg);  }
 
+/* Work Plan page */
+.tc-w1 { background: #6b5344; color: #ffffff; transform: rotate(-2.2deg); }
+.tc-w2 { background: #d4b588; color: #3d2b1a; transform: rotate(1.6deg);  }
+.tc-w3 { background: #c49a6c; color: #ffffff; transform: rotate(-1deg);   }
+.tc-w4 { background: #8b7355; color: #ffffff; transform: rotate(2.4deg);  }
+.tc-w5 { background: #e8ddd0; color: #6b5344; transform: rotate(-1.8deg); }
+
+/* Life Info page */
+.tc-l1 { background: #2d6a4f; color: #ffffff; transform: rotate(-2deg);   }
+.tc-l2 { background: #74c69d; color: #1b4332; transform: rotate(1.5deg);  }
+.tc-l3 { background: #40916c; color: #ffffff; transform: rotate(-1.3deg); }
+.tc-l4 { background: #b7e4c7; color: #1b4332; transform: rotate(2deg);   }
+
+/* Stock Info page */
+.tc-s1 { background: #1a3a5c; color: #f0c040; transform: rotate(-2deg);   }
+.tc-s2 { background: #f0c040; color: #1a3a5c; transform: rotate(1.5deg);  }
+.tc-s3 { background: #22c55e; color: #ffffff; transform: rotate(-1.3deg); }
+.tc-s4 { background: #0f2e4a; color: #f0c040; transform: rotate(2deg);   }
+
+.stock-info-card__query {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--hcp-fg);
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stock-info__content {
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.stock-info-card__delete-wrapper {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+.stock-info-card__delete {
+  flex: 0 0 auto;
+  padding: 5px 10px;
+  font-size: 12px;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.stock-info-card__delete:hover { opacity: 1; }
+
+.stock-info__markdown-body {
+  overflow-x: auto;
+}
+
+.memo-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 6px;
+}
+
+.memo-card__preview {
+  font-size: 13px;
+  color: var(--hcp-helper);
+  line-height: 1.55;
+  margin-top: 4px;
+}
+
+.memo-card__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.memo-card__link:hover { text-decoration: none; }
+
 @media (max-width: 640px) {
   .tc-letter { font-size: 22px; min-width: 26px; padding: 4px 7px; }
 }
@@ -950,6 +1026,25 @@ mark.search-hl {
   font-weight: 500;
   border-radius: 4px;
   letter-spacing: 0.01em;
+}
+
+.tech-tag--life {
+  background-color: #1b4332;
+  border-color: rgba(64, 145, 108, 0.6);
+  color: #d8f3dc;
+}
+
+.tech-tag--active {
+  background-color: var(--hcp-purple);
+  border-color: var(--hcp-purple);
+  color: #fff;
+}
+
+.life-info-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
 }
 
 .badge {
@@ -1802,4 +1897,412 @@ lexxy-editor.lexxy-editor-field {
     padding: 7px 10px;
     font-size: 12px;
   }
+}
+
+/* ── Compact Form — 20% 축소 (작업계획서 · 기술정보) ────── */
+.work-plan-form,
+.tech-info-form {
+  gap: 16px;
+}
+
+.work-plan-form .form__label,
+.tech-info-form .form__label {
+  font-size: 11px;
+}
+
+.work-plan-form .form__input,
+.work-plan-form .form__textarea,
+.work-plan-form .form__select,
+.tech-info-form .form__input,
+.tech-info-form .form__textarea,
+.tech-info-form .form__select {
+  padding: 9px 10px;
+  font-size: 13px;
+}
+
+.work-plan-form .form__static {
+  padding: 9px 10px;
+  font-size: 12px;
+}
+
+.work-plan-form .form__field,
+.tech-info-form .form__field {
+  gap: 5px;
+}
+
+/* ── Work Plan Calendar ────────────────────────────────── */
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calendar__nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.calendar__nav .btn--ghost {
+  color: #1e3a8a;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.calendar__nav .btn--ghost:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.calendar__nav-btn {
+  padding: 7px 12px;
+}
+
+.calendar__month-title {
+  font-family: var(--font-brand);
+  font-size: 20px;
+  font-weight: 700;
+  min-width: 140px;
+  text-align: center;
+}
+
+.calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border: 1px solid var(--hcp-light-bg);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.calendar__dow {
+  padding: 10px 4px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background-color: var(--hcp-light-bg);
+  color: var(--hcp-helper);
+  border-right: 1px solid rgba(178, 182, 189, 0.3);
+}
+
+.calendar__dow:last-child { border-right: none; }
+.calendar__dow--sun { color: #dc2626; }
+.calendar__dow--sat { color: var(--hcp-vagrant); }
+
+.calendar__cell {
+  min-height: 90px;
+  padding: 8px 6px 6px;
+  border-right: 1px solid var(--hcp-light-bg);
+  border-bottom: 1px solid var(--hcp-light-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.calendar__cell:nth-child(7n) { border-right: none; }
+
+.calendar__cell--empty {
+  background-color: #fafafa;
+}
+
+.calendar__cell--today {
+  background-color: rgba(123, 66, 188, 0.04);
+}
+
+.calendar__cell--today .calendar__date-num {
+  background-color: var(--hcp-terraform);
+  color: #fff;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar__cell--sun .calendar__date-num { color: #dc2626; }
+.calendar__cell--sat .calendar__date-num { color: var(--hcp-vagrant); }
+
+.calendar__date-link {
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  width: fit-content;
+}
+
+.calendar__date-link:hover .calendar__date-num {
+  background-color: var(--hcp-light-bg);
+  border-radius: 50%;
+}
+
+.calendar__date-num {
+  font-size: 13px;
+  font-weight: 500;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s;
+}
+
+.calendar__plans {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.calendar__plan-icon {
+  color: #d97706;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.1s, transform 0.1s;
+  line-height: 1;
+}
+
+.calendar__plan-icon:hover {
+  color: #b45309;
+  transform: scale(1.15);
+}
+
+.calendar__plan-more {
+  font-size: 11px;
+  color: var(--hcp-helper);
+  font-weight: 600;
+  align-self: center;
+}
+
+/* ── Work Plan Form ────────────────────────────────────── */
+.work-plan-datetime {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.work-plan-datetime__date { flex: 1.6; }
+.work-plan-datetime__time { flex: 1; }
+
+.work-plan-datetime__sep {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hcp-helper);
+  white-space: nowrap;
+  align-self: center;
+  padding: 0 2px;
+}
+
+.work-plan-detail__time-sep {
+  margin: 0 6px;
+  color: var(--hcp-helper);
+}
+
+.form__static {
+  font-size: 15px;
+  color: var(--hcp-charcoal);
+  padding: 11px 12px;
+  border: 1px solid var(--hcp-border-light);
+  border-radius: 5px;
+  background-color: #fafafa;
+}
+
+.form__hint {
+  font-size: 12px;
+  color: var(--hcp-helper);
+  margin-left: 6px;
+}
+
+.lexxy-work-plan {
+  min-height: 280px;
+  border: 1px solid var(--hcp-border-mid);
+  border-radius: 5px;
+}
+
+.lexxy-work-plan table,
+.content-preview table {
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+}
+
+.lexxy-work-plan table th,
+.lexxy-work-plan table td,
+.content-preview table th,
+.content-preview table td {
+  border: 1px solid #000 !important;
+  padding: 4px !important;
+}
+
+.lexxy-work-plan table tr:first-child th,
+.lexxy-work-plan table tr:first-child td,
+.content-preview table tr:first-child th,
+.content-preview table tr:first-child td {
+  background-color: #e5e7eb !important;
+}
+
+/* ── Work Plan Detail ──────────────────────────────────── */
+.work-plan-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.work-plan-detail__meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--hcp-helper);
+}
+
+.work-plan-detail__dept {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.work-plan-detail__title {
+  font-family: var(--font-brand);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--hcp-black);
+  line-height: 1.25;
+}
+
+.work-plan-detail__when {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--hcp-charcoal);
+  font-weight: 500;
+}
+
+.work-plan-detail__section {
+  border-top: 1px solid var(--hcp-light-bg);
+  padding-top: 20px;
+}
+
+.work-plan-detail__section-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: var(--hcp-helper);
+  margin-bottom: 12px;
+}
+
+.work-plan-detail__content {
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.work-plan-detail__extra {
+  font-size: 14px;
+  color: var(--hcp-charcoal);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* Mobile calendar */
+@media (max-width: 600px) {
+  .calendar__cell {
+    min-height: 60px;
+    padding: 4px 3px;
+  }
+
+  .calendar__month-title {
+    font-size: 16px;
+    min-width: 110px;
+  }
+
+  .calendar__date-num {
+    font-size: 11px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .calendar__plan-icon {
+    font-size: 12px;
+  }
+
+  .work-plan-datetime {
+    flex-direction: column;
+  }
+}
+
+/* ── Work Plan Document Preview ─────────────────────────── */
+.work-plan-doc {
+  margin: 24px 0;
+  overflow-x: auto;
+}
+
+.work-plan-doc__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+.work-plan-doc__title-cell {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  padding: 14px 12px;
+  border: 1px solid #555;
+  background: #f5f5f7;
+  color: var(--hcp-dark);
+}
+
+.work-plan-doc__label {
+  text-align: center;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 8px 10px;
+  border: 1px solid #888;
+  background: #f0f0f2;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: var(--hcp-charcoal);
+  width: 80px;
+}
+
+.work-plan-doc__label--tall {
+  vertical-align: top;
+  padding-top: 12px;
+}
+
+.work-plan-doc__value {
+  padding: 8px 12px;
+  border: 1px solid #aaa;
+  vertical-align: middle;
+  color: var(--hcp-dark);
+  line-height: 1.5;
+}
+
+.work-plan-doc__value--content {
+  vertical-align: top;
+  min-height: 120px;
+  padding: 10px 12px;
+}
+
+.work-plan-doc__value--content p { margin: 0 0 4px; }
+.work-plan-doc__value--content ul,
+.work-plan-doc__value--content ol { padding-left: 18px; margin: 4px 0; }
+.work-plan-doc__value--content table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.work-plan-doc__value--content table th,
+.work-plan-doc__value--content table td {
+  border: 1px solid #000;
+  padding: 4px;
+}
+.work-plan-doc__value--content table tr:first-child th,
+.work-plan-doc__value--content table tr:first-child td {
+  background-color: #e5e7eb;
 }

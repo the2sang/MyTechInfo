@@ -1,0 +1,58 @@
+<% content_for :title, "주식전망" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="title-collage" aria-label="주식전망">
+      <span class="tc-letter tc-s1">주</span><span class="tc-letter tc-s2">식</span><span class="tc-word-gap"></span><span class="tc-letter tc-s3">전</span><span class="tc-letter tc-s4">망</span>
+    </h1>
+    <% if authenticated? %>
+      <div class="page__header-actions">
+        <%= button_to stock_infos_path, method: :get,
+              class: "btn btn--ghost btn--sm",
+              title: "새로고침" do %>
+          <i class="fa-solid fa-rotate-right"></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @stock_infos.empty? %>
+    <div class="empty-state">
+      <i class="fa-solid fa-chart-line" style="font-size:48px;color:var(--hcp-border-mid);margin-bottom:12px;display:block;"></i>
+      <p class="empty-state__text">등록된 주식 전망이 없습니다.</p>
+      <p style="font-size:13px;color:var(--hcp-cool-gray);margin-top:8px;">
+        <code>bin/rails stock_infos:fetch</code> 를 실행하면 오늘의 전망이 등록됩니다.
+      </p>
+    </div>
+  <% else %>
+    <div class="memo-grid">
+      <% @stock_infos.each do |stock_info| %>
+        <div class="memo-card" style="border-left: 4px solid <%= stock_info.id.even? ? '#22c55e' : '#3b82f6' %>; position: relative;">
+          <div class="memo-card__header">
+            <span class="memo-card__date">
+              <i class="fa-solid fa-chart-line" style="margin-right:4px;"></i>
+              <%= stock_info.queried_at.strftime("%Y.%m.%d %H:%M") %>
+            </span>
+          </div>
+
+          <div class="memo-card__body" style="padding-bottom: <%= authenticated? ? '36px' : '12px' %>;">
+            <%= link_to stock_info_path(stock_info), class: "memo-card__link" do %>
+              <p class="stock-info-card__query"><%= stock_info.query %></p>
+              <p class="memo-card__preview"><%= truncate(strip_tags(render_markdown(stock_info.content)).gsub(/\s+/, " ").strip, length: 150) %></p>
+            <% end %>
+          </div>
+
+          <% if authenticated? %>
+            <div class="stock-info-card__delete-wrapper">
+              <%= button_to stock_info_path(stock_info), method: :delete,
+                    class: "memo-card__btn memo-card__btn--danger stock-info-card__delete",
+                    form: { data: { turbo_confirm: "이 전망을 삭제하시겠습니까?" } } do %>
+                <i class="fa-solid fa-trash"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

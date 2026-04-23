@@ -1,0 +1,38 @@
+<% content_for :title, @stock_info.query %>
+
+<div class="page page--narrow">
+  <%= link_to "주식전망 목록", stock_infos_path, class: "back-link" %>
+
+  <div class="tech-detail">
+    <div class="tech-detail__meta" style="margin-bottom: 16px;">
+      <div class="tech-detail__meta-left">
+        <i class="fa-solid fa-chart-line"></i>
+        <span><%= @stock_info.queried_at.strftime("%Y년 %m월 %d일 %H:%M") %></span>
+      </div>
+    </div>
+
+    <div class="tech-detail__section">
+      <div class="tech-detail__label">제목</div>
+      <div class="tech-detail__value" style="font-weight:600;">
+        <%= @stock_info.query %>
+      </div>
+    </div>
+
+    <div class="tech-detail__section">
+      <div class="tech-detail__label">Claude 전망</div>
+      <div class="stock-info__markdown-body">
+        <div class="prose stock-info__content">
+          <%= render_markdown @stock_info.content %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if authenticated? %>
+    <div class="form__actions" style="margin-top: 24px; justify-content: flex-end;">
+      <%= button_to "삭제", stock_info_path(@stock_info), method: :delete,
+          class: "btn btn--danger",
+          form: { data: { turbo_confirm: "이 주식 전망을 삭제하시겠습니까?" } } %>
+    </div>
+  <% end %>
+</div>
