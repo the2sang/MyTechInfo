@@ -1,0 +1,15 @@
+one:
+  chat_id: "12345"
+  telegram_message_id: 1
+  command: /task
+  message_text: /task 로그인 화면 수정
+  status: pending
+
+completed:
+  chat_id: "12345"
+  telegram_message_id: 2
+  command: /status
+  message_text: /status
+  status: completed
+  result: done
+  processed_at: <%= Time.current %>

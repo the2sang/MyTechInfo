@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  post "telegram/webhook", to: "telegram/webhooks#create", as: :telegram_webhook
+
   resource :session, only: %i[ new create destroy ]
   resources :passwords, param: :token, only: %i[ new create edit update ]
   resource :registration, only: %i[ new create ]
