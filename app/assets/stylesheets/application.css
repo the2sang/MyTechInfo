@@ -2467,3 +2467,63 @@ lexxy-editor.lexxy-editor-field {
 .work-plan-doc__value--content table tr:first-child td {
   background-color: #e5e7eb;
 }
+
+/* ── PWA Install Banner ─────────────────────────────── */
+.pwa-install-banner {
+  margin-top: 16px;
+  border: 1px solid var(--color-border, #2a2a3e);
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--color-surface, #16213e);
+  font-size: 13px;
+  color: var(--color-text, #e0e0e0);
+}
+
+.pwa-install-banner__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.pwa-install-banner__close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--color-text-muted, #888);
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.pwa-install-banner__close:hover { color: var(--color-text, #e0e0e0); }
+
+.pwa-install-banner__desc {
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--color-text-muted, #888);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pwa-install-banner__steps {
+  margin: 0 0 8px;
+  padding-left: 18px;
+  line-height: 1.8;
+}
+
+.pwa-install-banner__note {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--color-text-muted, #888);
+}
+
+.pwa-install-banner__btn {
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 12px;
+}
