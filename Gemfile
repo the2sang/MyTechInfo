@@ -69,3 +69,4 @@ group :test do
 end
 
 gem "lexxy", "~> 0.9.9.beta"
+gem "rubyzip"

@@ -1,0 +1,78 @@
+<%= form_with(model: life_info, class: "form life-info-form") do |form| %>
+  <% if life_info.errors.any? %>
+    <div class="form__errors">
+      <div class="form__errors-title">
+        <%= pluralize(life_info.errors.count, "error") %> prevented this record from being saved:
+      </div>
+      <ul class="form__errors-list">
+        <% life_info.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form__field">
+    <%= form.label :title, "제목", class: "form__label" %>
+    <%= form.text_field :title, class: "form__input", placeholder: "생활정보 제목을 입력하세요", maxlength: 200 %>
+  </div>
+
+  <div class="form__field">
+    <%= form.label :category, "카테고리", class: "form__label" %>
+    <%= form.text_field :category, class: "form__input", placeholder: "예: 건강, 요리, 법률, 금융" %>
+  </div>
+
+  <div class="form__field">
+    <%= form.label :reference_url, "참고 URL", class: "form__label" %>
+    <%= form.url_field :reference_url, class: "form__input", placeholder: "https://example.com" %>
+  </div>
+
+  <div class="form__field content-editor"
+       data-controller="content-editor">
+
+    <div class="content-editor__header">
+      <%= form.label :content, "내용", class: "form__label" %>
+    </div>
+
+    <div class="content-editor__tabs">
+      <button type="button" class="content-editor__tab content-editor__tab--active"
+              data-content-editor-target="editTab"
+              data-action="click->content-editor#showEdit">
+        편집
+      </button>
+      <button type="button" class="content-editor__tab"
+              data-content-editor-target="previewTab"
+              data-action="click->content-editor#showPreview">
+        미리 보기
+      </button>
+    </div>
+
+    <%= form.hidden_field :content, data: { "content-editor-target": "hiddenContent" } %>
+
+    <div data-content-editor-target="editPane">
+      <lexxy-editor
+        class="lexxy-editor-field"
+        placeholder="내용을 입력하세요"
+        data-content-editor-target="editor"></lexxy-editor>
+    </div>
+
+    <div data-content-editor-target="previewPane" hidden>
+      <div class="content-preview lexxy-content"
+           data-content-editor-target="previewPanel">
+        <span class="content-preview__empty">미리 보기할 내용을 입력하세요</span>
+      </div>
+    </div>
+
+    <%= form.hidden_field :content_format, value: "html" %>
+  </div>
+
+  <div class="form__field form__field--inline">
+    <%= form.check_box :is_public, class: "form__checkbox" %>
+    <%= form.label :is_public, "공개 (로그인 없이 누구나 볼 수 있음)", class: "form__label form__label--inline" %>
+  </div>
+
+  <div class="form__actions">
+    <%= form.submit life_info.new_record? ? "등록" : "수정", class: "btn btn--primary" %>
+    <%= link_to "취소", life_info.new_record? ? life_infos_path : life_info, class: "btn btn--ghost" %>
+  </div>
+<% end %>

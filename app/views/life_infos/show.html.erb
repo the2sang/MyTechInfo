@@ -1,0 +1,61 @@
+<% content_for :title, @life_info.title %>
+
+<div class="page page--editor">
+  <%= link_to "생활정보 목록", life_infos_path, class: "back-link" %>
+
+  <div class="tech-detail">
+    <h3 class="tech-detail__title"><%= @life_info.title %></h3>
+
+    <% if @life_info.category.present? %>
+      <div class="tech-detail__tags">
+        <span class="tech-tag tech-tag--life"><%= @life_info.category %></span>
+      </div>
+    <% end %>
+
+    <div class="tech-detail__meta">
+      <div class="tech-detail__meta-left">
+        <span><%= @life_info.user.nickname %></span>
+        <span>&middot;</span>
+        <span><%= @life_info.created_at.strftime("%Y년 %m월 %d일") %></span>
+      </div>
+      <div class="tech-detail__meta-right">
+        <span class="badge badge--<%= @life_info.is_public? ? 'public' : 'private' %>">
+          <%= @life_info.is_public? ? "공개" : "비공개" %>
+        </span>
+      </div>
+    </div>
+
+    <% if @life_info.reference_url.present? %>
+      <div class="tech-detail__section">
+        <div class="tech-detail__label">참고 URL</div>
+        <div class="tech-detail__value">
+          <%= link_to @life_info.reference_url, @life_info.reference_url, target: "_blank", rel: "noopener noreferrer" %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="tech-detail__section">
+      <div class="tech-detail__label">내용</div>
+      <% if @life_info.content.present? %>
+        <div class="tech-detail__value tech-detail__value--rendered lexxy-content">
+          <%= sanitize @life_info.content,
+                tags: %w[p br ul ol li h1 h2 h3 h4 h5 h6 strong em u s del
+                         blockquote code pre a span div
+                         table thead tbody tfoot tr th td figure figcaption],
+                attributes: %w[class colspan rowspan href target rel] %>
+        </div>
+      <% else %>
+        <p class="tech-detail__empty">내용이 없습니다.</p>
+      <% end %>
+    </div>
+  </div>
+
+  <% if authenticated? && Current.session&.user == @life_info.user %>
+    <div class="form__actions" style="margin-top:24px;">
+      <%= link_to "수정", edit_life_info_path(@life_info), class: "btn btn--secondary" %>
+      <%= button_to "삭제", @life_info, method: :delete,
+          class: "btn btn--danger",
+          form: { data: { turbo_confirm: "이 생활정보를 삭제하시겠습니까?" } } %>
+    </div>
+  <% end %>
+</div>

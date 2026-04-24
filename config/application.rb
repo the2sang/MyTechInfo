@@ -23,6 +23,7 @@ module Twitterclone
     #
     config.time_zone = "Seoul"
     config.i18n.default_locale = :ko
+    config.i18n.available_locales = [ :en, :ko ]
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end

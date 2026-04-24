@@ -1,0 +1,12 @@
+<% content_for :title, "작업계획서 등록" %>
+
+<div class="page page--editor">
+  <div class="page__header">
+    <h1 class="page__title">작업계획서 등록</h1>
+    <%= link_to work_plans_path, class: "btn btn--ghost btn--sm" do %>
+      <i class="fa-solid fa-arrow-left"></i> 캘린더로
+    <% end %>
+  </div>
+
+  <%= render "form", work_plan: @work_plan, department_names: @department_names %>
+</div>

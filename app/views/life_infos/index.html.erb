@@ -1,0 +1,86 @@
+<% content_for :title, "생활정보" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="title-collage" aria-label="생활정보">
+      <span class="tc-letter tc-l1">생</span><span class="tc-letter tc-l2">활</span><span class="tc-word-gap"></span><span class="tc-letter tc-l3">정</span><span class="tc-letter tc-l4">보</span>
+    </h1>
+    <% if authenticated? %>
+      <div class="page__header-actions">
+        <%= link_to new_life_info_path, class: "btn btn--primary" do %>
+          <i class="fa-solid fa-plus"></i>
+          <span class="nav-hide-mobile">New</span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# 카테고리 필터 %>
+  <% if @categories.any? %>
+    <div class="life-info-categories">
+      <%= link_to "전체", life_infos_path(q: params[:q]),
+            class: "tech-tag #{params[:category].blank? ? 'tech-tag--active' : ''}" %>
+      <% @categories.each do |cat| %>
+        <%= link_to cat, life_infos_path(category: cat, q: params[:q]),
+              class: "tech-tag #{params[:category] == cat ? 'tech-tag--active' : ''}" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @life_infos.empty? %>
+    <div class="empty-state">
+      <p class="empty-state__text">등록된 생활정보가 없습니다.</p>
+    </div>
+  <% else %>
+    <div class="tech-info-list">
+      <% @life_infos.each do |life_info| %>
+        <div class="tech-info-card">
+          <div class="tech-info-card__title">
+            <%= link_to life_info, class: "tech-info-card__title-link" do %>
+              <%= life_info.title %>
+            <% end %>
+          </div>
+
+          <% if life_info.category.present? %>
+            <div class="tech-info-card__tags">
+              <span class="tech-tag tech-tag--sm tech-tag--life"><%= life_info.category %></span>
+            </div>
+          <% end %>
+
+          <div class="tech-info-card__footer">
+            <div class="tech-info-card__meta">
+              <span><%= life_info.user.nickname %></span>
+              <span>&middot;</span>
+              <span><%= life_info.created_at.strftime("%Y.%m.%d") %></span>
+            </div>
+            <div class="tech-info-card__controls">
+              <span class="badge badge--<%= life_info.is_public? ? 'public' : 'private' %>">
+                <%= life_info.is_public? ? "공개" : "비공개" %>
+              </span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="pagination">
+      <div class="pagination__info">
+        <%= @total %>건 중 <%= [(@page - 1) * 12 + 1, @total].min %>–<%= [@page * 12, @total].min %>
+      </div>
+      <div class="pagination__nav">
+        <% if @page > 1 %>
+          <%= link_to "← 이전", life_infos_path(page: @page - 1, category: params[:category], q: params[:q]), class: "btn btn--secondary" %>
+        <% else %>
+          <span class="btn btn--secondary btn--disabled">← 이전</span>
+        <% end %>
+        <% total_pages = (@total.to_f / 12).ceil %>
+        <span class="pagination__pages"><%= @page %> / <%= [total_pages, 1].max %></span>
+        <% if @page < total_pages %>
+          <%= link_to "다음 →", life_infos_path(page: @page + 1, category: params[:category], q: params[:q]), class: "btn btn--secondary" %>
+        <% else %>
+          <span class="btn btn--secondary btn--disabled">다음 →</span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

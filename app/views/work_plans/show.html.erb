@@ -1,0 +1,75 @@
+<% content_for :title, @work_plan.work_name %>
+
+<div class="page page--narrow">
+  <div class="page__header">
+    <%= link_to work_plans_path, class: "btn btn--ghost btn--sm" do %>
+      <i class="fa-solid fa-arrow-left"></i> 캘린더로
+    <% end %>
+    <div class="page__header-actions">
+      <%= link_to hwpx_work_plan_path(@work_plan), class: "btn btn--secondary btn--sm", title: "HWPX 다운로드", data: { turbo: false } do %>
+        <i class="fa-solid fa-file-word"></i> HWPX
+      <% end %>
+      <%= link_to edit_work_plan_path(@work_plan), class: "btn btn--secondary btn--sm" do %>
+        <i class="fa-solid fa-pen"></i> 수정
+      <% end %>
+      <%= button_to work_plan_path(@work_plan),
+            method: :delete,
+            class: "btn btn--danger btn--sm",
+            data: { turbo_confirm: "이 작업계획서를 삭제하시겠습니까?" } do %>
+        <i class="fa-solid fa-trash"></i> 삭제
+      <% end %>
+    </div>
+  </div>
+
+  <%# Document-form preview — mirrors the HWPX template layout %>
+  <div class="work-plan-doc">
+    <table class="work-plan-doc__table">
+      <thead>
+        <tr>
+          <th class="work-plan-doc__title-cell" colspan="4">작 업 계 획 서</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th class="work-plan-doc__label">부 서 명</th>
+          <td class="work-plan-doc__value"><%= @work_plan.department_name %></td>
+          <th class="work-plan-doc__label">작성일자</th>
+          <td class="work-plan-doc__value"><%= @work_plan.doc_date.strftime("%Y-%m-%d") %></td>
+        </tr>
+        <tr>
+          <th class="work-plan-doc__label">작 업 명</th>
+          <td class="work-plan-doc__value" colspan="3"><%= @work_plan.work_name %></td>
+        </tr>
+        <tr>
+          <th class="work-plan-doc__label">작업일시</th>
+          <td class="work-plan-doc__value" colspan="3">
+            <%= @work_plan.work_at.strftime("%Y년 %-m월 %-d일 %H:%M") %>
+            <% if @work_plan.work_end_at.present? %>
+              ~ <%= @work_plan.work_end_at.strftime("%H:%M") %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <th class="work-plan-doc__label work-plan-doc__label--tall">작업내용</th>
+          <td class="work-plan-doc__value work-plan-doc__value--content" colspan="3">
+            <% if @work_plan.work_content.present? %>
+              <%= sanitize @work_plan.work_content,
+                    tags: %w[p br ul ol li h1 h2 h3 h4 h5 h6 strong em u s del
+                             blockquote code pre a span div
+                             table thead tbody tfoot tr th td figure figcaption],
+                    attributes: %w[class colspan rowspan href target rel] %>
+            <% else %>
+              <span class="content-preview__empty">내용이 없습니다.</span>
+            <% end %>
+          </td>
+        </tr>
+        <% if @work_plan.extra_info.present? %>
+        <tr>
+          <th class="work-plan-doc__label">기 타</th>
+          <td class="work-plan-doc__value" colspan="3"><%= simple_format @work_plan.extra_info %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -3,9 +3,11 @@
 <div class="page page--narrow">
   <div class="auth-card">
     <div class="auth-card__header">
-      <div class="nav__logo-mark" style="width:32px;height:32px;font-size:14px;">T</div>
-      <h1 class="page__title" style="margin-top:16px;">Create your account</h1>
-      <p style="font-size:13px;color:var(--color-text-muted);margin-top:6px;">Join MyTechInfo today.</p>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="nav__logo-mark" style="width:32px;height:32px;font-size:14px;flex-shrink:0;">T</div>
+        <h1 class="page__title" style="margin:0;">Create your account</h1>
+      </div>
+      <p style="font-size:13px;color:var(--color-text-muted);margin-top:6px;">Join my site today.</p>
     </div>
 
     <%= form_with model: @user, url: registration_path, class: "form" do |form| %>
@@ -31,9 +33,9 @@
       </div>
 
       <div class="form__field">
-        <%= form.label :nickname, "닉네임", class: "form__label" %>
+        <%= form.label :nickname, "Nickname", class: "form__label" %>
         <%= form.text_field :nickname, class: "form__input",
-            placeholder: "닉네임 (2~30자)",
+            placeholder: "Nickname (2~30자)",
             autocomplete: "nickname",
             maxlength: 30 %>
       </div>

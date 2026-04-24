@@ -1,0 +1,12 @@
+<% content_for :title, "작업계획서 수정" %>
+
+<div class="page page--editor">
+  <div class="page__header">
+    <h1 class="page__title">작업계획서 수정</h1>
+    <%= link_to work_plan_path(@work_plan), class: "btn btn--ghost btn--sm" do %>
+      <i class="fa-solid fa-arrow-left"></i> 상세로
+    <% end %>
+  </div>
+
+  <%= render "form", work_plan: @work_plan, department_names: @department_names %>
+</div>

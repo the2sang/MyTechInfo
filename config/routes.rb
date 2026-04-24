@@ -5,8 +5,13 @@ Rails.application.routes.draw do
   resources :passwords, param: :token, only: %i[ new create edit update ]
   resource :registration, only: %i[ new create ]
 
+  resources :work_plans do
+    member { get :hwpx }
+  end
   resources :memos
   resources :posts
+  resources :life_infos
+  resources :stock_infos, only: %i[index show destroy]
   resources :tech_infos do
     resources :comments, only: %i[ create destroy ]
     resource :reaction, only: %i[ create destroy ], controller: "tech_info_reactions"

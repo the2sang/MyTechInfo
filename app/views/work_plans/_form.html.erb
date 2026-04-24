@@ -1,0 +1,118 @@
+<%= form_with model: work_plan,
+      class: "form work-plan-form",
+      data: { controller: "work-plan-form" } do |f| %>
+
+  <% if work_plan.errors.any? %>
+    <div class="form__errors">
+      <p class="form__errors-title">입력 오류가 있습니다</p>
+      <ul class="form__errors-list">
+        <% work_plan.errors.each do |e| %>
+          <li><%= e.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# 부서명 — datalist 자동완성 %>
+  <div class="form__field">
+    <%= f.label :department_name, "부서명", class: "form__label" %>
+    <%= f.text_field :department_name,
+          class: "form__input",
+          placeholder: "부서명 입력",
+          maxlength: 100,
+          autocomplete: "off",
+          list: "department-list",
+          autofocus: true %>
+    <datalist id="department-list">
+      <% (department_names || []).each do |name| %>
+        <option value="<%= name %>">
+      <% end %>
+    </datalist>
+  </div>
+
+  <%# 작성일자 — 달력 선택 %>
+  <div class="form__field">
+    <%= f.label :doc_date, "작성일자", class: "form__label" %>
+    <%= f.date_field :doc_date, class: "form__input" %>
+  </div>
+
+  <%# 작업명 %>
+  <div class="form__field">
+    <%= f.label :work_name, "작업명", class: "form__label" %>
+    <%= f.text_field :work_name,
+          class: "form__input",
+          placeholder: "작업 제목을 입력하세요",
+          maxlength: 200 %>
+  </div>
+
+  <%# 작업일시 — 날짜 + 시작시간 + 종료시간 %>
+  <div class="form__field">
+    <span class="form__label">작업일시</span>
+    <div class="work-plan-datetime">
+      <input type="date"
+             class="form__input work-plan-datetime__date"
+             data-work-plan-form-target="dateInput"
+             data-action="change->work-plan-form#syncDatetime"
+             value="<%= work_plan.work_at&.strftime('%Y-%m-%d') %>">
+      <span class="work-plan-datetime__sep">시작</span>
+      <input type="time"
+             class="form__input work-plan-datetime__time"
+             data-work-plan-form-target="startTimeInput"
+             data-action="change->work-plan-form#syncDatetime"
+             value="<%= work_plan.work_at&.strftime('%H:%M') %>"
+             step="60">
+      <span class="work-plan-datetime__sep">종료</span>
+      <input type="time"
+             class="form__input work-plan-datetime__time"
+             data-work-plan-form-target="endTimeInput"
+             data-action="change->work-plan-form#syncDatetime"
+             value="<%= work_plan.work_end_at&.strftime('%H:%M') %>"
+             step="60">
+      <%= f.hidden_field :work_at,    data: { work_plan_form_target: "hiddenWorkAt" } %>
+      <%= f.hidden_field :work_end_at, data: { work_plan_form_target: "hiddenWorkEndAt" } %>
+    </div>
+  </div>
+
+  <%# 작업내용 — Lexxy 에디터 %>
+  <div class="form__field">
+    <%= f.label :work_content, "작업내용", class: "form__label" %>
+    <div class="content-editor" data-controller="content-editor">
+      <div class="content-editor__tabs">
+        <button type="button"
+                class="content-editor__tab"
+                data-content-editor-target="editTab"
+                data-action="click->content-editor#showEdit">편집</button>
+        <button type="button"
+                class="content-editor__tab"
+                data-content-editor-target="previewTab"
+                data-action="click->content-editor#showPreview">미리보기</button>
+      </div>
+      <div data-content-editor-target="editPane">
+        <lexxy-editor
+          data-content-editor-target="editor"
+          class="lexxy-work-plan"></lexxy-editor>
+      </div>
+      <div data-content-editor-target="previewPane" hidden>
+        <div class="content-preview" data-content-editor-target="previewPanel"></div>
+      </div>
+      <%= f.hidden_field :work_content,
+            value: work_plan.work_content,
+            data: { "content-editor-target": "hiddenContent" } %>
+    </div>
+  </div>
+
+  <%# 기타 %>
+  <div class="form__field">
+    <%= f.label :extra_info, "기타", class: "form__label" %>
+    <%= f.textarea :extra_info,
+          class: "form__textarea",
+          placeholder: "추가 참고 사항을 입력하세요",
+          rows: 3 %>
+  </div>
+
+  <div class="form__actions">
+    <%= f.submit work_plan.new_record? ? "등록" : "수정",
+          class: "btn btn--primary" %>
+    <%= link_to "취소", work_plans_path, class: "btn btn--ghost" %>
+  </div>
+<% end %>

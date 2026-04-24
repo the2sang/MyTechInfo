@@ -30,7 +30,9 @@
         <div class="nav__left">
           <%= link_to root_path, class: "nav__logo" do %>
             <span class="nav__logo-mark">T</span>
-            <span class="nav__logo-text nav-hide-mobile">My Tech Info</span>
+            <span class="nav__logo-text nav-hide-mobile">
+              <%= authenticated? ? Current.session.user.email_address.split("@").first : "Public" %>
+            </span>
           <% end %>
         </div>
 
@@ -61,8 +63,17 @@
           <%= link_to tech_infos_path, class: "nav__icon-btn", title: "Tech Info" do %>
             <i class="fa-solid fa-database"></i>
           <% end %>
+          <%= link_to life_infos_path, class: "nav__icon-btn", title: "생활정보" do %>
+            <i class="fa-solid fa-seedling"></i>
+          <% end %>
+          <%= link_to stock_infos_path, class: "nav__icon-btn", title: "주식전망" do %>
+            <i class="fa-solid fa-chart-line"></i>
+          <% end %>
           <%= link_to memos_path, class: "nav__icon-btn", title: "메모" do %>
             <i class="fa-solid fa-note-sticky"></i>
+          <% end %>
+          <%= link_to work_plans_path, class: "nav__icon-btn", title: "작업계획서" do %>
+            <i class="fa-solid fa-calendar-check"></i>
           <% end %>
           <a href="https://github.com/the2sang/MyTechInfo"
              class="nav__icon-btn nav-hide-xs" title="GitHub"
@@ -71,23 +82,19 @@
           </a>
           <div class="nav__divider"></div>
           <% if authenticated? %>
-            <%= link_to new_tech_info_path, class: "btn btn--primary btn--sm" do %>
-              <i class="fa-solid fa-plus nav-only-mobile"></i>
-              <span class="nav-hide-mobile">New Tech</span>
-            <% end %>
             <span class="nav__nickname nav-hide-mobile"><%= Current.session.user.nickname %></span>
             <%= button_to session_path, method: :delete, class: "btn btn--logout btn--sm" do %>
               <i class="fa-solid fa-right-from-bracket nav-only-mobile"></i>
-              <span class="nav-hide-mobile">로그아웃</span>
+              <span class="nav-hide-mobile">Log out</span>
             <% end %>
           <% else %>
             <%= link_to new_session_path, class: "btn btn--secondary btn--sm" do %>
               <i class="fa-solid fa-right-to-bracket nav-only-mobile"></i>
-              <span class="nav-hide-mobile">로그인</span>
+              <span class="nav-hide-mobile">Log in</span>
             <% end %>
             <%= link_to new_registration_path, class: "btn btn--primary btn--sm" do %>
               <i class="fa-solid fa-user-plus nav-only-mobile"></i>
-              <span class="nav-hide-mobile">가입하기</span>
+              <span class="nav-hide-mobile">Join</span>
             <% end %>
           <% end %>
         </div>

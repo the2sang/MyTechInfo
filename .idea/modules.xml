@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/.iml" filepath="$PROJECT_DIR$/.idea/modules/.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/twitterclone.iml" filepath="$PROJECT_DIR$/.idea/twitterclone.iml" />
     </modules>
   </component>

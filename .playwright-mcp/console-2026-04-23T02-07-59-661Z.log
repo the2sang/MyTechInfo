@@ -1,0 +1,6 @@
+[   35068ms] Nt: The response (200) did not contain the expected <turbo-frame id="calendar_body"> and will be ignored. To perform a full page visit instead, set turbo-visit-control to reload.
+    at #J (http://localhost:3000/assets/turbo.min-9fd88cd5.js:19:51590)
+    at #z (http://localhost:3000/assets/turbo.min-9fd88cd5.js:19:51372)
+    at #W (http://localhost:3000/assets/turbo.min-9fd88cd5.js:19:50008)
+    at async t.delegateConstructor.loadResponse (http://localhost:3000/assets/turbo.min-9fd88cd5.js:19:47344)
+    at async t.delegateConstructor.requestSucceededWithResponse (http://localhost:3000/assets/turbo.min-9fd88cd5.js:19:48343)

@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :tech_info_reactions, dependent: :destroy
   has_many :memos, dependent: :destroy
+  has_many :work_plans,  dependent: :destroy
+  has_many :life_infos,  dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   normalizes :nickname, with: ->(n) { n.strip }

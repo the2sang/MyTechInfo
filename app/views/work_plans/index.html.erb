@@ -1,0 +1,102 @@
+<% content_for :title, "작업계획서" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="title-collage" aria-label="작업계획서">
+      <span class="tc-letter tc-w1">작</span><span class="tc-letter tc-w2">업</span><span class="tc-letter tc-w3">계</span><span class="tc-letter tc-w4">획</span><span class="tc-letter tc-w5">서</span>
+    </h1>
+    <div class="page__header-actions">
+      <%= link_to new_work_plan_path, class: "btn btn--primary" do %>
+        <i class="fa-solid fa-plus"></i>
+        <span class="nav-hide-mobile">새 계획서</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="calendar" data-controller="calendar">
+    <%# ── 월 네비게이션 + 그리드를 하나의 Turbo Frame으로 묶어 헤딩도 함께 교체 ── %>
+    <%= turbo_frame_tag "calendar_body" do %>
+      <%
+        prev_month = @calendar_date.prev_month
+        next_month = @calendar_date.next_month
+        today      = Date.today
+      %>
+      <div class="calendar__nav">
+        <%= link_to work_plans_path(year: prev_month.year, month: prev_month.month),
+              class: "btn btn--secondary btn--sm calendar__nav-btn",
+              data: { turbo_frame: "calendar_body" } do %>
+          <i class="fa-solid fa-chevron-left"></i>
+        <% end %>
+
+        <h2 class="calendar__month-title">
+          <%= @calendar_date.strftime("%Y년 %-m월") %>
+        </h2>
+
+        <%= link_to work_plans_path,
+              class: "btn btn--ghost btn--sm",
+              title: "오늘",
+              data: { turbo_frame: "calendar_body" } do %>
+          <i class="fa-solid fa-calendar-day"></i> Today
+        <% end %>
+
+        <%= link_to work_plans_path(year: next_month.year, month: next_month.month),
+              class: "btn btn--secondary btn--sm calendar__nav-btn",
+              data: { turbo_frame: "calendar_body" } do %>
+          <i class="fa-solid fa-chevron-right"></i>
+        <% end %>
+      </div>
+      <div class="calendar__grid">
+        <%# 요일 헤더 %>
+        <% %w[일 월 화 수 목 금 토].each_with_index do |day, i| %>
+          <div class="calendar__dow <%= i == 0 ? 'calendar__dow--sun' : '' %> <%= i == 6 ? 'calendar__dow--sat' : '' %>">
+            <%= day %>
+          </div>
+        <% end %>
+
+        <%# 시작 요일 오프셋 (일=0, 월=1, ..., 토=6) %>
+        <% first_day_wday = @calendar_date.wday %>
+        <% first_day_wday.times do %>
+          <div class="calendar__cell calendar__cell--empty"></div>
+        <% end %>
+
+        <%# 날짜 셀 %>
+        <% (@calendar_date..@calendar_date.end_of_month).each do |date| %>
+          <%
+            plans      = @plans_by_date[date] || []
+            is_today   = date == today
+            is_sun     = date.wday == 0
+            is_sat     = date.wday == 6
+            cell_class = ["calendar__cell"]
+            cell_class << "calendar__cell--today"   if is_today
+            cell_class << "calendar__cell--sun"     if is_sun
+            cell_class << "calendar__cell--sat"     if is_sat
+            cell_class << "calendar__cell--has-plan" if plans.any?
+          %>
+          <div class="<%= cell_class.join(" ") %>">
+            <%= link_to new_work_plan_path(date: date.iso8601),
+                  class: "calendar__date-link",
+                  data: { turbo_frame: "_top" } do %>
+              <span class="calendar__date-num"><%= date.day %></span>
+            <% end %>
+
+            <% if plans.any? %>
+              <div class="calendar__plans">
+                <% plans.first(3).each do |plan| %>
+                  <%= link_to work_plan_path(plan),
+                        class: "calendar__plan-icon",
+                        title: plan.work_name,
+                        data: { turbo_frame: "_top" } do %>
+                    <i class="fa-solid fa-file-lines"></i>
+                  <% end %>
+                <% end %>
+                <% if plans.size > 3 %>
+                  <span class="calendar__plan-more">+<%= plans.size - 3 %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
