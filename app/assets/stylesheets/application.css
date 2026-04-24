@@ -728,6 +728,89 @@ a:hover {
   text-decoration: none;
 }
 
+.footer__install-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid rgba(97, 104, 117, 0.4);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--hcp-helper);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s;
+  white-space: nowrap;
+}
+
+.footer__install-btn:hover {
+  color: var(--hcp-mid-gray);
+  border-color: rgba(97, 104, 117, 0.7);
+}
+
+/* ── iOS 설치 안내 모달 ─────────────────────────────── */
+.pwa-ios-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+}
+
+.pwa-ios-modal[hidden] { display: none; }
+
+.pwa-ios-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.pwa-ios-modal__box {
+  position: relative;
+  background: var(--color-surface, #16213e);
+  border: 1px solid var(--color-border, #2a2a3e);
+  border-radius: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  color: var(--color-text, #e0e0e0);
+  font-size: 14px;
+}
+
+.pwa-ios-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--color-text-muted, #888);
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.pwa-ios-modal__close:hover { color: var(--color-text, #e0e0e0); }
+
+.pwa-ios-modal__title {
+  font-weight: 600;
+  font-size: 15px;
+  margin: 0 0 14px;
+}
+
+.pwa-ios-modal__steps {
+  margin: 0 0 10px;
+  padding-left: 20px;
+  line-height: 2;
+}
+
+.pwa-ios-modal__note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-muted, #888);
+}
+
 /* ── Auth Card ─────────────────────────────────────────── */
 .auth-card {
   max-width: 400px;

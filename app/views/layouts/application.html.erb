@@ -33,7 +33,26 @@
     </script>
   </head>
 
-  <body>
+  <body data-controller="pwa-install">
+    <%# iOS 홈 화면 추가 안내 모달 (전역) %>
+    <div class="pwa-ios-modal" data-pwa-install-target="iosModal" hidden>
+      <div class="pwa-ios-modal__backdrop" data-action="click->pwa-install#hideIosModal"></div>
+      <div class="pwa-ios-modal__box">
+        <button class="pwa-ios-modal__close" data-action="click->pwa-install#hideIosModal" aria-label="닫기">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <p class="pwa-ios-modal__title">
+          <i class="fa-solid fa-mobile-screen-button"></i> 홈 화면에 추가 (iOS)
+        </p>
+        <ol class="pwa-ios-modal__steps">
+          <li>하단 <strong>공유 버튼</strong> <i class="fa-solid fa-arrow-up-from-bracket"></i> 탭</li>
+          <li><strong>홈 화면에 추가</strong> 선택</li>
+          <li><strong>추가</strong> 버튼 탭</li>
+        </ol>
+        <p class="pwa-ios-modal__note">Safari 브라우저에서만 지원됩니다.</p>
+      </div>
+    </div>
+
     <nav class="nav">
       <div class="nav__inner">
         <div class="nav__left">
@@ -138,6 +157,13 @@
     <footer class="footer">
       <div class="footer__inner">
         <span class="footer__copy">&copy; <%= Time.current.year %> <%= site_identity %></span>
+        <button class="footer__install-btn"
+                data-pwa-install-target="footerBtn"
+                data-action="click->pwa-install#install"
+                aria-label="홈 화면에 추가">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+          <span>홈 화면에 추가</span>
+        </button>
       </div>
     </footer>
   </body>
