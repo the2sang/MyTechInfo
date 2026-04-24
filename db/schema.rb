@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_23_212808) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_24_000000) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -94,6 +94,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_212808) do
     t.integer "usefulness", null: false
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_tech_infos_on_user_id"
+  end
+
+  create_table "telegram_prompts", force: :cascade do |t|
+    t.string "chat_id", null: false
+    t.string "command"
+    t.datetime "created_at", null: false
+    t.text "error_message"
+    t.text "message_text", null: false
+    t.datetime "processed_at"
+    t.text "result"
+    t.string "status", default: "pending", null: false
+    t.integer "telegram_message_id"
+    t.datetime "updated_at", null: false
+    t.index ["chat_id", "telegram_message_id"], name: "index_telegram_prompts_on_chat_id_and_telegram_message_id", unique: true
+    t.index ["chat_id"], name: "index_telegram_prompts_on_chat_id"
+    t.index ["status"], name: "index_telegram_prompts_on_status"
   end
 
   create_table "users", force: :cascade do |t|
