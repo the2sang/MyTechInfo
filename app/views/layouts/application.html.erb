@@ -2,7 +2,7 @@
 <html lang="ko">
   <head>
     <% site_identity = authenticated? ? Current.session.user.email_address.split("@").first : "Public" %>
-    <title><%= [content_for(:title), site_identity].compact_blank.join(" — ") %></title>
+    <title><%= authenticated? ? [content_for(:title), site_identity].compact_blank.join(" — ") : site_identity %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="MyTechInfo">
