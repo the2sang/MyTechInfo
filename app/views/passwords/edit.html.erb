@@ -7,10 +7,6 @@
       <p style="font-size:13px;color:var(--color-text-muted);margin-top:6px;">Choose a strong new password.</p>
     </div>
 
-    <% if flash[:alert].present? %>
-      <div class="flash flash--alert"><%= flash[:alert] %></div>
-    <% end %>
-
     <%= form_with url: password_path(params[:token]), method: :put, class: "form" do |form| %>
       <div class="form__field">
         <%= form.label :password, "New password", class: "form__label" %>

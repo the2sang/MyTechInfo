@@ -14,6 +14,14 @@ module ApplicationHelper
     superscript: true
   )
 
+  def highlight_search(text, query)
+    return h(text) if query.blank? || text.blank?
+    safe_text = h(text)
+    safe_text.gsub(Regexp.new(Regexp.escape(query), Regexp::IGNORECASE)) do |match|
+      "<mark class=\"search-hl\">#{match}</mark>"
+    end.html_safe
+  end
+
   def render_markdown(text)
     return "" if text.blank?
     MARKDOWN_PARSER.render(text).html_safe

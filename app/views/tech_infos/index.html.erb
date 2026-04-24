@@ -31,6 +31,16 @@
     <% end %>
   </div>
 
+  <%= render "shared/search_form",
+        form_url: tech_infos_path,
+        reset_url: tech_infos_path,
+        content_placeholder: "제목 또는 내용 검색",
+        search_query: @search_query,
+        date_from: @search_date_from,
+        date_to: @search_date_to,
+        total: @total,
+        default_type: "date" %>
+
   <% if @tech_infos.empty? %>
     <div class="empty-state">
       <p class="empty-state__text">등록된 기술정보가 없습니다.</p>
@@ -41,12 +51,7 @@
         <div class="tech-info-card" data-tech-info-id="<%= tech_info.id %>">
           <div class="tech-info-card__title">
             <%= link_to tech_info, class: "tech-info-card__title-link" do %>
-              <% if @search_query.present? %>
-                <%= highlight(tech_info.title, @search_query,
-                      highlighter: '<mark class="search-hl">\1</mark>') %>
-              <% else %>
-                <%= tech_info.title %>
-              <% end %>
+              <%= highlight_search(tech_info.title, @search_query) %>
             <% end %>
           </div>
 
@@ -89,14 +94,15 @@
         <%= @total %>건 중 <%= [(@page - 1) * 10 + 1, @total].min %>–<%= [@page * 10, @total].min %>
       </div>
       <div class="pagination__nav">
+        <% sp = { q: @search_query, date_from: @search_date_from, date_to: @search_date_to }.reject { |_, v| v.blank? } %>
         <% if @page > 1 %>
-          <%= link_to "← 이전", tech_infos_path(page: @page - 1), class: "btn btn--secondary" %>
+          <%= link_to "← 이전", tech_infos_path(sp.merge(page: @page - 1)), class: "btn btn--secondary" %>
         <% else %>
           <span class="btn btn--secondary btn--disabled">← 이전</span>
         <% end %>
-        <span class="pagination__pages"><%= @page %> / <%= @total_pages %></span>
+        <span class="pagination__pages"><%= @page %> / <%= [@total_pages, 1].max %></span>
         <% if @page < @total_pages %>
-          <%= link_to "다음 →", tech_infos_path(page: @page + 1), class: "btn btn--secondary" %>
+          <%= link_to "다음 →", tech_infos_path(sp.merge(page: @page + 1)), class: "btn btn--secondary" %>
         <% else %>
           <span class="btn btn--secondary btn--disabled">다음 →</span>
         <% end %>

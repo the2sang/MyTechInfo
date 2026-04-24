@@ -16,6 +16,16 @@
     <% end %>
   </div>
 
+  <%= render "shared/search_form",
+        form_url: stock_infos_path,
+        reset_url: stock_infos_path,
+        content_placeholder: "종목 또는 내용 검색",
+        search_query: @search_query,
+        date_from: @search_date_from,
+        date_to: @search_date_to,
+        total: @total,
+        default_type: "date" %>
+
   <% if @stock_infos.empty? %>
     <div class="empty-state">
       <i class="fa-solid fa-chart-line" style="font-size:48px;color:var(--hcp-border-mid);margin-bottom:12px;display:block;"></i>
@@ -37,7 +47,7 @@
 
           <div class="memo-card__body" style="padding-bottom: <%= authenticated? ? '36px' : '12px' %>;">
             <%= link_to stock_info_path(stock_info), class: "memo-card__link" do %>
-              <p class="stock-info-card__query"><%= stock_info.query %></p>
+              <p class="stock-info-card__query"><%= highlight_search(stock_info.query, @search_query) %></p>
               <p class="memo-card__preview"><%= truncate(strip_tags(render_markdown(stock_info.content)).gsub(/\s+/, " ").strip, length: 150) %></p>
             <% end %>
           </div>
@@ -53,6 +63,25 @@
           <% end %>
         </div>
       <% end %>
+    </div>
+    <div class="pagination">
+      <div class="pagination__info">
+        <%= @total %>건 중 <%= [(@page - 1) * StockInfosController::PER_PAGE + 1, @total].min %>–<%= [@page * StockInfosController::PER_PAGE, @total].min %>
+      </div>
+      <div class="pagination__nav">
+        <% sp = { q: @search_query, date_from: @search_date_from, date_to: @search_date_to }.reject { |_, v| v.blank? } %>
+        <% if @page > 1 %>
+          <%= link_to "← 이전", stock_infos_path(sp.merge(page: @page - 1)), class: "btn btn--secondary" %>
+        <% else %>
+          <span class="btn btn--secondary btn--disabled">← 이전</span>
+        <% end %>
+        <span class="pagination__pages"><%= @page %> / <%= [@total_pages, 1].max %></span>
+        <% if @page < @total_pages %>
+          <%= link_to "다음 →", stock_infos_path(sp.merge(page: @page + 1)), class: "btn btn--secondary" %>
+        <% else %>
+          <span class="btn btn--secondary btn--disabled">다음 →</span>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>

@@ -23,6 +23,19 @@
     </div>
   <% end %>
 
+  <%# 검색 폼 %>
+  <% if authenticated? %>
+    <%= render "shared/search_form",
+          form_url: memos_path,
+          reset_url: memos_path,
+          content_placeholder: "제목 또는 내용 검색",
+          search_query: @search_query,
+          date_from: @search_date_from,
+          date_to: @search_date_to,
+          total: @total,
+          default_type: "date" %>
+  <% end %>
+
   <%# New memo form (collapsible) %>
   <% if authenticated? && defined?(@new_memo) %>
     <div class="memo-new-panel" data-controller="toggle" id="memo-new-panel" hidden>
@@ -49,14 +62,15 @@
         <%= @total %>건 중 <%= [(@page - 1) * 9 + 1, @total].min %>–<%= [@page * 9, @total].min %>
       </div>
       <div class="pagination__nav">
+        <% search_params = { q: @search_query, date_from: @search_date_from, date_to: @search_date_to }.reject { |_, v| v.blank? } %>
         <% if @page > 1 %>
-          <%= link_to "← 이전", memos_path(page: @page - 1), class: "btn btn--secondary" %>
+          <%= link_to "← 이전", memos_path(search_params.merge(page: @page - 1)), class: "btn btn--secondary" %>
         <% else %>
           <span class="btn btn--secondary btn--disabled">← 이전</span>
         <% end %>
         <span class="pagination__pages"><%= @page %> / <%= [@total_pages, 1].max %></span>
         <% if @page < @total_pages %>
-          <%= link_to "다음 →", memos_path(page: @page + 1), class: "btn btn--secondary" %>
+          <%= link_to "다음 →", memos_path(search_params.merge(page: @page + 1)), class: "btn btn--secondary" %>
         <% else %>
           <span class="btn btn--secondary btn--disabled">다음 →</span>
         <% end %>

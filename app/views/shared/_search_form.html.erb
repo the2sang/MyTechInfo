@@ -1,0 +1,71 @@
+<% search_type = if local_assigns[:date_from].present? || local_assigns[:date_to].present?
+                   "date"
+                 elsif local_assigns[:default_type].present?
+                   local_assigns[:default_type]
+                 else
+                   "content"
+                 end %>
+<%= form_with url: form_url, method: :get, class: "memo-search",
+    data: { controller: "memo-search" } do |f| %>
+  <div class="memo-search__row">
+    <%= f.select :search_type, [["내용", "content"], ["작성일", "date"]],
+        { selected: search_type },
+        class: "memo-search__select",
+        data: { memo_search_target: "type", action: "change->memo-search#switchType" } %>
+
+    <% if search_type == "date" %>
+      <div class="memo-search__field" data-memo-search-target="contentField" hidden>
+    <% else %>
+      <div class="memo-search__field" data-memo-search-target="contentField">
+    <% end %>
+      <i class="fa-solid fa-magnifying-glass memo-search__icon"></i>
+      <%= f.text_field :q, value: local_assigns[:search_query],
+          class: "memo-search__input",
+          placeholder: content_placeholder,
+          data: { memo_search_target: "contentInput" } %>
+    </div>
+
+    <% if search_type == "content" %>
+      <div class="memo-search__date-range" data-memo-search-target="dateField" hidden>
+    <% else %>
+      <div class="memo-search__date-range" data-memo-search-target="dateField">
+    <% end %>
+      <div class="memo-search__field">
+        <%= f.date_field :date_from, value: local_assigns[:date_from],
+            class: "memo-search__input memo-search__input--date",
+            data: { memo_search_target: "dateFromInput" } %>
+      </div>
+      <span class="memo-search__range-sep">~</span>
+      <div class="memo-search__field">
+        <%= f.date_field :date_to, value: local_assigns[:date_to],
+            class: "memo-search__input memo-search__input--date",
+            data: { memo_search_target: "dateToInput" } %>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn--primary btn--sm">
+      <i class="fa-solid fa-magnifying-glass"></i> 검색
+    </button>
+    <% if local_assigns[:search_query].present? || local_assigns[:date_from].present? || local_assigns[:date_to].present? %>
+      <%= link_to reset_url, class: "btn btn--ghost btn--sm" do %>
+        <i class="fa-solid fa-xmark"></i> 초기화
+      <% end %>
+    <% end %>
+
+    <% local_assigns[:extra_params]&.each do |key, val| %>
+      <%= f.hidden_field key, value: val %>
+    <% end %>
+  </div>
+
+  <% if local_assigns[:search_query].present? || local_assigns[:date_from].present? || local_assigns[:date_to].present? %>
+    <p class="memo-search__result">
+      <% if local_assigns[:search_query].present? %>
+        내용 &ldquo;<strong><%= local_assigns[:search_query] %></strong>&rdquo; &mdash; <strong><%= total %></strong>건
+      <% else %>
+        작성일 <strong><%= local_assigns[:date_from].presence || "처음" %></strong>
+        ~ <strong><%= local_assigns[:date_to].presence || "현재" %></strong>
+        &mdash; <strong><%= total %></strong>건
+      <% end %>
+    </p>
+  <% end %>
+<% end %>

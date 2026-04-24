@@ -11,4 +11,24 @@ class Memo < ApplicationRecord
   end
 
   scope :recent, -> { order(created_at: :desc) }
+  scope :search, ->(query, date_from, date_to) {
+    conds, vals = [], []
+    if query.present?
+      conds << "(title LIKE ? OR content LIKE ?)"
+      vals  << "%#{query}%" << "%#{query}%"
+    end
+    if date_from.present? || date_to.present?
+      if date_from.present? && date_to.present?
+        conds << "DATE(created_at) BETWEEN ? AND ?"
+        vals  << date_from << date_to
+      elsif date_from.present?
+        conds << "DATE(created_at) >= ?"
+        vals  << date_from
+      else
+        conds << "DATE(created_at) <= ?"
+        vals  << date_to
+      end
+    end
+    conds.empty? ? all : where(conds.join(" OR "), *vals)
+  }
 end

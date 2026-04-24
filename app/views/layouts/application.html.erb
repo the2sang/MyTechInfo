@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
-    <title><%= content_for(:title) || "MyTechInfo" %></title>
+    <% site_identity = authenticated? ? Current.session.user.email_address.split("@").first : "Public" %>
+    <title><%= [content_for(:title), site_identity].compact_blank.join(" — ") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="MyTechInfo">
@@ -101,24 +102,34 @@
       </div>
     </nav>
 
-    <main class="site-content">
+    <div class="toast-container">
       <% if notice.present? %>
-        <div class="page">
-          <div class="flash flash--notice"><%= notice %></div>
+        <div class="toast toast--notice" data-controller="toast">
+          <i class="fa-solid fa-circle-check toast__icon"></i>
+          <span class="toast__msg"><%= notice %></span>
+          <button class="toast__close" data-action="click->toast#dismiss" aria-label="닫기">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
       <% end %>
       <% if alert.present? %>
-        <div class="page">
-          <div class="flash flash--alert"><%= alert %></div>
+        <div class="toast toast--alert" data-controller="toast">
+          <i class="fa-solid fa-circle-exclamation toast__icon"></i>
+          <span class="toast__msg"><%= alert %></span>
+          <button class="toast__close" data-action="click->toast#dismiss" aria-label="닫기">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
         </div>
       <% end %>
+    </div>
 
+    <main class="site-content">
       <%= yield %>
     </main>
 
     <footer class="footer">
       <div class="footer__inner">
-        <span class="footer__copy">&copy; <%= Time.current.year %> MyTechInfo</span>
+        <span class="footer__copy">&copy; <%= Time.current.year %> <%= site_identity %></span>
       </div>
     </footer>
   </body>

@@ -15,13 +15,25 @@
     <% end %>
   </div>
 
+  <%= render "shared/search_form",
+        form_url: life_infos_path,
+        reset_url: life_infos_path(category: params[:category].presence),
+        content_placeholder: "제목 또는 내용 검색",
+        search_query: @search_query,
+        date_from: @search_date_from,
+        date_to: @search_date_to,
+        total: @total,
+        default_type: "date",
+        extra_params: { category: params[:category] }.reject { |_, v| v.blank? } %>
+
   <%# 카테고리 필터 %>
   <% if @categories.any? %>
     <div class="life-info-categories">
-      <%= link_to "전체", life_infos_path(q: params[:q]),
+      <% sp = { q: @search_query, date_from: @search_date_from, date_to: @search_date_to }.reject { |_, v| v.blank? } %>
+      <%= link_to "전체", life_infos_path(sp),
             class: "tech-tag #{params[:category].blank? ? 'tech-tag--active' : ''}" %>
       <% @categories.each do |cat| %>
-        <%= link_to cat, life_infos_path(category: cat, q: params[:q]),
+        <%= link_to cat, life_infos_path(sp.merge(category: cat)),
               class: "tech-tag #{params[:category] == cat ? 'tech-tag--active' : ''}" %>
       <% end %>
     </div>
@@ -37,7 +49,7 @@
         <div class="tech-info-card">
           <div class="tech-info-card__title">
             <%= link_to life_info, class: "tech-info-card__title-link" do %>
-              <%= life_info.title %>
+              <%= highlight_search(life_info.title, @search_query) %>
             <% end %>
           </div>
 
@@ -68,15 +80,15 @@
         <%= @total %>건 중 <%= [(@page - 1) * 12 + 1, @total].min %>–<%= [@page * 12, @total].min %>
       </div>
       <div class="pagination__nav">
+        <% sp = { q: @search_query, date_from: @search_date_from, date_to: @search_date_to, category: params[:category] }.reject { |_, v| v.blank? } %>
         <% if @page > 1 %>
-          <%= link_to "← 이전", life_infos_path(page: @page - 1, category: params[:category], q: params[:q]), class: "btn btn--secondary" %>
+          <%= link_to "← 이전", life_infos_path(sp.merge(page: @page - 1)), class: "btn btn--secondary" %>
         <% else %>
           <span class="btn btn--secondary btn--disabled">← 이전</span>
         <% end %>
-        <% total_pages = (@total.to_f / 12).ceil %>
-        <span class="pagination__pages"><%= @page %> / <%= [total_pages, 1].max %></span>
-        <% if @page < total_pages %>
-          <%= link_to "다음 →", life_infos_path(page: @page + 1, category: params[:category], q: params[:q]), class: "btn btn--secondary" %>
+        <span class="pagination__pages"><%= @page %> / <%= [@total_pages, 1].max %></span>
+        <% if @page < @total_pages %>
+          <%= link_to "다음 →", life_infos_path(sp.merge(page: @page + 1)), class: "btn btn--secondary" %>
         <% else %>
           <span class="btn btn--secondary btn--disabled">다음 →</span>
         <% end %>

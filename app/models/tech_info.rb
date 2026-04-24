@@ -11,6 +11,21 @@ class TechInfo < ApplicationRecord
 
   scope :recent,      -> { order(created_at: :desc) }
   scope :public_only, -> { where(is_public: true) }
+  scope :search, ->(query, date_from, date_to) {
+    conds, vals = [], []
+    if query.present?
+      conds << "(title LIKE ? OR content LIKE ?)"
+      vals  << "%#{query}%" << "%#{query}%"
+    end
+    if date_from.present? && date_to.present?
+      conds << "DATE(created_at) BETWEEN ? AND ?"; vals << date_from << date_to
+    elsif date_from.present?
+      conds << "DATE(created_at) >= ?"; vals << date_from
+    elsif date_to.present?
+      conds << "DATE(created_at) <= ?"; vals << date_to
+    end
+    conds.empty? ? all : where(conds.join(" OR "), *vals)
+  }
 
   def related_tech_list
     related_tech.to_s.split(",").map(&:strip).reject(&:blank?)

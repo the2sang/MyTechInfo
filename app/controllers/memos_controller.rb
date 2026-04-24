@@ -8,8 +8,14 @@ class MemosController < ApplicationController
   def index
     return unless authenticated?
 
-    @page        = [ params[:page].to_i, 1 ].max
-    base         = Current.session.user.memos.recent
+    @search_query     = params[:q].to_s.strip
+    @search_date_from = params[:date_from].to_s.strip
+    @search_date_to   = params[:date_to].to_s.strip
+    @page             = [ params[:page].to_i, 1 ].max
+
+    base = Current.session.user.memos.recent
+               .search(@search_query, @search_date_from, @search_date_to)
+
     @total       = base.count
     @total_pages = (@total / PER_PAGE.to_f).ceil
     @memos       = base.limit(PER_PAGE).offset((@page - 1) * PER_PAGE)

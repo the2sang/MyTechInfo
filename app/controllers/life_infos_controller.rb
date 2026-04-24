@@ -9,13 +9,18 @@ class LifeInfosController < ApplicationController
   PER_PAGE = 12
 
   def index
+    @search_query     = params[:q].to_s.strip
+    @search_date_from = params[:date_from].to_s.strip
+    @search_date_to   = params[:date_to].to_s.strip
+    @page             = (params[:page] || 1).to_i
+
     @life_infos = base_scope
-                    .then { |s| params[:q].present? ? s.where("title LIKE ?", "%#{params[:q]}%") : s }
+                    .search(@search_query, @search_date_from, @search_date_to)
                     .then { |s| params[:category].present? ? s.where(category: params[:category]) : s }
                     .recent
-    @categories  = LifeInfo.public_only.distinct.pluck(:category).compact.sort
-    @page        = (params[:page] || 1).to_i
+    @categories = LifeInfo.public_only.distinct.pluck(:category).compact.sort
     @total       = @life_infos.count
+    @total_pages = (@total / PER_PAGE.to_f).ceil
     @life_infos  = @life_infos.offset((@page - 1) * PER_PAGE).limit(PER_PAGE)
   end
 

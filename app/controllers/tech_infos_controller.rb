@@ -8,12 +8,14 @@ class TechInfosController < ApplicationController
   PER_PAGE = 10
 
   def index
-    base = authenticated? ? TechInfo.all : TechInfo.public_only
-    if params[:q].present?
-      base = base.where("title LIKE ?", "%#{params[:q]}%")
-    end
-    @search_query = params[:q]
-    @page        = [ params[:page].to_i, 1 ].max
+    @search_query     = params[:q].to_s.strip
+    @search_date_from = params[:date_from].to_s.strip
+    @search_date_to   = params[:date_to].to_s.strip
+    @page             = [ params[:page].to_i, 1 ].max
+
+    base = (authenticated? ? TechInfo.all : TechInfo.public_only)
+             .search(@search_query, @search_date_from, @search_date_to)
+
     @total       = base.count
     @total_pages = (@total / PER_PAGE.to_f).ceil
     @tech_infos  = base.includes(:user).recent
