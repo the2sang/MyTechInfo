@@ -2470,7 +2470,8 @@ lexxy-editor.lexxy-editor-field {
 
 /* ── PWA Install Banner ─────────────────────────────── */
 .pwa-install-banner {
-  margin-top: 16px;
+  max-width: 400px;
+  margin: 16px auto 0;
   border: 1px solid var(--color-border, #2a2a3e);
   border-radius: 12px;
   padding: 16px;
