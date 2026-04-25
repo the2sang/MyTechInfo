@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_24_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_25_193913) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -19,6 +19,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_000000) do
     t.integer "user_id", null: false
     t.index ["tech_info_id"], name: "index_comments_on_tech_info_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "identities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "provider", null: false
+    t.string "uid", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["provider", "uid"], name: "index_identities_on_provider_and_uid", unique: true
+    t.index ["user_id"], name: "index_identities_on_user_id"
   end
 
   create_table "life_infos", force: :cascade do |t|
@@ -116,7 +126,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_000000) do
     t.datetime "created_at", null: false
     t.string "email_address", null: false
     t.string "nickname", null: false
-    t.string "password_digest", null: false
+    t.string "password_digest"
     t.datetime "updated_at", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["nickname"], name: "index_users_on_nickname", unique: true
@@ -139,6 +149,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_000000) do
 
   add_foreign_key "comments", "tech_infos"
   add_foreign_key "comments", "users"
+  add_foreign_key "identities", "users"
   add_foreign_key "life_infos", "users"
   add_foreign_key "memos", "users"
   add_foreign_key "posts", "users"
