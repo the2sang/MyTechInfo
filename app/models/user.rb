@@ -38,6 +38,7 @@ class User < ApplicationRecord
   end
 
   def self.generate_unique_nickname(base)
+    base = base.split("@").first if base.include?("@")
     base = base.gsub(/[^a-zA-Z0-9가-힣_]/, "").first(28).presence || "user"
     return base unless exists?(nickname: base)
     (2..99).each { |n| return "#{base}#{n}" unless exists?(nickname: "#{base}#{n}") }
