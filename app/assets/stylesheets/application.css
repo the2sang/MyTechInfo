@@ -1744,7 +1744,7 @@ lexxy-editor.lexxy-editor-field {
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   margin-bottom: 28px;
-  width: 95%;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
 }
