@@ -319,7 +319,7 @@ body {
 
 .page__title {
   font-family: var(--font-brand);
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--hcp-black);
@@ -343,10 +343,10 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 42px;
-  padding: 6px 10px;
+  min-width: 28px;
+  padding: 4px 7px;
   font-family: 'Ultra', Georgia, serif;
-  font-size: 29px;
+  font-size: 20px;
   font-weight: 400;
   line-height: 1;
   border-radius: 4px;
@@ -2186,7 +2186,7 @@ lexxy-editor.lexxy-editor-field {
   }
 
   .tech-detail__title { font-size: 22px; }
-  .page__title        { font-size: 20px; }
+  .page__title        { font-size: 18px; }
 
   .post-card {
     grid-template-columns: 32px 1fr;
