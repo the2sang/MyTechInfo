@@ -27,47 +27,51 @@
     <%= form.text_field :related_tech, class: "form__input", placeholder: "Rails, Ruby, SQLite (쉼표로 구분)" %>
   </div>
 
-  <div class="form__field content-editor"
-       data-controller="content-editor">
+  <% is_markdown = tech_info.content_format == "markdown" %>
+  <div class="form__field <%= is_markdown ? "" : "content-editor" %>"
+       <%= "data-controller=content-editor" unless is_markdown %>>
 
     <div class="content-editor__header">
       <%= form.label :content, "상세 내용", class: "form__label" %>
     </div>
 
-    <%# Edit / Preview tab bar %>
-    <div class="content-editor__tabs">
-      <button type="button" class="content-editor__tab content-editor__tab--active"
-              data-content-editor-target="editTab"
-              data-action="click->content-editor#showEdit">
-        편집
-      </button>
-      <button type="button" class="content-editor__tab"
-              data-content-editor-target="previewTab"
-              data-action="click->content-editor#showPreview">
-        미리 보기
-      </button>
-    </div>
-
-    <%# Hidden textarea that actually submits the content %>
-    <%= form.hidden_field :content, data: { "content-editor-target": "hiddenContent" } %>
-
-    <%# Edit pane: Lexxy rich text editor %>
-    <div data-content-editor-target="editPane">
-      <lexxy-editor
-        class="lexxy-editor-field"
-        placeholder="내용을 입력하세요"
-        data-content-editor-target="editor"></lexxy-editor>
-    </div>
-
-    <%# Preview pane (hidden by default) %>
-    <div data-content-editor-target="previewPane" hidden>
-      <div class="content-preview lexxy-content"
-           data-content-editor-target="previewPanel">
-        <span class="content-preview__empty">미리 보기할 내용을 입력하세요</span>
+    <% if is_markdown %>
+      <%# Markdown 형식: 일반 textarea로 원문 그대로 편집 %>
+      <%= form.textarea :content, class: "form__textarea form__textarea--code",
+            placeholder: "마크다운 내용을 입력하세요", rows: 20 %>
+    <% else %>
+      <%# HTML 형식: Lexxy 리치 텍스트 에디터 %>
+      <div class="content-editor__tabs">
+        <button type="button" class="content-editor__tab content-editor__tab--active"
+                data-content-editor-target="editTab"
+                data-action="click->content-editor#showEdit">
+          편집
+        </button>
+        <button type="button" class="content-editor__tab"
+                data-content-editor-target="previewTab"
+                data-action="click->content-editor#showPreview">
+          미리 보기
+        </button>
       </div>
-    </div>
 
-    <%= form.hidden_field :content_format, value: "html" %>
+      <%= form.hidden_field :content, data: { "content-editor-target": "hiddenContent" } %>
+
+      <div data-content-editor-target="editPane">
+        <lexxy-editor
+          class="lexxy-editor-field"
+          placeholder="내용을 입력하세요"
+          data-content-editor-target="editor"></lexxy-editor>
+      </div>
+
+      <div data-content-editor-target="previewPane" hidden>
+        <div class="content-preview lexxy-content"
+             data-content-editor-target="previewPanel">
+          <span class="content-preview__empty">미리 보기할 내용을 입력하세요</span>
+        </div>
+      </div>
+    <% end %>
+
+    <%= form.hidden_field :content_format %>
   </div>
 
   <div class="form__field">

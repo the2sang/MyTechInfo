@@ -1380,6 +1380,7 @@ mark.search-hl {
 
 /* ── Form Textarea Variants ────────────────────────────── */
 .form__textarea--tall   { min-height: 200px; }
+.form__textarea--code   { min-height: 400px; resize: vertical; font-family: var(--font-mono); font-size: 13px; line-height: 1.65; white-space: pre; }
 
 .form__textarea--editor {
   resize: vertical;
