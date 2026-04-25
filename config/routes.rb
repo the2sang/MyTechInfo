@@ -2,8 +2,9 @@ Rails.application.routes.draw do
   post "telegram/webhook", to: "telegram/webhooks#create", as: :telegram_webhook
 
   resource :session, only: %i[ new create destroy ]
-  get  "/auth/:provider/callback", to: "omniauth_callbacks#google_oauth2"
-  get  "/auth/failure",            to: "omniauth_callbacks#failure"
+  get "/auth/google_oauth2/callback", to: "omniauth_callbacks#google_oauth2"
+  get "/auth/naver/callback",         to: "omniauth_callbacks#naver"
+  get "/auth/failure",                to: "omniauth_callbacks#failure"
   resources :passwords, param: :token, only: %i[ new create edit update ]
   resource :registration, only: %i[ new create ]
 
