@@ -1278,7 +1278,7 @@ mark.search-hl {
 
 .tech-detail__title {
   font-family: var(--font-brand);
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--hcp-black);
@@ -2185,7 +2185,7 @@ lexxy-editor.lexxy-editor-field {
     gap: 8px;
   }
 
-  .tech-detail__title { font-size: 16px; }
+  .tech-detail__title { font-size: 18px; }
   .page__title        { font-size: 18px; }
 
   .post-card {
