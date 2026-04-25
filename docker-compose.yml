@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     image: mytechinfo:local
     ports:
-      - "80:80"
+      - "3000:80"
     environment:
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       SOLID_QUEUE_IN_PUMA: "true"
