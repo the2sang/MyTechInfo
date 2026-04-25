@@ -1,0 +1,24 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mytechinfo:local
+    ports:
+      - "80:80"
+    environment:
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      SOLID_QUEUE_IN_PUMA: "true"
+      RAILS_LOG_TO_STDOUT: "true"
+    volumes:
+      - storage:/rails/storage
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/up"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  storage:
+    driver: local

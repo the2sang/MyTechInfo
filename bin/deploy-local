@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+export RAILS_MASTER_KEY=$(cat config/master.key)
+
+echo "==> Building Docker image..."
+docker compose build
+
+echo "==> Restarting container..."
+docker compose down
+docker compose up -d
+
+echo "==> Waiting for startup..."
+sleep 5
+
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/up)
+if [ "$STATUS" = "200" ]; then
+  echo "==> Deploy successful (http://localhost)"
+else
+  echo "==> WARNING: Health check returned $STATUS"
+  docker compose logs --tail=20
+fi
