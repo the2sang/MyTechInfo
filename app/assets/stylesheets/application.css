@@ -1921,7 +1921,7 @@ lexxy-editor.lexxy-editor-field {
 }
 
 @media (max-width: 480px) {
-  .memo-grid { grid-template-columns: 1fr; }
+  .memo-grid { grid-template-columns: 1fr; margin-right: 5px; }
 }
 
 /* ── Comments ──────────────────────────────────────────── */
