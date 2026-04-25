@@ -25,7 +25,6 @@ class WorkPlansController < ApplicationController
 
   def new
     @work_plan = WorkPlan.new(
-      department_name: "원전시스템운영부",
       doc_date: Date.today,
       work_end_at: Time.current.change(min: 0, sec: 0)
     )
@@ -33,7 +32,7 @@ class WorkPlansController < ApplicationController
       @work_plan.work_at = Date.parse(params[:date])
     end
   rescue Date::Error
-    @work_plan = WorkPlan.new(department_name: "원전시스템운영부", doc_date: Date.today)
+    @work_plan = WorkPlan.new(doc_date: Date.today)
   end
 
   def create
