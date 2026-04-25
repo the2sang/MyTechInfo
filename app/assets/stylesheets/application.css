@@ -1769,7 +1769,7 @@ lexxy-editor.lexxy-editor-field {
 }
 
 .memo-card__body {
-  padding: 16px 18px;
+  padding: 16px 18px 16px 15px;
   flex: 1;
 }
 
