@@ -269,6 +269,20 @@ body {
   font-size: 12px;
 }
 
+/* ── Btn Extra Small ───────────────────────────────────── */
+.btn--xs {
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+}
+
+/* ── Admin Role Cell ───────────────────────────────────── */
+.admin-role-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .nav__actions {
   display: flex;
   align-items: center;

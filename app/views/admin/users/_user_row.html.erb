@@ -1,0 +1,23 @@
+<tr id="<%= dom_id(user) %>">
+  <td><%= link_to user.nickname, admin_user_path(user) %></td>
+  <td class="admin-table__mono"><%= user.email_address %></td>
+  <td>
+    <div class="admin-role-cell">
+      <% if user.admin? %>
+        <span class="admin-badge admin-badge--admin">ADMIN</span>
+      <% else %>
+        <span class="admin-badge">USER</span>
+      <% end %>
+      <%= form_with url: admin_user_path(user), method: :patch do |f| %>
+        <%= f.hidden_field :role, value: user.admin? ? "user" : "admin" %>
+        <%= f.button type: :submit,
+              class: "btn btn--xs #{user.admin? ? 'btn--danger' : 'btn--primary'}",
+              data: { confirm: user.admin? ? "#{user.nickname}의 관리자 권한을 해제합니까?" : "#{user.nickname}에게 관리자 권한을 부여합니까?" } do %>
+          <%= user.admin? ? "권한 해제" : "관리자 부여" %>
+        <% end %>
+      <% end %>
+    </div>
+  </td>
+  <td><%= user.sessions.count %></td>
+  <td><%= user.created_at.strftime("%Y-%m-%d") %></td>
+</tr>

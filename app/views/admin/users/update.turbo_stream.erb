@@ -1,0 +1,3 @@
+<%= turbo_stream.replace dom_id(@user) do %>
+  <%= render "user_row", user: @user %>
+<% end %>

@@ -1,7 +1,8 @@
 module Admin
   class UserPolicy < ApplicationPolicy
-    def index? = user&.admin?
-    def show?  = user&.admin?
+    def index?  = user&.admin?
+    def show?   = user&.admin?
+    def update? = user&.admin?
 
     class Scope < ApplicationPolicy::Scope
       def resolve

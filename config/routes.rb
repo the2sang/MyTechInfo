@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root "dashboards#index"
-    resources :users, only: %i[index show]
+    resources :users, only: %i[index show update]
     resources :sessions, only: %i[index]
   end
 
