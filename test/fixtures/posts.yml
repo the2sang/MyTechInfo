@@ -2,8 +2,8 @@
 
 one:
   title: MyText
-  user_id: 1
+  user: one
 
 two:
   title: MyText
-  user_id: 1
+  user: one

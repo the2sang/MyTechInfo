@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
   <head>
+    <%= toast_css_variables %>
+
     <% site_identity = authenticated? ? Current.session.user.email_address.split("@").first : "Public" %>
     <title><%= authenticated? ? [content_for(:title), site_identity].compact_blank.join(" — ") : site_identity %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -25,7 +27,9 @@
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "lexxy", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "faw_toast.min", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "faw_toast.min", "data-turbo-track": "reload" %>
     <script>
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("/service-worker.js", { scope: "/" });
@@ -103,6 +107,11 @@
           <%= link_to work_plans_path, class: "nav__icon-btn", title: "작업계획서" do %>
             <i class="fa-solid fa-calendar-check"></i>
           <% end %>
+          <% if current_user&.admin? %>
+            <%= link_to admin_root_path, class: "nav__icon-btn nav__icon-btn--admin", title: "관리자" do %>
+              <i class="fa-solid fa-shield-halved"></i>
+            <% end %>
+          <% end %>
           <a href="https://github.com/the2sang/MyTechInfo"
              class="nav__icon-btn nav-hide-xs" title="GitHub"
              target="_blank" rel="noopener noreferrer">
@@ -129,27 +138,6 @@
       </div>
     </nav>
 
-    <div class="toast-container">
-      <% if notice.present? %>
-        <div class="toast toast--notice" data-controller="toast">
-          <i class="fa-solid fa-circle-check toast__icon"></i>
-          <span class="toast__msg"><%= notice %></span>
-          <button class="toast__close" data-action="click->toast#dismiss" aria-label="닫기">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-      <% end %>
-      <% if alert.present? %>
-        <div class="toast toast--alert" data-controller="toast">
-          <i class="fa-solid fa-circle-exclamation toast__icon"></i>
-          <span class="toast__msg"><%= alert %></span>
-          <button class="toast__close" data-action="click->toast#dismiss" aria-label="닫기">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-      <% end %>
-    </div>
-
     <main class="site-content">
       <%= yield %>
     </main>
@@ -166,5 +154,6 @@
         </button>
       </div>
     </footer>
+    <%= toast_container %>
   </body>
 </html>

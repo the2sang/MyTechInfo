@@ -1,0 +1,63 @@
+<% content_for :title, "회원 - #{@user.nickname}" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="title-collage" aria-label="User">
+      <span class="tc-letter tc-1">U</span><span class="tc-letter tc-2">s</span><span class="tc-letter tc-3">e</span><span class="tc-letter tc-4">r</span>
+    </h1>
+    <div class="page__header-actions">
+      <%= link_to admin_users_path, class: "btn btn--ghost btn--sm" do %>
+        <i class="fa-solid fa-arrow-left"></i> 목록
+      <% end %>
+    </div>
+  </div>
+
+  <section class="admin-panel">
+    <div class="admin-panel__header">
+      <h2 class="admin-panel__title">기본 정보</h2>
+    </div>
+    <dl class="admin-dl">
+      <dt>닉네임</dt>      <dd><%= @user.nickname %></dd>
+      <dt>이메일</dt>      <dd class="admin-table__mono"><%= @user.email_address %></dd>
+      <dt>권한</dt>
+      <dd>
+        <% if @user.admin? %>
+          <span class="admin-badge admin-badge--admin">ADMIN</span>
+        <% else %>
+          <span class="admin-badge">USER</span>
+        <% end %>
+      </dd>
+      <dt>가입일</dt>      <dd><%= @user.created_at.strftime("%Y-%m-%d %H:%M") %></dd>
+      <dt>OAuth 연결</dt>  <dd><%= @user.identities.pluck(:provider).map(&:upcase).join(", ").presence || "—" %></dd>
+      <dt>총 세션</dt>     <dd><%= @user.sessions.count %></dd>
+    </dl>
+  </section>
+
+  <section class="admin-panel">
+    <div class="admin-panel__header">
+      <h2 class="admin-panel__title">최근 세션 (최대 20)</h2>
+    </div>
+    <% if @recent_sessions.any? %>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>IP</th>
+            <th>UA</th>
+            <th>시각</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @recent_sessions.each do |session| %>
+            <tr>
+              <td class="admin-table__mono"><%= session.ip_address %></td>
+              <td class="admin-table__truncate" title="<%= session.user_agent %>"><%= session.user_agent %></td>
+              <td><%= session.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="empty-state">세션이 없습니다.</p>
+    <% end %>
+  </section>
+</div>

@@ -1,0 +1,40 @@
+<% content_for :title, "접속 이력" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="title-collage" aria-label="Sessions">
+      <span class="tc-letter tc-1">S</span><span class="tc-letter tc-2">e</span><span class="tc-letter tc-3">s</span><span class="tc-letter tc-4">s</span><span class="tc-letter tc-5">i</span><span class="tc-letter tc-6">o</span><span class="tc-letter tc-7">n</span><span class="tc-letter tc-8">s</span>
+    </h1>
+    <div class="page__header-actions">
+      <%= link_to admin_root_path, class: "btn btn--ghost btn--sm" do %>
+        <i class="fa-solid fa-arrow-left"></i> 대시보드
+      <% end %>
+    </div>
+  </div>
+
+  <% if @sessions.any? %>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>사용자</th>
+          <th>IP</th>
+          <th>UA</th>
+          <th>시각</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sessions.each do |session| %>
+          <tr>
+            <td><%= link_to session.user.nickname, admin_user_path(session.user) %></td>
+            <td class="admin-table__mono"><%= session.ip_address %></td>
+            <td class="admin-table__truncate" title="<%= session.user_agent %>"><%= session.user_agent %></td>
+            <td><%= session.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <p class="admin-note">최신 200건까지 표시됩니다.</p>
+  <% else %>
+    <p class="empty-state">접속 기록이 없습니다.</p>
+  <% end %>
+</div>

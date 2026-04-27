@@ -1,0 +1,48 @@
+<% content_for :title, "회원 목록" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="title-collage" aria-label="Users">
+      <span class="tc-letter tc-1">U</span><span class="tc-letter tc-2">s</span><span class="tc-letter tc-3">e</span><span class="tc-letter tc-4">r</span><span class="tc-letter tc-5">s</span>
+    </h1>
+    <div class="page__header-actions">
+      <%= link_to admin_root_path, class: "btn btn--ghost btn--sm" do %>
+        <i class="fa-solid fa-arrow-left"></i> 대시보드
+      <% end %>
+    </div>
+  </div>
+
+  <% if @users.any? %>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>닉네임</th>
+          <th>이메일</th>
+          <th>권한</th>
+          <th>세션 수</th>
+          <th>가입일</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= link_to user.nickname, admin_user_path(user) %></td>
+            <td class="admin-table__mono"><%= user.email_address %></td>
+            <td>
+              <% if user.admin? %>
+                <span class="admin-badge admin-badge--admin">ADMIN</span>
+              <% else %>
+                <span class="admin-badge">USER</span>
+              <% end %>
+            </td>
+            <td><%= user.sessions.count %></td>
+            <td><%= user.created_at.strftime("%Y-%m-%d") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <p class="admin-note">최신 100명까지 표시됩니다.</p>
+  <% else %>
+    <p class="empty-state">회원이 없습니다.</p>
+  <% end %>
+</div>

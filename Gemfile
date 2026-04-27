@@ -76,3 +76,7 @@ end
 
 gem "lexxy", "~> 0.9.9.beta"
 gem "rubyzip"
+gem "faw_toast"
+
+# Authorization (role-based access control)
+gem "pundit"

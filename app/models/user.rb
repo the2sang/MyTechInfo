@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :work_plans,  dependent: :destroy
   has_many :life_infos,  dependent: :destroy
 
+  enum :role, { user: 0, admin: 1 }, default: :user
+
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   normalizes :nickname, with: ->(n) { n.strip }
 
