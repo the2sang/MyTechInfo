@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :memos, dependent: :destroy
   has_many :work_plans,  dependent: :destroy
   has_many :life_infos,  dependent: :destroy
+  has_one  :pomodoro_setting, dependent: :destroy
 
   enum :role, { user: 0, admin: 1 }, default: :user
 

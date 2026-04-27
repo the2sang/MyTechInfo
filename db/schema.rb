@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_27_105409) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_27_105410) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -51,6 +51,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_105409) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_memos_on_user_id"
+  end
+
+  create_table "pomodoro_settings", force: :cascade do |t|
+    t.integer "break_minutes", default: 5, null: false
+    t.datetime "created_at", null: false
+    t.integer "focus_minutes", default: 25, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_pomodoro_settings_on_user_id", unique: true
   end
 
   create_table "posts", force: :cascade do |t|
@@ -154,6 +163,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_105409) do
   add_foreign_key "identities", "users"
   add_foreign_key "life_infos", "users"
   add_foreign_key "memos", "users"
+  add_foreign_key "pomodoro_settings", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "stock_infos", "users"

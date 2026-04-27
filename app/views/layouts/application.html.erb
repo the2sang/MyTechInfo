@@ -107,6 +107,11 @@
           <%= link_to work_plans_path, class: "nav__icon-btn", title: "작업계획서" do %>
             <i class="fa-solid fa-calendar-check"></i>
           <% end %>
+          <% if authenticated? %>
+            <%= link_to focus_path, class: "nav__icon-btn", title: "집중" do %>
+              <i class="fa-solid fa-stopwatch"></i>
+            <% end %>
+          <% end %>
           <% if current_user&.admin? %>
             <%= link_to admin_root_path, class: "nav__icon-btn nav__icon-btn--admin", title: "관리자" do %>
               <i class="fa-solid fa-shield-halved"></i>

@@ -1,0 +1,67 @@
+<% content_for :title, "집중" %>
+
+<div class="page page--focus"
+     data-controller="pomodoro"
+     data-pomodoro-focus-minutes-value="<%= @setting.focus_minutes %>"
+     data-pomodoro-break-minutes-value="<%= @setting.break_minutes %>">
+
+  <%# ── Mode indicator ──────────────────────────────────── %>
+  <div class="pomodoro-mode">
+    <span class="pomodoro-mode__label" data-pomodoro-target="modeLabel" data-mode="focus">집중</span>
+    <span class="pomodoro-mode__sessions" data-pomodoro-target="sessionCount">완료 0세션</span>
+  </div>
+
+  <%# ── Timer display ───────────────────────────────────── %>
+  <div class="pomodoro-timer">
+    <span class="pomodoro-timer__display" data-pomodoro-target="display">
+      <%= "%02d:00" % @setting.focus_minutes %>
+    </span>
+  </div>
+
+  <%# ── Controls ────────────────────────────────────────── %>
+  <div class="pomodoro-controls">
+    <button class="btn btn--primary pomodoro-controls__start"
+            data-pomodoro-target="startBtn"
+            data-action="click->pomodoro#toggle">
+      시작
+    </button>
+    <button class="btn btn--ghost"
+            data-action="click->pomodoro#reset"
+            title="리셋">
+      <i class="fa-solid fa-rotate-left"></i>
+    </button>
+    <button class="btn btn--ghost"
+            data-action="click->pomodoro#skipMode"
+            title="모드 전환">
+      <i class="fa-solid fa-forward-step"></i>
+    </button>
+  </div>
+
+  <%# ── Settings form ───────────────────────────────────── %>
+  <details class="pomodoro-settings">
+    <summary class="pomodoro-settings__toggle">
+      <i class="fa-solid fa-gear"></i> 타이머 설정
+    </summary>
+
+    <% if @setting.errors.any? %>
+      <div class="form-errors">
+        <% @setting.errors.full_messages.each do |msg| %>
+          <p><%= msg %></p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= form_with model: @setting, url: focus_path, method: :patch,
+                  class: "pomodoro-settings__form" do |f| %>
+        <div class="pomodoro-settings__row">
+          <%= f.label :focus_minutes, "집중 시간 (분)" %>
+          <%= f.number_field :focus_minutes, min: 1, max: 120, step: 1, class: "form-input" %>
+        </div>
+        <div class="pomodoro-settings__row">
+          <%= f.label :break_minutes, "휴식 시간 (분)" %>
+          <%= f.number_field :break_minutes, min: 1, max: 60, step: 1, class: "form-input" %>
+        </div>
+      <%= f.submit "저장", class: "btn btn--primary btn--sm" %>
+    <% end %>
+  </details>
+</div>

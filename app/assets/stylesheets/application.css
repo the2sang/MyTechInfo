@@ -2749,3 +2749,109 @@ lexxy-editor.lexxy-editor-field {
 }
 
 .nav__icon-btn--admin { color: var(--hcp-terraform); }
+
+/* ── Pomodoro / Focus Page ─────────────────────────────── */
+.page--focus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding-top: 48px;
+}
+
+.pomodoro-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.pomodoro-mode__label {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border-radius: 20px;
+  background: var(--hcp-terraform);
+  color: #fff;
+}
+
+.pomodoro-mode__label[data-mode="break"] {
+  background: var(--hcp-helper);
+}
+
+.pomodoro-mode__sessions {
+  font-size: 12px;
+  color: var(--hcp-helper);
+}
+
+.pomodoro-timer__display {
+  font-size: clamp(72px, 18vw, 140px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -2px;
+  color: var(--hcp-charcoal);
+  line-height: 1;
+}
+
+.pomodoro-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pomodoro-controls__start {
+  min-width: 110px;
+}
+
+/* ── Settings panel ────────────────────────────────────── */
+.pomodoro-settings {
+  width: 100%;
+  max-width: 360px;
+  border: 1px solid var(--hcp-border);
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.pomodoro-settings__toggle {
+  cursor: pointer;
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--hcp-helper);
+  list-style: none;
+  user-select: none;
+}
+
+.pomodoro-settings__toggle::-webkit-details-marker { display: none; }
+
+.pomodoro-settings[open] .pomodoro-settings__toggle {
+  border-bottom: 1px solid var(--hcp-border);
+}
+
+.pomodoro-settings__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+}
+
+.pomodoro-settings__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.pomodoro-settings__row label {
+  font-size: 13px;
+  color: var(--hcp-charcoal);
+  white-space: nowrap;
+}
+
+.pomodoro-settings__row .form-input {
+  width: 80px;
+  text-align: center;
+}
