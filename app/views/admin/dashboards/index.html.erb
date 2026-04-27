@@ -83,7 +83,6 @@
             <tr>
               <th>사용자</th>
               <th>IP</th>
-              <th>UA</th>
               <th>시각</th>
             </tr>
           </thead>
@@ -92,7 +91,6 @@
               <tr>
                 <td><%= link_to session.user.nickname, admin_user_path(session.user) %></td>
                 <td class="admin-table__mono"><%= session.ip_address %></td>
-                <td class="admin-table__truncate" title="<%= session.user_agent %>"><%= session.user_agent %></td>
                 <td><%= session.created_at.strftime("%Y-%m-%d %H:%M") %></td>
               </tr>
             <% end %>
