@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_27_105411) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_27_105412) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -146,6 +146,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_105411) do
     t.index ["role"], name: "index_users_on_role"
   end
 
+  create_table "work_journals", force: :cascade do |t|
+    t.integer "category", default: 0, null: false
+    t.text "content", null: false
+    t.string "content_format", default: "markdown", null: false
+    t.datetime "created_at", null: false
+    t.boolean "is_draft", default: false, null: false
+    t.integer "progress", default: 0, null: false
+    t.integer "status", default: 0, null: false
+    t.string "title", limit: 200, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.date "work_date", null: false
+    t.index ["user_id", "category"], name: "index_work_journals_on_user_id_and_category"
+    t.index ["user_id", "is_draft"], name: "index_work_journals_on_user_id_and_is_draft"
+    t.index ["user_id", "status"], name: "index_work_journals_on_user_id_and_status"
+    t.index ["user_id", "work_date"], name: "index_work_journals_on_user_id_and_work_date"
+    t.index ["user_id"], name: "index_work_journals_on_user_id"
+  end
+
   create_table "work_plans", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "department_name", null: false
@@ -173,5 +192,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_105411) do
   add_foreign_key "tech_info_reactions", "tech_infos"
   add_foreign_key "tech_info_reactions", "users"
   add_foreign_key "tech_infos", "users"
+  add_foreign_key "work_journals", "users"
   add_foreign_key "work_plans", "users"
 end

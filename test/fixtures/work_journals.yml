@@ -1,0 +1,34 @@
+one_today:
+  user: one
+  title: 오늘 한 일
+  content: |
+    ## 진행
+    - 인증 모듈 완료
+  content_format: markdown
+  category: 0
+  status: 0
+  progress: 50
+  work_date: <%= Date.today.to_s %>
+  is_draft: false
+
+one_yesterday:
+  user: one
+  title: 어제 회의
+  content: 팀 미팅 정리
+  content_format: markdown
+  category: 1
+  status: 1
+  progress: 100
+  work_date: <%= (Date.today - 1).to_s %>
+  is_draft: false
+
+two_today:
+  user: two
+  title: 다른 사용자 일지
+  content: 권한 테스트용
+  content_format: markdown
+  category: 0
+  status: 0
+  progress: 0
+  work_date: <%= Date.today.to_s %>
+  is_draft: false

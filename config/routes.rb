@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :work_plans do
     member { get :hwpx }
   end
+  resources :work_journals
   resources :memos
   resources :posts
   resources :life_infos

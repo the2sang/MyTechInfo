@@ -1,0 +1,99 @@
+<% content_for :title, "업무일지" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="title-collage" aria-label="업무일지">
+      <span class="tc-letter tc-w1">업</span><span class="tc-letter tc-w2">무</span><span class="tc-letter tc-w3">일</span><span class="tc-letter tc-w4">지</span>
+    </h1>
+    <div class="page__header-actions">
+      <%= link_to new_work_journal_path, class: "btn btn--primary" do %>
+        <i class="fa-solid fa-plus"></i>
+        <span class="nav-hide-mobile">새 일지</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="calendar" data-controller="calendar">
+    <%= turbo_frame_tag "calendar_body" do %>
+      <%
+        prev_month = @calendar_date.prev_month
+        next_month = @calendar_date.next_month
+        today      = Date.today
+      %>
+      <div class="calendar__nav">
+        <%= link_to work_journals_path(year: prev_month.year, month: prev_month.month),
+              class: "btn btn--secondary btn--sm calendar__nav-btn",
+              data: { turbo_frame: "calendar_body" } do %>
+          <i class="fa-solid fa-chevron-left"></i>
+        <% end %>
+
+        <h2 class="calendar__month-title">
+          <%= @calendar_date.strftime("%Y년 %-m월") %>
+        </h2>
+
+        <%= link_to work_journals_path,
+              class: "btn btn--ghost btn--sm",
+              title: "오늘",
+              data: { turbo_frame: "calendar_body" } do %>
+          <i class="fa-solid fa-calendar-day"></i> Today
+        <% end %>
+
+        <%= link_to work_journals_path(year: next_month.year, month: next_month.month),
+              class: "btn btn--secondary btn--sm calendar__nav-btn",
+              data: { turbo_frame: "calendar_body" } do %>
+          <i class="fa-solid fa-chevron-right"></i>
+        <% end %>
+      </div>
+
+      <div class="calendar__grid">
+        <% %w[일 월 화 수 목 금 토].each_with_index do |day, i| %>
+          <div class="calendar__dow <%= i == 0 ? 'calendar__dow--sun' : '' %> <%= i == 6 ? 'calendar__dow--sat' : '' %>">
+            <%= day %>
+          </div>
+        <% end %>
+
+        <% first_day_wday = @calendar_date.wday %>
+        <% first_day_wday.times do %>
+          <div class="calendar__cell calendar__cell--empty"></div>
+        <% end %>
+
+        <% (@calendar_date..@calendar_date.end_of_month).each do |date| %>
+          <%
+            journals   = @journals_by_date[date] || []
+            is_today   = date == today
+            is_sun     = date.wday == 0
+            is_sat     = date.wday == 6
+            cell_class = [ "calendar__cell" ]
+            cell_class << "calendar__cell--today"   if is_today
+            cell_class << "calendar__cell--sun"     if is_sun
+            cell_class << "calendar__cell--sat"     if is_sat
+            cell_class << "calendar__cell--has-plan" if journals.any?
+          %>
+          <div class="<%= cell_class.join(" ") %>">
+            <%= link_to new_work_journal_path(date: date.iso8601),
+                  class: "calendar__date-link",
+                  data: { turbo_frame: "_top" } do %>
+              <span class="calendar__date-num"><%= date.day %></span>
+            <% end %>
+
+            <% if journals.any? %>
+              <div class="calendar__plans">
+                <% journals.first(3).each do |journal| %>
+                  <%= link_to work_journal_path(journal),
+                        class: "calendar__plan-icon",
+                        title: "#{journal.title} (#{journal.progress}%)",
+                        data: { turbo_frame: "_top" } do %>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  <% end %>
+                <% end %>
+                <% if journals.size > 3 %>
+                  <span class="calendar__plan-more">+<%= journals.size - 3 %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

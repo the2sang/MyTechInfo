@@ -1,0 +1,12 @@
+<% content_for :title, "새 업무일지" %>
+
+<div class="page page--narrow">
+  <div class="page__header">
+    <%= link_to work_journals_path, class: "btn btn--ghost btn--sm" do %>
+      <i class="fa-solid fa-arrow-left"></i> 캘린더로
+    <% end %>
+    <h1 class="page__title">새 업무일지</h1>
+  </div>
+
+  <%= render "form", work_journal: @work_journal %>
+</div>

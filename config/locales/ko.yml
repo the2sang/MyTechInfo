@@ -1,0 +1,12 @@
+ko:
+  work_journals:
+    category:
+      task: "작업"
+      meeting: "회의"
+      planning: "기획"
+      issue: "이슈 해결"
+      etc: "기타"
+    status:
+      in_progress: "진행 중"
+      completed: "완료"
+      on_hold: "보류 중"

@@ -1,0 +1,57 @@
+<% content_for :title, @work_journal.title %>
+
+<div class="page page--narrow">
+  <div class="page__header">
+    <%= link_to work_journals_path, class: "btn btn--ghost btn--sm" do %>
+      <i class="fa-solid fa-arrow-left"></i> 캘린더로
+    <% end %>
+    <div class="page__header-actions">
+      <%= link_to edit_work_journal_path(@work_journal), class: "btn btn--secondary btn--sm" do %>
+        <i class="fa-solid fa-pen"></i> 수정
+      <% end %>
+      <%= button_to work_journal_path(@work_journal),
+            method: :delete,
+            class: "btn btn--danger btn--sm",
+            data: { turbo_confirm: "이 업무일지를 삭제하시겠습니까?" } do %>
+        <i class="fa-solid fa-trash"></i> 삭제
+      <% end %>
+    </div>
+  </div>
+
+  <article class="work-journal">
+    <header class="work-journal__header">
+      <h1 class="work-journal__title"><%= @work_journal.title %></h1>
+      <div class="work-journal__meta">
+        <span class="work-journal__date">
+          <i class="fa-solid fa-calendar-day"></i>
+          <%= @work_journal.work_date.strftime("%Y년 %-m월 %-d일") %>
+        </span>
+        <span class="work-journal__badge work-journal__badge--category">
+          <%= t("work_journals.category.#{@work_journal.category}") %>
+        </span>
+        <span class="work-journal__badge work-journal__badge--status work-journal__badge--<%= @work_journal.status %>">
+          <%= t("work_journals.status.#{@work_journal.status}") %>
+        </span>
+      </div>
+
+      <div class="work-journal__progress">
+        <div class="work-journal__progress-bar"
+             role="progressbar"
+             aria-valuenow="<%= @work_journal.progress %>"
+             aria-valuemin="0"
+             aria-valuemax="100">
+          <div class="work-journal__progress-fill"
+               style="width: <%= @work_journal.progress %>%"></div>
+        </div>
+        <span class="work-journal__progress-text"><%= @work_journal.progress %>%</span>
+      </div>
+    </header>
+
+    <div class="work-journal__content prose">
+      <%= sanitize render_markdown(@work_journal.content),
+            tags: %w[p br b i u s strong em h1 h2 h3 h4 h5 h6 ul ol li a pre code blockquote
+                     table thead tbody tr th td hr span div figure figcaption mark sub sup img],
+            attributes: %w[href src alt class target rel] %>
+    </div>
+  </article>
+</div>
