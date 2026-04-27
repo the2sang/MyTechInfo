@@ -48,10 +48,7 @@
     </header>
 
     <div class="work-journal__content prose">
-      <%= sanitize render_markdown(@work_journal.content),
-            tags: %w[p br b i u s strong em h1 h2 h3 h4 h5 h6 ul ol li a pre code blockquote
-                     table thead tbody tr th td hr span div figure figcaption mark sub sup img],
-            attributes: %w[href src alt class target rel] %>
+      <%= render_markdown(@work_journal.content) %>
     </div>
   </article>
 </div>

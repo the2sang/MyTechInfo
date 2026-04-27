@@ -1,6 +1,9 @@
 module ApplicationHelper
+  # filter_html: true escapes raw HTML embedded in markdown source so user-authored
+  # content cannot inject <script>, <iframe>, on*-handlers, etc. Markdown-generated
+  # tags (h1-6, p, ul/ol, em/strong, table, code, ...) still pass through.
   MARKDOWN_RENDERER = Redcarpet::Render::HTML.new(
-    filter_html: false,
+    filter_html: true,
     hard_wrap: true,
     link_attributes: { target: "_blank", rel: "noopener noreferrer" }
   )
