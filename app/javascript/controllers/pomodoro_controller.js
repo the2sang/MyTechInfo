@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["display", "startBtn", "modeLabel", "sessionCount", "roundDot"]
+  static targets = ["display", "startBtn", "modeLabel", "sessionCount", "roundDot", "turtle", "turtleFill"]
   static values  = {
     focusMinutes:     Number,
     breakMinutes:     Number,
@@ -28,6 +28,7 @@ export default class extends Controller {
     this.running = true
     this.startBtnTarget.textContent = "일시정지"
     this.startBtnTarget.classList.replace("btn--primary", "btn--secondary")
+    if (this.hasTurtleTarget) this.turtleTarget.classList.add("turtle-track__turtle--running")
     this._tick()
     this.timer = setInterval(() => this._tick(), 1000)
   }
@@ -36,6 +37,7 @@ export default class extends Controller {
     this.running = false
     this.startBtnTarget.textContent = "계속하기"
     this.startBtnTarget.classList.replace("btn--secondary", "btn--primary")
+    if (this.hasTurtleTarget) this.turtleTarget.classList.remove("turtle-track__turtle--running")
     this._clearTick()
   }
 
@@ -75,6 +77,11 @@ export default class extends Controller {
   _reset() {
     this.running   = false
     this.remaining = this._totalSeconds()
+    if (this.hasTurtleTarget) {
+      this.turtleTarget.classList.remove("turtle-track__turtle--running")
+      this.turtleTarget.style.left = "0%"
+    }
+    if (this.hasTurtleFillTarget) this.turtleFillTarget.style.width = "0%"
     this._render()
     this._renderMode()
     if (this.hasStartBtnTarget) {
@@ -95,6 +102,15 @@ export default class extends Controller {
     if (this.hasDisplayTarget) this.displayTarget.textContent = fmt
     const label = this.mode === "focus" ? "집중 중" : "휴식 중"
     document.title = `${fmt} — ${label}`
+    this._updateTurtle()
+  }
+
+  _updateTurtle() {
+    if (!this.hasTurtleTarget) return
+    const total = this._totalSeconds()
+    const pct = Math.min(((total - this.remaining) / total) * 100, 96)
+    this.turtleTarget.style.left = `${pct}%`
+    if (this.hasTurtleFillTarget) this.turtleFillTarget.style.width = `${pct}%`
   }
 
   _renderMode() {

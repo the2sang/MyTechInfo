@@ -3009,3 +3009,58 @@ lexxy-editor.lexxy-editor-field {
 }
 
 .pomodoro-rounds__dot--done { background: var(--hcp-vagrant); }
+
+/* ── Turtle Track ──────────────────────────────────────── */
+.turtle-track {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.turtle-track__road {
+  flex: 1;
+  height: 36px;
+  background: var(--hcp-light-bg);
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.turtle-track__fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0%;
+  background: linear-gradient(90deg, #d4f5e0, #a8e6bf);
+  border-radius: 18px;
+  transition: width 0.9s linear;
+}
+
+.turtle-track__turtle {
+  position: absolute;
+  left: 0%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 22px;
+  line-height: 1;
+  transition: left 0.9s linear;
+  z-index: 1;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+}
+
+.turtle-track__turtle--running {
+  animation: turtle-walk 0.7s ease-in-out infinite;
+}
+
+@keyframes turtle-walk {
+  0%, 100% { transform: translateY(-50%); }
+  25%       { transform: translateY(calc(-50% - 4px)) rotate(-3deg); }
+  75%       { transform: translateY(calc(-50% + 2px)) rotate(3deg); }
+}
+
+.turtle-track__flag {
+  font-size: 22px;
+  flex-shrink: 0;
+}
