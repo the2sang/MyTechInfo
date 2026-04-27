@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   resources :passwords, param: :token, only: %i[ new create edit update ]
   resource :registration, only: %i[ new create ]
 
-  resource :focus, only: %i[show update]
+  resource :focus, only: %i[show] do
+    resource :settings, controller: "focus/settings", only: %i[show update]
+  end
 
   resources :work_plans do
     member { get :hwpx }

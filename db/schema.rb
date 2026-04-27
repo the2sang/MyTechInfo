@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_27_105410) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_27_105411) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -54,9 +54,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_105410) do
   end
 
   create_table "pomodoro_settings", force: :cascade do |t|
+    t.boolean "auto_start", default: false, null: false
     t.integer "break_minutes", default: 5, null: false
     t.datetime "created_at", null: false
     t.integer "focus_minutes", default: 25, null: false
+    t.integer "long_break_minutes", default: 20, null: false
+    t.integer "rounds", default: 4, null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_pomodoro_settings_on_user_id", unique: true

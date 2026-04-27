@@ -1,0 +1,87 @@
+<% content_for :title, "집중 설정" %>
+
+<div class="page page--narrow">
+  <div class="page__header">
+    <h1 class="page__title">설정</h1>
+    <%= link_to focus_path, class: "btn btn--ghost btn--sm" do %>
+      <i class="fa-solid fa-arrow-left"></i> 타이머
+    <% end %>
+  </div>
+
+  <% if @setting.errors.any? %>
+    <div class="form-errors">
+      <% @setting.errors.full_messages.each do |msg| %><p><%= msg %></p><% end %>
+    </div>
+  <% end %>
+
+  <%= form_with model: @setting, url: focus_settings_path, method: :patch, class: "pomo-settings" do |f| %>
+
+    <div class="pomo-settings__group">
+      <%# Work duration %>
+      <div class="pomo-slider" data-controller="range" data-range-suffix-value=" min">
+        <div class="pomo-slider__header">
+          <label class="pomo-slider__label" for="<%= f.field_id(:focus_minutes) %>">집중 시간</label>
+          <span class="pomo-slider__value" data-range-target="display"><%= @setting.focus_minutes %> min</span>
+        </div>
+        <%= f.range_field :focus_minutes, min: 5, max: 60, step: 5,
+              class: "pomo-slider__input",
+              data: { action: "input->range#update" } %>
+        <div class="pomo-slider__scale"><span>5 min</span><span>60 min</span></div>
+      </div>
+
+      <%# Short break %>
+      <div class="pomo-slider" data-controller="range" data-range-suffix-value=" min">
+        <div class="pomo-slider__header">
+          <label class="pomo-slider__label" for="<%= f.field_id(:break_minutes) %>">짧은 휴식</label>
+          <span class="pomo-slider__value" data-range-target="display"><%= @setting.break_minutes %> min</span>
+        </div>
+        <%= f.range_field :break_minutes, min: 1, max: 30, step: 1,
+              class: "pomo-slider__input",
+              data: { action: "input->range#update" } %>
+        <div class="pomo-slider__scale"><span>1 min</span><span>30 min</span></div>
+      </div>
+
+      <%# Long break %>
+      <div class="pomo-slider" data-controller="range" data-range-suffix-value=" min">
+        <div class="pomo-slider__header">
+          <label class="pomo-slider__label" for="<%= f.field_id(:long_break_minutes) %>">긴 휴식</label>
+          <span class="pomo-slider__value" data-range-target="display"><%= @setting.long_break_minutes %> min</span>
+        </div>
+        <%= f.range_field :long_break_minutes, min: 1, max: 45, step: 5,
+              class: "pomo-slider__input",
+              data: { action: "input->range#update" } %>
+        <div class="pomo-slider__scale"><span>1 min</span><span>45 min</span></div>
+      </div>
+
+      <%# Rounds %>
+      <div class="pomo-slider" data-controller="range" data-range-suffix-value="">
+        <div class="pomo-slider__header">
+          <label class="pomo-slider__label" for="<%= f.field_id(:rounds) %>">라운드 수</label>
+          <span class="pomo-slider__value" data-range-target="display"><%= @setting.rounds %></span>
+        </div>
+        <%= f.range_field :rounds, min: 2, max: 15, step: 1,
+              class: "pomo-slider__input",
+              data: { action: "input->range#update" } %>
+        <div class="pomo-slider__scale"><span>2</span><span>15</span></div>
+      </div>
+    </div>
+
+    <div class="pomo-settings__group pomo-settings__toggles">
+      <div class="pomo-toggle-item">
+        <div class="pomo-toggle-item__label">
+          <span>자동 시작</span>
+          <span class="pomo-toggle-item__desc">세션 종료 후 다음 세션 자동 시작</span>
+        </div>
+        <label class="pomo-toggle">
+          <%= f.check_box :auto_start, class: "pomo-toggle__input" %>
+          <span class="pomo-toggle__track"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="pomo-settings__actions">
+      <%= f.submit "저장", class: "btn btn--primary" %>
+      <%= link_to "취소", focus_path, class: "btn btn--ghost" %>
+    </div>
+  <% end %>
+</div>

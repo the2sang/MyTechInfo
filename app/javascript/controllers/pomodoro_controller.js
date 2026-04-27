@@ -1,35 +1,26 @@
 import { Controller } from "@hotwired/stimulus"
 
-// State machine: idle → running → paused → idle
-//                running → finished → (auto-switch mode) → idle
 export default class extends Controller {
-  static targets = ["display", "startBtn", "resetBtn", "modeLabel", "sessionCount"]
-  static values  = { focusMinutes: Number, breakMinutes: Number }
+  static targets = ["display", "startBtn", "modeLabel", "sessionCount", "roundDot"]
+  static values  = {
+    focusMinutes:     Number,
+    breakMinutes:     Number,
+    longBreakMinutes: Number,
+    rounds:           Number,
+    autoStart:        Boolean
+  }
 
   connect() {
-    this.mode = "focus"       // "focus" | "break"
-    this.sessions = 0
+    this.mode      = "focus"
+    this.sessions  = 0
     this._reset()
   }
 
-  disconnect() {
-    this._clearTick()
-  }
+  disconnect() { this._clearTick() }
 
-  toggle() {
-    this.running ? this._pause() : this._start()
-  }
-
-  reset() {
-    this._clearTick()
-    this._reset()
-  }
-
-  skipMode() {
-    this._clearTick()
-    this.mode = this.mode === "focus" ? "break" : "focus"
-    this._reset()
-  }
+  toggle()    { this.running ? this._pause() : this._start() }
+  reset()     { this._clearTick(); this._reset() }
+  skipMode()  { this._clearTick(); this._switchMode(); this._reset() }
 
   // ── private ──────────────────────────────────────────────
 
@@ -49,10 +40,7 @@ export default class extends Controller {
   }
 
   _tick() {
-    if (this.remaining <= 0) {
-      this._finish()
-      return
-    }
+    if (this.remaining <= 0) { this._finish(); return }
     this.remaining -= 1
     this._render()
   }
@@ -60,21 +48,32 @@ export default class extends Controller {
   _finish() {
     this._clearTick()
     this.running = false
-
     if (this.mode === "focus") {
       this.sessions += 1
-      this._updateSessionCount()
-      this._notify("집중 완료! 휴식할 시간입니다 🎉")
-      this.mode = "break"
+      this._updateDots()
+      this._notify("집중 완료! 🎉 " + (this._isLongBreak() ? "긴 휴식" : "짧은 휴식") + " 시간입니다.")
     } else {
-      this._notify("휴식 완료! 다시 집중할 시간입니다 💪")
+      this._notify("휴식 완료! 💪 다시 집중할 시간입니다.")
+    }
+    this._switchMode()
+    this._reset()
+    if (this.autoStartValue) this._start()
+  }
+
+  _switchMode() {
+    if (this.mode === "focus") {
+      this.mode = this._isLongBreak() ? "long_break" : "break"
+    } else {
       this.mode = "focus"
     }
-    this._reset()
+  }
+
+  _isLongBreak() {
+    return this.rounds > 0 && this.sessions % this.roundsValue === 0
   }
 
   _reset() {
-    this.running  = false
+    this.running   = false
     this.remaining = this._totalSeconds()
     this._render()
     this._renderMode()
@@ -83,30 +82,33 @@ export default class extends Controller {
       this.startBtnTarget.classList.remove("btn--secondary")
       this.startBtnTarget.classList.add("btn--primary")
     }
-    document.title = `${this._formatted()} — 집중`
   }
 
   _totalSeconds() {
-    return (this.mode === "focus"
-      ? this.focusMinutesValue
-      : this.breakMinutesValue) * 60
+    if (this.mode === "focus")      return this.focusMinutesValue * 60
+    if (this.mode === "long_break") return this.longBreakMinutesValue * 60
+    return this.breakMinutesValue * 60
   }
 
   _render() {
     const fmt = this._formatted()
     if (this.hasDisplayTarget) this.displayTarget.textContent = fmt
-    document.title = `${fmt} — ${this.mode === "focus" ? "집중 중" : "휴식 중"}`
+    const label = this.mode === "focus" ? "집중 중" : "휴식 중"
+    document.title = `${fmt} — ${label}`
   }
 
   _renderMode() {
     if (!this.hasModeLabelTarget) return
-    if (this.mode === "focus") {
-      this.modeLabelTarget.textContent = "집중"
-      this.modeLabelTarget.dataset.mode = "focus"
-    } else {
-      this.modeLabelTarget.textContent = "휴식"
-      this.modeLabelTarget.dataset.mode = "break"
-    }
+    const labels = { focus: "집중", break: "휴식", long_break: "긴 휴식" }
+    this.modeLabelTarget.textContent = labels[this.mode] || "집중"
+    this.modeLabelTarget.dataset.mode = this.mode === "focus" ? "focus" : "break"
+  }
+
+  _updateDots() {
+    if (!this.hasRoundDotTarget) return
+    this.roundDotTargets.forEach((dot, i) => {
+      dot.classList.toggle("pomodoro-rounds__dot--done", i < (this.sessions % this.roundsValue || this.roundsValue))
+    })
   }
 
   _updateSessionCount() {
@@ -122,15 +124,13 @@ export default class extends Controller {
   }
 
   _clearTick() {
-    if (this.timer) {
-      clearInterval(this.timer)
-      this.timer = null
-    }
+    if (this.timer) { clearInterval(this.timer); this.timer = null }
   }
 
   _notify(msg) {
+    this._updateSessionCount()
     if ("Notification" in window && Notification.permission === "granted") {
-      new Notification(msg)
+      new Notification("포모도로", { body: msg })
     } else {
       alert(msg)
     }
