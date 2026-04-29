@@ -1,0 +1,6 @@
+<% if records.any? %>
+  <span class="mp-day-summary">
+    <i class="fa-solid fa-clipboard-check"></i>
+    <%= records.size %>건 · <%= records.sum(&:work_minutes) %>분
+  </span>
+<% end %>

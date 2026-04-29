@@ -1,16 +1,13 @@
 module Focus
   class SettingsController < ApplicationController
-    before_action :require_authentication
+    allow_unauthenticated_access only: :show
 
     def show
-      @setting = current_user.pomodoro_setting ||
-                 current_user.build_pomodoro_setting
-      authorize @setting, policy_class: PomodoroSettingPolicy
+      @setting = authenticated? ? (current_user.pomodoro_setting || current_user.build_pomodoro_setting) : PomodoroSetting.new
     end
 
     def update
-      @setting = current_user.pomodoro_setting ||
-                 current_user.build_pomodoro_setting
+      @setting = current_user.pomodoro_setting || current_user.build_pomodoro_setting
       authorize @setting, policy_class: PomodoroSettingPolicy
       if @setting.update(setting_params)
         redirect_to focus_path, notice: "설정이 저장되었습니다."

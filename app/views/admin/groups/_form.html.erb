@@ -1,0 +1,40 @@
+<%= form_with model: [:admin, group], class: "form" do |f| %>
+  <% if group.errors.any? %>
+    <div class="form__errors">
+      <% group.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="form__field">
+    <%= f.label :name, "그룹명", class: "form__label" %>
+    <%= f.text_field :name, class: "form__input", placeholder: "예: 개발팀" %>
+  </div>
+
+  <div class="form__field">
+    <%= f.label :owner_id, "소유자", class: "form__label" %>
+    <%= f.select :owner_id,
+          @users.map { |u| [u.nickname, u.id] },
+          { include_blank: "선택하세요" },
+          class: "form__select" %>
+  </div>
+
+  <div class="form__field">
+    <label class="form__label">멤버 선택 (소유자 자동 포함)</label>
+    <div class="group-member-checkboxes">
+      <% @users.each do |user| %>
+        <label class="group-member-check">
+          <input type="checkbox" name="group[user_ids][]" value="<%= user.id %>"
+                 <%= group.users.include?(user) ? "checked" : "" %>>
+          <%= user.nickname %> <span class="group-member-check__email"><%= user.email_address %></span>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="form__actions">
+    <%= f.submit "저장", class: "btn btn--primary" %>
+    <%= link_to "취소", admin_groups_path, class: "btn btn--ghost" %>
+  </div>
+<% end %>

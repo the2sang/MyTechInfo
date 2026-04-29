@@ -80,8 +80,19 @@
     </div>
 
     <div class="pomo-settings__actions">
-      <%= f.submit "저장", class: "btn btn--primary" %>
-      <%= link_to "취소", focus_path, class: "btn btn--ghost" %>
+      <% if authenticated? %>
+        <%= f.submit "저장", class: "btn btn--primary" %>
+        <%= link_to "취소", focus_path, class: "btn btn--ghost" %>
+      <% else %>
+        <div class="pomo-auth-prompt">
+          <p class="pomo-auth-prompt__message">설정을 저장하려면 로그인이 필요합니다.</p>
+          <div class="pomo-auth-prompt__actions">
+            <%= link_to "로그인", new_session_path, class: "btn btn--primary btn--sm" %>
+            <%= link_to "회원가입", new_registration_path, class: "btn btn--ghost btn--sm" %>
+          </div>
+        </div>
+        <%= link_to "돌아가기", focus_path, class: "btn btn--ghost" %>
+      <% end %>
     </div>
   <% end %>
 </div>

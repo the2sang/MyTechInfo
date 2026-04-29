@@ -5,17 +5,23 @@ class WorkJournalTest < ActiveSupport::TestCase
     @user = users(:one)
     @valid_attrs = {
       title: "API 작업",
-      content: "## 진행\n- 인증 모듈 완료",
       content_format: "markdown",
       category: :task,
       status: :in_progress,
       progress: 50,
-      work_date: Date.today
+      work_date: Date.today,
+      entry_type: :result,
+      sequence_number: 1
     }
   end
 
   test "valid with required fields" do
     j = @user.work_journals.new(@valid_attrs)
+    assert j.valid?, j.errors.full_messages.inspect
+  end
+
+  test "content is optional" do
+    j = @user.work_journals.new(@valid_attrs.merge(content: ""))
     assert j.valid?, j.errors.full_messages.inspect
   end
 
@@ -29,11 +35,6 @@ class WorkJournalTest < ActiveSupport::TestCase
     j = @user.work_journals.new(@valid_attrs.merge(title: "x" * 201))
     assert_not j.valid?
     assert_predicate j.errors[:title], :present?
-  end
-
-  test "content required" do
-    j = @user.work_journals.new(@valid_attrs.merge(content: ""))
-    assert_not j.valid?
   end
 
   test "progress rejects negatives, over 100, and floats" do
@@ -58,6 +59,30 @@ class WorkJournalTest < ActiveSupport::TestCase
   test "work_date required" do
     j = @user.work_journals.new(@valid_attrs.merge(work_date: nil))
     assert_not j.valid?
+  end
+
+  test "entry_type defaults to result" do
+    j = @user.work_journals.new(@valid_attrs.except(:entry_type))
+    assert j.valid?
+    assert_equal "result", j.entry_type
+  end
+
+  test "entry_type enum: result and plan are valid" do
+    %i[result plan].each do |type|
+      j = @user.work_journals.new(@valid_attrs.merge(entry_type: type))
+      assert j.valid?, "expected entry_type=#{type} to be valid"
+    end
+  end
+
+  test "sequence_number must be at least 1" do
+    j = @user.work_journals.new(@valid_attrs.merge(sequence_number: 0))
+    assert_not j.valid?
+    assert_predicate j.errors[:sequence_number], :present?
+  end
+
+  test "sequence_number accepts positive integers" do
+    j = @user.work_journals.new(@valid_attrs.merge(sequence_number: 5))
+    assert j.valid?, j.errors.full_messages.inspect
   end
 
   test "category and status enums coerce strings" do
@@ -89,5 +114,20 @@ class WorkJournalTest < ActiveSupport::TestCase
     newer = @user.work_journals.create!(@valid_attrs.merge(work_date: Date.today))
     ordered = @user.work_journals.recent.where(id: [ older.id, newer.id ])
     assert_equal newer.id, ordered.first.id
+  end
+
+  test "by_type scope filters by entry_type" do
+    result_j = @user.work_journals.create!(@valid_attrs.merge(entry_type: :result))
+    plan_j   = @user.work_journals.create!(@valid_attrs.merge(entry_type: :plan, sequence_number: 2))
+    assert_includes @user.work_journals.by_type(:result), result_j
+    assert_not_includes @user.work_journals.by_type(:result), plan_j
+  end
+
+  test "ordered scope sorts by sequence_number" do
+    j3 = @user.work_journals.create!(@valid_attrs.merge(sequence_number: 3))
+    j1 = @user.work_journals.create!(@valid_attrs.merge(sequence_number: 1))
+    j2 = @user.work_journals.create!(@valid_attrs.merge(sequence_number: 2))
+    ordered = @user.work_journals.ordered.where(id: [ j1.id, j2.id, j3.id ])
+    assert_equal [ j1.id, j2.id, j3.id ], ordered.map(&:id)
   end
 end

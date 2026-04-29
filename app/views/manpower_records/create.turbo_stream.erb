@@ -1,0 +1,21 @@
+<%# Update records list %>
+<%= turbo_stream.update "mp-records-#{@request_date.iso8601}" do %>
+  <%= render partial: "record_row",
+        collection: @records,
+        as: :manpower_record,
+        locals: { date: @request_date } %>
+  <% if @records.empty? %>
+    <p class="mp-records-empty">등록된 내역이 없습니다.</p>
+  <% end %>
+<% end %>
+
+<%# Reset form %>
+<%= turbo_stream.update "mp-form-#{@request_date.iso8601}" do %>
+  <%= render "form",
+        manpower_record: ManpowerRecord.new(request_date: @request_date) %>
+<% end %>
+
+<%# Update trigger summary badge %>
+<%= turbo_stream.update "mp-summary-#{@request_date.iso8601}" do %>
+  <%= render "day_summary", records: @records %>
+<% end %>

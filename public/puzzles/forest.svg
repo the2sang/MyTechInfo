@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <linearGradient id="sky4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1628"/>
+      <stop offset="40%" stop-color="#0d3b2e"/>
+      <stop offset="100%" stop-color="#1a5c3a"/>
+    </linearGradient>
+    <linearGradient id="ground4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a5c3a"/>
+      <stop offset="100%" stop-color="#0a2818"/>
+    </linearGradient>
+    <linearGradient id="path4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a7c59" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#1a5c3a" stop-opacity="0.3"/>
+    </linearGradient>
+    <radialGradient id="light-ray" cx="50%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="#a8d5a2" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#a8d5a2" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="moon-forest" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e8f5e9" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#e8f5e9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Sky -->
+  <rect width="600" height="600" fill="url(#sky4)"/>
+  <!-- Moon glow through trees -->
+  <circle cx="300" cy="80" r="90" fill="url(#moon-forest)"/>
+  <!-- Moon -->
+  <circle cx="300" cy="80" r="42" fill="#e8f5e9"/>
+  <circle cx="312" cy="72" r="35" fill="#f1f8e9"/>
+  <!-- Stars -->
+  <circle cx="80" cy="40" r="1.5" fill="#a8d5a2" opacity="0.8"/>
+  <circle cx="150" cy="25" r="2" fill="white" opacity="0.7"/>
+  <circle cx="220" cy="50" r="1" fill="#a8d5a2" opacity="0.6"/>
+  <circle cx="400" cy="30" r="1.5" fill="white" opacity="0.8"/>
+  <circle cx="470" cy="55" r="2" fill="#a8d5a2" opacity="0.7"/>
+  <circle cx="540" cy="35" r="1" fill="white" opacity="0.6"/>
+  <circle cx="560" cy="90" r="1.5" fill="#a8d5a2" opacity="0.5"/>
+  <circle cx="40" cy="90" r="1" fill="white" opacity="0.5"/>
+  <!-- Light rays from moon -->
+  <polygon points="260,80 300,180 340,80" fill="#a8d5a2" opacity="0.06"/>
+  <polygon points="240,60 300,300 360,60" fill="#a8d5a2" opacity="0.04"/>
+  <polygon points="280,10 295,400 320,400 315,10" fill="#c8e6c9" opacity="0.05"/>
+  <!-- Ground -->
+  <rect y="430" width="600" height="170" fill="url(#ground4)"/>
+  <!-- Path through forest -->
+  <polygon points="240,430 360,430 420,600 180,600" fill="url(#path4)"/>
+  <!-- Path light -->
+  <polygon points="270,430 330,430 380,600 220,600" fill="#4a7c59" opacity="0.15"/>
+  <!-- Left trees background -->
+  <rect x="-10" y="120" width="25" height="340" fill="#0a2818" rx="3"/>
+  <polygon points="12,80 -10,180 34,180" fill="#0a2818"/>
+  <polygon points="12,110 -10,200 34,200" fill="#0d3b22"/>
+  <rect x="30" y="150" width="22" height="300" fill="#0d3b22" rx="3"/>
+  <polygon points="41,100 22,195 60,195" fill="#0a2818"/>
+  <rect x="65" y="130" width="20" height="330" fill="#0a2818" rx="3"/>
+  <polygon points="75,85 58,175 92,175" fill="#0d3b22"/>
+  <polygon points="75,115 60,195 90,195" fill="#0a2818"/>
+  <!-- Right trees background -->
+  <rect x="560" y="115" width="25" height="345" fill="#0a2818" rx="3"/>
+  <polygon points="572,75 550,170 594,170" fill="#0d3b22"/>
+  <polygon points="572,110 552,200 592,200" fill="#0a2818"/>
+  <rect x="528" y="145" width="22" height="315" fill="#0d3b22" rx="3"/>
+  <polygon points="539,98 520,190 558,190" fill="#0a2818"/>
+  <rect x="495" y="135" width="20" height="325" fill="#0a2818" rx="3"/>
+  <polygon points="505,90 488,180 522,180" fill="#0d3b22"/>
+  <!-- Left trees foreground -->
+  <rect x="-5" y="220" width="40" height="380" fill="#061510" rx="3"/>
+  <polygon points="15,140 -15,250 45,250" fill="#061510"/>
+  <polygon points="15,175 -12,270 42,270" fill="#0a1f14"/>
+  <rect x="100" y="200" width="35" height="400" fill="#061510" rx="3"/>
+  <polygon points="117,120 92,215 142,215" fill="#0a1f14"/>
+  <polygon points="117,155 94,240 140,240" fill="#061510"/>
+  <!-- Right trees foreground -->
+  <rect x="565" y="215" width="40" height="385" fill="#061510" rx="3"/>
+  <polygon points="585,138 558,245 612,245" fill="#0a1f14"/>
+  <polygon points="585,172 560,265 610,265" fill="#061510"/>
+  <rect x="465" y="195" width="35" height="405" fill="#061510" rx="3"/>
+  <polygon points="482,115 458,210 506,210" fill="#061510"/>
+  <polygon points="482,150 460,238 504,238" fill="#0a1f14"/>
+  <!-- Fireflies / magic particles -->
+  <circle cx="190" cy="320" r="3" fill="#a8d5a2" opacity="0.9"/>
+  <circle cx="190" cy="320" r="6" fill="#a8d5a2" opacity="0.25"/>
+  <circle cx="420" cy="280" r="3" fill="#c8e6c9" opacity="0.85"/>
+  <circle cx="420" cy="280" r="7" fill="#c8e6c9" opacity="0.2"/>
+  <circle cx="230" cy="400" r="2.5" fill="#a8d5a2" opacity="0.8"/>
+  <circle cx="230" cy="400" r="5" fill="#a8d5a2" opacity="0.2"/>
+  <circle cx="380" cy="370" r="3" fill="#dcedc8" opacity="0.75"/>
+  <circle cx="380" cy="370" r="6" fill="#dcedc8" opacity="0.2"/>
+  <circle cx="310" cy="280" r="2.5" fill="#f1f8e9" opacity="0.7"/>
+  <circle cx="260" cy="250" r="2" fill="#a8d5a2" opacity="0.6"/>
+  <circle cx="350" cy="330" r="2" fill="#c8e6c9" opacity="0.7"/>
+  <circle cx="160" cy="370" r="2.5" fill="#a8d5a2" opacity="0.65"/>
+  <circle cx="450" cy="350" r="2" fill="#dcedc8" opacity="0.65"/>
+  <!-- Ferns/undergrowth -->
+  <path d="M140 560 Q160 520 140 490 Q120 520 140 560" fill="#0d3b22" opacity="0.7"/>
+  <path d="M460 550 Q480 510 460 480 Q440 510 460 550" fill="#0d3b22" opacity="0.7"/>
+  <path d="M170 580 Q200 545 185 515" stroke="#0d3b22" stroke-width="3" fill="none" opacity="0.6"/>
+  <path d="M430 575 Q400 540 415 510" stroke="#0d3b22" stroke-width="3" fill="none" opacity="0.6"/>
+</svg>

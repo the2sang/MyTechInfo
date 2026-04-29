@@ -53,4 +53,34 @@
     </div>
     <span class="turtle-track__flag">🏁</span>
   </div>
+
+  <%# ── Analog Clock ──────────────────────────────────────── %>
+  <div class="analog-clock" data-controller="analog-clock">
+    <svg class="analog-clock__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+
+      <circle class="analog-clock__face" cx="50" cy="50" r="46"/>
+      <circle class="analog-clock__progress" cx="50" cy="50" r="40"
+              transform="rotate(-90, 50, 50)"
+              data-pomodoro-target="clockProgress"/>
+
+      <% 12.times do |i| %>
+        <line class="analog-clock__tick<%= i % 3 == 0 ? ' analog-clock__tick--major' : '' %>"
+              x1="50" y1="6" x2="50" y2="<%= i % 3 == 0 ? 16 : 13 %>"
+              transform="rotate(<%= i * 30 %>, 50, 50)"/>
+      <% end %>
+
+      <line class="analog-clock__hand analog-clock__hand--hour"
+            x1="50" y1="50" x2="50" y2="24"
+            data-analog-clock-target="hour"/>
+      <line class="analog-clock__hand analog-clock__hand--minute"
+            x1="50" y1="50" x2="50" y2="12"
+            data-analog-clock-target="minute"/>
+      <line class="analog-clock__hand analog-clock__hand--second"
+            x1="50" y1="57" x2="50" y2="9"
+            data-analog-clock-target="second"/>
+
+      <circle class="analog-clock__center" cx="50" cy="50" r="2.5"/>
+    </svg>
+    <time class="analog-clock__digital" data-analog-clock-target="digital"></time>
+  </div>
 </div>

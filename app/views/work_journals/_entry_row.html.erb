@@ -1,0 +1,25 @@
+<div id="<%= dom_id(work_journal) %>" class="wj-entry-row">
+  <span class="wj-entry-row__seq">#<%= work_journal.sequence_number %></span>
+  <div class="wj-entry-row__body">
+    <span class="wj-entry-row__title"><%= work_journal.title %></span>
+    <% if work_journal.content.present? %>
+      <div class="wj-entry-row__memo prose wj-entry-row__memo--md">
+        <%= render_markdown(work_journal.content) %>
+      </div>
+    <% end %>
+  </div>
+  <div class="wj-entry-row__actions">
+    <%= link_to edit_work_journal_path(work_journal),
+          class: "btn btn--xs btn--ghost",
+          title: "수정" do %>
+      <i class="fa-solid fa-pen"></i>
+    <% end %>
+    <%= button_to work_journal_path(work_journal),
+          method: :delete,
+          class: "btn btn--xs btn--danger",
+          form: { data: { turbo_confirm: "이 항목을 삭제하시겠습니까?" } },
+          title: "삭제" do %>
+      <i class="fa-solid fa-trash"></i>
+    <% end %>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_27_105412) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_29_082827) do
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -19,6 +19,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_105412) do
     t.integer "user_id", null: false
     t.index ["tech_info_id"], name: "index_comments_on_tech_info_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "group_memberships", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "group_id", null: false
+    t.integer "role", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["group_id", "user_id"], name: "index_group_memberships_on_group_id_and_user_id", unique: true
+    t.index ["group_id"], name: "index_group_memberships_on_group_id"
+    t.index ["user_id"], name: "index_group_memberships_on_user_id"
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.integer "owner_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_groups_on_name"
+    t.index ["owner_id"], name: "index_groups_on_owner_id"
   end
 
   create_table "identities", force: :cascade do |t|
@@ -42,6 +62,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_105412) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_life_infos_on_user_id"
+  end
+
+  create_table "manpower_records", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description", null: false
+    t.date "end_date", null: false
+    t.date "request_date", null: false
+    t.date "start_date", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.integer "work_minutes", null: false
+    t.index ["user_id", "request_date"], name: "index_manpower_records_on_user_id_and_request_date"
+    t.index ["user_id"], name: "index_manpower_records_on_user_id"
   end
 
   create_table "memos", force: :cascade do |t|
@@ -148,11 +181,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_105412) do
 
   create_table "work_journals", force: :cascade do |t|
     t.integer "category", default: 0, null: false
-    t.text "content", null: false
+    t.text "content", default: ""
     t.string "content_format", default: "markdown", null: false
     t.datetime "created_at", null: false
+    t.integer "entry_type", default: 0, null: false
     t.boolean "is_draft", default: false, null: false
     t.integer "progress", default: 0, null: false
+    t.integer "sequence_number", default: 1, null: false
     t.integer "status", default: 0, null: false
     t.string "title", limit: 200, null: false
     t.datetime "updated_at", null: false
@@ -161,6 +196,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_105412) do
     t.index ["user_id", "category"], name: "index_work_journals_on_user_id_and_category"
     t.index ["user_id", "is_draft"], name: "index_work_journals_on_user_id_and_is_draft"
     t.index ["user_id", "status"], name: "index_work_journals_on_user_id_and_status"
+    t.index ["user_id", "work_date", "entry_type"], name: "index_work_journals_on_user_date_type"
     t.index ["user_id", "work_date"], name: "index_work_journals_on_user_id_and_work_date"
     t.index ["user_id"], name: "index_work_journals_on_user_id"
   end
@@ -182,8 +218,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_105412) do
 
   add_foreign_key "comments", "tech_infos"
   add_foreign_key "comments", "users"
+  add_foreign_key "group_memberships", "groups"
+  add_foreign_key "group_memberships", "users"
+  add_foreign_key "groups", "users", column: "owner_id"
   add_foreign_key "identities", "users"
   add_foreign_key "life_infos", "users"
+  add_foreign_key "manpower_records", "users"
   add_foreign_key "memos", "users"
   add_foreign_key "pomodoro_settings", "users"
   add_foreign_key "posts", "users"

@@ -1,0 +1,16 @@
+<% if group_members.any? %>
+  <div class="member-picker">
+    <%= link_to work_journals_path(year: calendar_date.year, month: calendar_date.month),
+          class: "member-picker__item #{"member-picker__item--active" if viewed_user == current_user}" do %>
+      <i class="fa-solid fa-user"></i>
+      <span>나</span>
+    <% end %>
+    <% group_members.each do |member| %>
+      <%= link_to work_journals_path(year: calendar_date.year, month: calendar_date.month, member_id: member.id),
+            class: "member-picker__item #{"member-picker__item--active" if viewed_user == member}" do %>
+        <i class="fa-solid fa-user"></i>
+        <span><%= member.nickname %></span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

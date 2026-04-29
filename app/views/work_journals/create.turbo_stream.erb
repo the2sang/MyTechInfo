@@ -1,0 +1,26 @@
+<%
+  type      = @work_journal.entry_type
+  next_seq  = @work_journal.sequence_number + 1
+  fresh_wj  = WorkJournal.new(
+    work_date:      @date,
+    entry_type:     type,
+    content_format: "markdown",
+    category:       :task,
+    status:         :in_progress,
+    progress:       0
+  )
+%>
+
+<% if @work_journal.sequence_number == 1 %>
+  <%= turbo_stream.remove "#{type}-entries-empty" %>
+<% end %>
+
+<%= turbo_stream.append "#{type}-entries-list" do %>
+  <%= render "entry_row", work_journal: @work_journal %>
+<% end %>
+
+<%= turbo_stream.replace "#{type}-entry-form" do %>
+  <div id="<%= type %>-entry-form" class="wj-entry-form-wrapper">
+    <%= render "entry_form", work_journal: fresh_wj, next_seq: next_seq %>
+  </div>
+<% end %>

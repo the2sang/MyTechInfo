@@ -1,0 +1,69 @@
+<% content_for :title, "퍼즐조각맞추기" %>
+
+<div class="pz-page" data-controller="puzzle">
+
+  <%# Controls bar %>
+  <div class="pz-controls">
+    <h1 class="pz-title"><i class="fa-solid fa-puzzle-piece"></i> 퍼즐조각맞추기</h1>
+    <div class="pz-controls__row">
+      <div class="pz-count-group">
+        <% [[9, "9조각", "10분"], [25, "25조각", "20분"], [36, "36조각", "30분"]].each do |count, label, time| %>
+          <button class="pz-count-btn <%= count == 9 ? 'pz-count-btn--active' : '' %>"
+                  data-count="<%= count %>"
+                  data-time="<%= time %>"
+                  data-action="click->puzzle#selectCount"
+                  data-puzzle-target="countBtn">
+            <%= label %>
+            <span class="pz-count-btn__time"><%= time %></span>
+          </button>
+        <% end %>
+      </div>
+      <div class="pz-action-group">
+        <div class="pz-timer" data-puzzle-target="timer">--:--</div>
+        <button class="btn btn--primary pz-btn-start"
+                data-action="click->puzzle#startGame"
+                data-puzzle-target="startBtn">
+          <i class="fa-solid fa-play"></i> 시작
+        </button>
+        <button class="btn btn--ghost pz-btn-reset"
+                data-action="click->puzzle#resetGame">
+          <i class="fa-solid fa-rotate-left"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <%# Preview %>
+  <div class="pz-preview-wrap">
+    <div class="pz-preview" data-puzzle-target="preview">
+      <span class="pz-preview__hint">원본 이미지</span>
+    </div>
+  </div>
+
+  <%# Game area %>
+  <div class="pz-game-area">
+    <%# Scatter area %>
+    <div class="pz-scatter-wrap">
+      <p class="pz-area-label"><i class="fa-solid fa-shuffle"></i> 조각 모음</p>
+      <div class="pz-scatter" data-puzzle-target="scatter"></div>
+    </div>
+
+    <%# Grid area %>
+    <div class="pz-grid-wrap">
+      <p class="pz-area-label"><i class="fa-solid fa-border-all"></i> 퍼즐판</p>
+      <div class="pz-grid" data-puzzle-target="grid"></div>
+    </div>
+  </div>
+
+  <%# Overlay %>
+  <div class="pz-overlay" data-puzzle-target="overlay" hidden>
+    <div class="pz-overlay__box">
+      <p class="pz-overlay__title" data-puzzle-target="overlayTitle"></p>
+      <p class="pz-overlay__msg" data-puzzle-target="overlayMsg"></p>
+      <button class="btn btn--primary" data-action="click->puzzle#resetGame">
+        다시 하기
+      </button>
+    </div>
+  </div>
+
+</div>

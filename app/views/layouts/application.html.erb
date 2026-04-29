@@ -68,53 +68,109 @@
           <% end %>
         </div>
 
-        <div class="nav__center" data-controller="nav-search">
-          <button class="nav__icon-btn"
-                  aria-label="검색 열기"
-                  data-nav-search-target="toggle"
-                  data-action="click->nav-search#open">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-          <%= form_with url: tech_infos_path, method: :get, class: "nav-search",
-                data: { "nav-search-target": "form" } do |f| %>
-            <i class="fa-solid fa-magnifying-glass nav-search__icon"></i>
-            <%= f.text_field :q,
-                class: "nav-search__input",
-                placeholder: "기술정보 검색...",
-                value: params[:q],
-                autocomplete: "off",
-                data: { "nav-search-target": "input" } %>
-            <span class="nav-search__hint"><kbd>⌘K</kbd></span>
+        <div class="nav__menu">
+          <%# Information %>
+          <div class="nav__group"
+               data-controller="nav-group"
+               data-action="mouseenter->nav-group#hover mouseleave->nav-group#hoverOut">
+            <button class="nav__group-btn"
+                    data-action="click->nav-group#tap"
+                    data-nav-group-target="trigger"
+                    aria-expanded="false"
+                    aria-haspopup="true">
+              <span class="nav__group-label">Information</span>
+              <i class="fa-solid fa-circle-info nav__group-icon"></i>
+              <i class="fa-solid fa-chevron-down nav__group-chevron"></i>
+            </button>
+            <div class="nav__dropdown" data-nav-group-target="dropdown">
+              <%= link_to tech_infos_path, class: "nav__dropdown-item" do %>
+                <i class="fa-solid fa-database"></i><span>기술정보</span>
+              <% end %>
+              <%= link_to life_infos_path, class: "nav__dropdown-item" do %>
+                <i class="fa-solid fa-seedling"></i><span>생활정보</span>
+              <% end %>
+              <%= link_to stock_infos_path, class: "nav__dropdown-item" do %>
+                <i class="fa-solid fa-chart-line"></i><span>주식전망</span>
+              <% end %>
+              <%= link_to memos_path, class: "nav__dropdown-item" do %>
+                <i class="fa-solid fa-note-sticky"></i><span>메모</span>
+              <% end %>
+            </div>
+          </div>
+
+          <%# Working (인증 필요) %>
+          <% if authenticated? %>
+            <div class="nav__group"
+                 data-controller="nav-group"
+                 data-action="mouseenter->nav-group#hover mouseleave->nav-group#hoverOut">
+              <button class="nav__group-btn"
+                      data-action="click->nav-group#tap"
+                      data-nav-group-target="trigger"
+                      aria-expanded="false"
+                      aria-haspopup="true">
+                <span class="nav__group-label">Working</span>
+                <i class="fa-solid fa-list-check nav__group-icon"></i>
+                <i class="fa-solid fa-chevron-down nav__group-chevron"></i>
+              </button>
+              <div class="nav__dropdown" data-nav-group-target="dropdown">
+                <%= link_to work_plans_path, class: "nav__dropdown-item" do %>
+                  <i class="fa-solid fa-calendar-check"></i><span>작업계획서</span>
+                <% end %>
+                <%= link_to work_journals_path, class: "nav__dropdown-item" do %>
+                  <i class="fa-solid fa-pen-to-square"></i><span>업무일지</span>
+                <% end %>
+                <%= link_to manpower_records_path, class: "nav__dropdown-item" do %>
+                  <i class="fa-solid fa-users-gear"></i><span>인력지원수행내역</span>
+                <% end %>
+              </div>
+            </div>
           <% end %>
+
+          <%# Utils %>
+          <div class="nav__group"
+               data-controller="nav-group"
+               data-action="mouseenter->nav-group#hover mouseleave->nav-group#hoverOut">
+            <button class="nav__group-btn"
+                    data-action="click->nav-group#tap"
+                    data-nav-group-target="trigger"
+                    aria-expanded="false"
+                    aria-haspopup="true">
+              <span class="nav__group-label">Utils</span>
+              <i class="fa-solid fa-wrench nav__group-icon"></i>
+              <i class="fa-solid fa-chevron-down nav__group-chevron"></i>
+            </button>
+            <div class="nav__dropdown" data-nav-group-target="dropdown">
+              <%= link_to focus_path, class: "nav__dropdown-item" do %>
+                <i class="fa-solid fa-stopwatch"></i><span>포모도로</span>
+              <% end %>
+              <%= link_to puzzle_path, class: "nav__dropdown-item" do %>
+                <i class="fa-solid fa-puzzle-piece"></i><span>퍼즐조각맞추기</span>
+              <% end %>
+            </div>
+          </div>
         </div>
 
         <div class="nav__right">
-          <%= link_to root_path, class: "nav__icon-btn nav-hide-xs", title: "Home" do %>
-            <i class="fa-solid fa-house"></i>
-          <% end %>
-          <%= link_to tech_infos_path, class: "nav__icon-btn", title: "Tech Info" do %>
-            <i class="fa-solid fa-database"></i>
-          <% end %>
-          <%= link_to life_infos_path, class: "nav__icon-btn", title: "생활정보" do %>
-            <i class="fa-solid fa-seedling"></i>
-          <% end %>
-          <%= link_to stock_infos_path, class: "nav__icon-btn", title: "주식전망" do %>
-            <i class="fa-solid fa-chart-line"></i>
-          <% end %>
-          <%= link_to memos_path, class: "nav__icon-btn", title: "메모" do %>
-            <i class="fa-solid fa-note-sticky"></i>
-          <% end %>
-          <%= link_to work_plans_path, class: "nav__icon-btn", title: "작업계획서" do %>
-            <i class="fa-solid fa-calendar-check"></i>
-          <% end %>
-          <%= link_to work_journals_path, class: "nav__icon-btn", title: "업무일지" do %>
-            <i class="fa-solid fa-pen-to-square"></i>
-          <% end %>
-          <% if authenticated? %>
-            <%= link_to focus_path, class: "nav__icon-btn", title: "집중" do %>
-              <i class="fa-solid fa-stopwatch"></i>
+          <div class="nav__search-wrapper" data-controller="nav-search">
+            <button class="nav__icon-btn"
+                    aria-label="검색 열기"
+                    data-nav-search-target="toggle"
+                    data-action="click->nav-search#open">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <%= form_with url: tech_infos_path, method: :get, class: "nav-search",
+                  data: { "nav-search-target": "form" } do |f| %>
+              <i class="fa-solid fa-magnifying-glass nav-search__icon"></i>
+              <%= f.text_field :q,
+                  class: "nav-search__input",
+                  placeholder: "기술정보 검색...",
+                  value: params[:q],
+                  autocomplete: "off",
+                  data: { "nav-search-target": "input" } %>
+              <span class="nav-search__hint"><kbd>⌘K</kbd></span>
             <% end %>
-          <% end %>
+          </div>
+
           <% if current_user&.admin? %>
             <%= link_to admin_root_path, class: "nav__icon-btn nav__icon-btn--admin", title: "관리자" do %>
               <i class="fa-solid fa-shield-halved"></i>
@@ -125,7 +181,9 @@
              target="_blank" rel="noopener noreferrer">
             <i class="fa-brands fa-github"></i>
           </a>
+
           <div class="nav__divider"></div>
+
           <% if authenticated? %>
             <span class="nav__nickname nav-hide-mobile"><%= Current.session.user.nickname %></span>
             <%= button_to session_path, method: :delete, class: "btn btn--logout btn--sm" do %>
@@ -146,7 +204,7 @@
       </div>
     </nav>
 
-    <main class="site-content">
+    <main class="site-content" data-controller="header-collapse">
       <%= yield %>
     </main>
 

@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     member { get :hwpx }
   end
   resources :work_journals
+  resources :manpower_records, only: %i[index create update destroy]
   resources :memos
   resources :posts
   resources :life_infos
@@ -33,6 +34,7 @@ Rails.application.routes.draw do
     root "dashboards#index"
     resources :users, only: %i[index show update]
     resources :sessions, only: %i[index]
+    resources :groups
   end
 
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
@@ -40,5 +42,6 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
+  get "puzzle", to: "pages#puzzle"
   root "tech_infos#index"
 end

@@ -1,0 +1,59 @@
+<%= form_with model: manpower_record,
+      class: "mp-form",
+      data: { turbo_frame: "_top" } do |f| %>
+
+  <% if manpower_record.errors.any? %>
+    <div class="mp-form__errors">
+      <% manpower_record.errors.each do |e| %>
+        <p class="mp-form__error-msg"><i class="fa-solid fa-circle-exclamation"></i> <%= e.full_message %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :request_date %>
+
+  <%# Row 1: 처리시작일 / 처리종료일 / 작업시간 %>
+  <div class="mp-form__row mp-form__row--dates">
+    <div class="mp-field">
+      <%= f.label :start_date, "처리시작일", class: "mp-field__label" %>
+      <%= f.date_field :start_date,
+            class: "mp-field__input",
+            required: true %>
+    </div>
+    <div class="mp-field">
+      <%= f.label :end_date, "처리종료일", class: "mp-field__label" %>
+      <%= f.date_field :end_date,
+            class: "mp-field__input",
+            required: true %>
+    </div>
+    <div class="mp-field mp-field--minutes">
+      <%= f.label :work_minutes, "작업시간(분)", class: "mp-field__label" %>
+      <div class="mp-field__input-wrap">
+        <%= f.number_field :work_minutes,
+              class: "mp-field__input",
+              placeholder: "60",
+              min: 1,
+              step: 1,
+              required: true %>
+        <span class="mp-field__unit">분</span>
+      </div>
+    </div>
+  </div>
+
+  <%# Row 2: 업무내역 + 저장 %>
+  <div class="mp-form__row mp-form__row--desc">
+    <div class="mp-field mp-field--grow">
+      <%= f.label :description, "업무내역", class: "mp-field__label" %>
+      <%= f.text_area :description,
+            class: "mp-field__textarea",
+            rows: 2,
+            placeholder: "수행한 업무 내용을 입력하세요",
+            required: true,
+            data: { action: "keydown->manpower#submitOnEnter" } %>
+    </div>
+    <div class="mp-form__submit-wrap">
+      <%= f.submit manpower_record.persisted? ? "수정" : "저장",
+            class: "btn btn--primary mp-form__submit" %>
+    </div>
+  </div>
+<% end %>

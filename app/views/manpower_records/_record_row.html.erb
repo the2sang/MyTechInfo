@@ -1,0 +1,24 @@
+<div class="mp-record" id="mp-record-<%= manpower_record.id %>">
+  <div class="mp-record__meta">
+    <span class="mp-record__dates">
+      <i class="fa-regular fa-calendar"></i>
+      <%= manpower_record.start_date.strftime("%m/%d") %>
+      <% if manpower_record.start_date != manpower_record.end_date %>
+        → <%= manpower_record.end_date.strftime("%m/%d") %>
+      <% end %>
+    </span>
+    <span class="mp-record__minutes">
+      <i class="fa-regular fa-clock"></i>
+      <%= manpower_record.work_minutes %>분
+    </span>
+  </div>
+  <p class="mp-record__description"><%= manpower_record.description %></p>
+  <div class="mp-record__actions">
+    <%= button_to manpower_record_path(manpower_record),
+          method: :delete,
+          class: "btn btn--ghost btn--xs mp-record__delete",
+          data: { turbo_confirm: "삭제하시겠습니까?" } do %>
+      <i class="fa-solid fa-trash-can"></i>
+    <% end %>
+  </div>
+</div>

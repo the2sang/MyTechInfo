@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0533"/>
+      <stop offset="30%" stop-color="#6a0572"/>
+      <stop offset="60%" stop-color="#c62828"/>
+      <stop offset="85%" stop-color="#ff6f00"/>
+      <stop offset="100%" stop-color="#ffca28"/>
+    </linearGradient>
+    <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffca28" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#c62828" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#1a0533" stop-opacity="0.8"/>
+    </linearGradient>
+    <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffca28" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#ff6f00" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Sky -->
+  <rect width="600" height="600" fill="url(#sky2)"/>
+  <!-- Sun glow -->
+  <circle cx="300" cy="320" r="100" fill="url(#sun-glow)"/>
+  <!-- Sun -->
+  <circle cx="300" cy="320" r="38" fill="#ffca28"/>
+  <circle cx="300" cy="320" r="30" fill="#ffe082"/>
+  <!-- Clouds -->
+  <ellipse cx="100" cy="100" rx="60" ry="20" fill="#7b1fa2" opacity="0.4"/>
+  <ellipse cx="130" cy="95" rx="40" ry="15" fill="#9c27b0" opacity="0.3"/>
+  <ellipse cx="480" cy="80" rx="70" ry="22" fill="#7b1fa2" opacity="0.35"/>
+  <ellipse cx="460" cy="75" rx="45" ry="16" fill="#9c27b0" opacity="0.25"/>
+  <ellipse cx="200" cy="140" rx="50" ry="16" fill="#6a0572" opacity="0.3"/>
+  <!-- Stars -->
+  <circle cx="60" cy="50" r="1.5" fill="white" opacity="0.8"/>
+  <circle cx="150" cy="35" r="1" fill="white" opacity="0.6"/>
+  <circle cx="400" cy="40" r="2" fill="white" opacity="0.7"/>
+  <circle cx="540" cy="30" r="1.5" fill="white" opacity="0.5"/>
+  <circle cx="480" cy="60" r="1" fill="white" opacity="0.6"/>
+  <!-- Mount Fuji main -->
+  <polygon points="300,60 520,420 80,420" fill="#1a1a2e"/>
+  <!-- Fuji snow cap -->
+  <polygon points="300,60 370,180 340,200 300,185 260,200 230,180" fill="#f5f5f5"/>
+  <polygon points="300,60 355,175 300,165 245,175" fill="#ffffff"/>
+  <!-- Secondary mountains -->
+  <polygon points="0,350 150,180 300,350" fill="#0d0d1a" opacity="0.9"/>
+  <polygon points="600,300 450,160 300,350 600,350" fill="#0d0d1a" opacity="0.85"/>
+  <!-- Lake -->
+  <ellipse cx="300" cy="480" rx="280" ry="80" fill="url(#lake)"/>
+  <!-- Fuji reflection in lake -->
+  <polygon points="300,540 220,480 380,480" fill="#1a1a2e" opacity="0.6"/>
+  <polygon points="300,540 230,485 300,490 370,485" fill="#f5f5f5" opacity="0.3"/>
+  <!-- Lake ripples -->
+  <ellipse cx="300" cy="475" rx="200" ry="8" fill="none" stroke="#ffca28" stroke-width="1" opacity="0.4"/>
+  <ellipse cx="300" cy="490" rx="160" ry="6" fill="none" stroke="#ffca28" stroke-width="1" opacity="0.3"/>
+  <ellipse cx="300" cy="505" rx="120" ry="5" fill="none" stroke="#ffca28" stroke-width="1" opacity="0.25"/>
+  <!-- Sun reflection strip -->
+  <rect x="280" y="420" width="40" height="60" fill="#ffca28" opacity="0.3" rx="2"/>
+  <!-- Ground/shore -->
+  <rect y="545" width="600" height="55" fill="#0d0d1a"/>
+  <!-- Foreground trees silhouette -->
+  <rect x="0" y="480" width="15" height="120" fill="#0d0d1a"/>
+  <polygon points="7,400 22,480 -8,480" fill="#0d0d1a"/>
+  <rect x="570" y="490" width="15" height="110" fill="#0d0d1a"/>
+  <polygon points="577,410 592,490 562,490" fill="#0d0d1a"/>
+  <!-- Birds -->
+  <path d="M200 180 Q205 175 210 180" stroke="#0d0d1a" stroke-width="2" fill="none"/>
+  <path d="M215 170 Q220 165 225 170" stroke="#0d0d1a" stroke-width="2" fill="none"/>
+  <path d="M370 160 Q376 155 382 160" stroke="#0d0d1a" stroke-width="2" fill="none"/>
+  <path d="M385 150 Q390 145 395 150" stroke="#0d0d1a" stroke-width="2" fill="none"/>
+  <path d="M400 170 Q405 165 410 170" stroke="#0d0d1a" stroke-width="2" fill="none"/>
+</svg>

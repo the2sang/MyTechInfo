@@ -1,0 +1,119 @@
+<% content_for :title, "인력지원수행내역" %>
+
+<%
+  today       = Date.today
+  prev_year   = @year - 1
+  next_year   = @year + 1
+  prev_month  = @calendar_date.prev_month
+  next_month  = @calendar_date.next_month
+  days_in_month = @calendar_date.end_of_month.day
+%>
+
+<div class="page page--narrow"
+     data-controller="manpower"
+     data-manpower-year-value="<%= @year %>"
+     data-manpower-month-value="<%= @month %>">
+
+  <div class="page__header">
+    <h1 class="page__title">
+      <i class="fa-solid fa-users-gear"></i>
+      인력지원수행내역
+    </h1>
+  </div>
+
+  <%# ── Year Selector ──────────────────────────────────── %>
+  <div class="mp-nav-section">
+    <div class="mp-year-nav">
+      <% [prev_year, @year, next_year].each do |yr| %>
+        <button class="mp-year-btn <%= yr == @year ? 'mp-year-btn--active' : '' %>"
+                data-manpower-target="yearBtn"
+                data-year="<%= yr %>"
+                data-action="click->manpower#selectYear"
+                aria-pressed="<%= yr == @year %>">
+          <%= yr %>
+        </button>
+      <% end %>
+    </div>
+  </div>
+
+  <%# ── Month Selector ─────────────────────────────────── %>
+  <div class="mp-nav-section mp-nav-section--month">
+    <div class="mp-month-nav">
+      <% [prev_month, @calendar_date, next_month].each do |md| %>
+        <button class="mp-month-btn <%= md.month == @month ? 'mp-month-btn--active' : '' %>"
+                data-manpower-target="monthBtn"
+                data-month="<%= md.month %>"
+                data-action="click->manpower#selectMonth"
+                aria-pressed="<%= md.month == @month %>">
+          <%= md.month %>
+        </button>
+      <% end %>
+    </div>
+    <span class="mp-month-label"><%= @calendar_date.strftime("%Y년 %-m월") %></span>
+  </div>
+
+  <%# ── Day List ─────────────────────────────────────────── %>
+  <div class="mp-day-list" id="mp-day-list">
+    <% (1..days_in_month).each do |day| %>
+      <%
+        date         = Date.new(@year, @month, day)
+        records      = @records_by_date[date] || []
+        is_today     = date == today
+        is_weekend   = date.saturday? || date.sunday?
+        new_record   = ManpowerRecord.new(request_date: date)
+      %>
+
+      <div class="mp-day-item <%= 'mp-day-item--today' if is_today %> <%= 'mp-day-item--weekend' if is_weekend %> <%= 'mp-day-item--has-records' if records.any? %>">
+
+        <%# Day trigger row %>
+        <button class="mp-day-trigger"
+                data-date="<%= date.iso8601 %>"
+                data-action="click->manpower#toggleDay"
+                aria-expanded="false"
+                aria-controls="mp-content-<%= date.iso8601 %>">
+          <span class="mp-day-trigger__left">
+            <span class="mp-day-num"><%= day %></span>
+            <span class="mp-day-weekday"><%= %w[일 월 화 수 목 금 토][date.wday] %></span>
+            <% if is_today %><span class="mp-day-badge mp-day-badge--today">오늘</span><% end %>
+          </span>
+          <span class="mp-day-trigger__right">
+            <span id="mp-summary-<%= date.iso8601 %>" class="mp-day-summary-wrap">
+              <% if records.any? %>
+                <span class="mp-day-summary">
+                  <i class="fa-solid fa-clipboard-check"></i>
+                  <%= records.size %>건 · <%= records.sum(&:work_minutes) %>분
+                </span>
+              <% end %>
+            </span>
+            <i class="fa-solid fa-chevron-down mp-day-chevron"></i>
+          </span>
+        </button>
+
+        <%# Expandable content %>
+        <div class="mp-day-content"
+             id="mp-content-<%= date.iso8601 %>"
+             data-day-content="<%= date.iso8601 %>"
+             hidden>
+
+          <%# Existing records %>
+          <div id="mp-records-<%= date.iso8601 %>" class="mp-records-list">
+            <%= render partial: "record_row",
+                  collection: records,
+                  as: :manpower_record,
+                  locals: { date: date } %>
+            <% if records.empty? %>
+              <p class="mp-records-empty">등록된 내역이 없습니다.</p>
+            <% end %>
+          </div>
+
+          <%# New record form %>
+          <div id="mp-form-<%= date.iso8601 %>">
+            <%= render "form", manpower_record: new_record %>
+          </div>
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+</div>

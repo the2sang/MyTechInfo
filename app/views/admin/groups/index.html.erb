@@ -1,0 +1,49 @@
+<% content_for :title, "그룹 관리" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="title-collage" aria-label="Groups">
+      <span class="tc-letter tc-1">G</span><span class="tc-letter tc-2">r</span><span class="tc-letter tc-3">o</span><span class="tc-letter tc-4">u</span><span class="tc-letter tc-5">p</span><span class="tc-letter tc-w1">s</span>
+    </h1>
+    <div class="page__header-actions">
+      <%= link_to new_admin_group_path, class: "btn btn--primary btn--sm" do %>
+        <i class="fa-solid fa-plus"></i> 새 그룹
+      <% end %>
+      <%= link_to admin_root_path, class: "btn btn--ghost btn--sm" do %>
+        <i class="fa-solid fa-arrow-left"></i> 대시보드
+      <% end %>
+    </div>
+  </div>
+
+  <% if @groups.any? %>
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>그룹명</th>
+          <th>소유자</th>
+          <th>멤버 수</th>
+          <th>생성일</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @groups.each do |group| %>
+          <tr>
+            <td><%= link_to group.name, admin_group_path(group) %></td>
+            <td><%= group.owner.nickname %></td>
+            <td><%= group.users.size %>명</td>
+            <td><%= group.created_at.strftime("%Y-%m-%d") %></td>
+            <td>
+              <%= link_to "편집", edit_admin_group_path(group), class: "btn btn--xs btn--secondary" %>
+              <%= button_to "삭제", admin_group_path(group), method: :delete,
+                    class: "btn btn--xs btn--danger",
+                    data: { confirm: "#{group.name} 그룹을 삭제합니까?" } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="empty-state">그룹이 없습니다. 새 그룹을 생성하세요.</p>
+  <% end %>
+</div>

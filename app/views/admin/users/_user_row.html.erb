@@ -8,7 +8,7 @@
       <% else %>
         <span class="admin-badge">USER</span>
       <% end %>
-      <%= form_with url: admin_user_path(user), method: :patch do |f| %>
+      <%= form_with url: admin_user_path(user), scope: :user, method: :patch do |f| %>
         <%= f.hidden_field :role, value: user.admin? ? "user" : "admin" %>
         <%= f.button type: :submit,
               class: "btn btn--xs #{user.admin? ? 'btn--danger' : 'btn--primary'}",

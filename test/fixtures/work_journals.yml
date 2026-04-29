@@ -10,6 +10,8 @@ one_today:
   progress: 50
   work_date: <%= Date.today.to_s %>
   is_draft: false
+  entry_type: 0
+  sequence_number: 1
 
 one_yesterday:
   user: one
@@ -21,6 +23,8 @@ one_yesterday:
   progress: 100
   work_date: <%= (Date.today - 1).to_s %>
   is_draft: false
+  entry_type: 0
+  sequence_number: 1
 
 two_today:
   user: two
@@ -32,3 +36,5 @@ two_today:
   progress: 0
   work_date: <%= Date.today.to_s %>
   is_draft: false
+  entry_type: 0
+  sequence_number: 1
