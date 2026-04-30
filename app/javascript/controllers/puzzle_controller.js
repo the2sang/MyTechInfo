@@ -54,6 +54,7 @@ export default class extends Controller {
     this.placedCount = 0
     this.gridTarget.replaceChildren()
     this.scatterTarget.replaceChildren()
+    this.scatterTarget.style.height = ""
     this.timerTarget.textContent = "--:--"
     this.timerTarget.classList.remove("pz-timer--urgent")
     this.previewTarget.style.backgroundImage = ""
@@ -93,9 +94,8 @@ export default class extends Controller {
     const perRow   = Math.max(1, Math.floor(sw / (pSize + gap)))
     const total    = cols * cols
 
-    // Adjust scatter height to fit all rows
+    // rowCount kept for piece positioning; height is governed by CSS flex layout
     const rowCount = Math.ceil(total / perRow)
-    scatter.style.height = `${rowCount * (pSize + gap) + gap}px`
 
     const ids = []
     for (let r = 0; r < cols; r++)

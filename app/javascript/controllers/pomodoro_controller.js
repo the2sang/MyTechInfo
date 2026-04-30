@@ -128,6 +128,8 @@ export default class extends Controller {
     const labels = { focus: "집중", break: "휴식", long_break: "긴 휴식" }
     this.modeLabelTarget.textContent = labels[this.mode] || "집중"
     this.modeLabelTarget.dataset.mode = this.mode === "focus" ? "focus" : "break"
+    if (this.hasTurtleFillTarget)
+      this.turtleFillTarget.classList.toggle("turtle-track__fill--break", this.mode !== "focus")
   }
 
   _updateDots() {

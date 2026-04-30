@@ -3348,7 +3348,7 @@ lexxy-editor.lexxy-editor-field {
 }
 
 .pomodoro-mode__label {
-  font-size: 14px;
+  font-size: 21px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -3363,7 +3363,7 @@ lexxy-editor.lexxy-editor-field {
 }
 
 .pomodoro-mode__sessions {
-  font-size: 12px;
+  font-size: 18px;
   color: var(--hcp-helper);
 }
 
@@ -3640,7 +3640,10 @@ lexxy-editor.lexxy-editor-field {
   width: 0%;
   background: linear-gradient(90deg, #d4f5e0, #a8e6bf);
   border-radius: 18px;
-  transition: width 0.9s linear;
+  transition: width 0.9s linear, background 0.4s ease;
+}
+.turtle-track__fill--break {
+  background: linear-gradient(90deg, #fed7aa, #fb923c);
 }
 
 .turtle-track__turtle {
@@ -4435,19 +4438,19 @@ lexxy-editor.lexxy-editor-field {
 .pz-area-label { font-size: 11px; font-weight: 600; color: var(--hcp-helper); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
 
 /* Game layout */
-.pz-game-area { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.pz-game-area { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
 @media (max-width: 640px) { .pz-game-area { grid-template-columns: 1fr; } }
 
 /* Scatter area */
-.pz-scatter-wrap { }
+.pz-scatter-wrap { display: flex; flex-direction: column; }
 .pz-scatter {
-  position: relative; width: 100%; min-height: 200px;
+  flex: 1; position: relative; width: 100%; min-height: 200px;
   border: 1.5px dashed rgba(97,104,117,0.4); border-radius: 10px;
   background: #fafafa; overflow-y: auto; overflow-x: hidden;
 }
 
 /* Grid */
-.pz-grid-wrap { }
+.pz-grid-wrap { display: flex; flex-direction: column; }
 .pz-grid {
   display: grid; width: 100%; aspect-ratio: 1;
   border: 2px solid var(--hcp-border-mid); border-radius: 4px; overflow: hidden;
