@@ -161,6 +161,33 @@ body {
   white-space: nowrap;
 }
 
+/* ── Nav Page Title ─────────────────────────────────────── */
+.nav__page-title {
+  font-family: var(--font-brand);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.60);
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* ── Screen Reader Only ──────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 /* ── Nav Search ────────────────────────────────────────── */
 .nav-search {
   position: relative;

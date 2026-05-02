@@ -2,8 +2,6 @@
 
 <div class="page page--editor">
   <%= link_to @tech_info.title, @tech_info, class: "back-link" %>
-  <div class="page__header">
-    <h1 class="page__title">기술정보 수정</h1>
-  </div>
+
   <%= render "form", tech_info: @tech_info %>
 </div>
