@@ -10,7 +10,8 @@ export default class extends Controller {
 
     this._injectToggle()
 
-    if (localStorage.getItem(this._storageKey()) === "1") {
+    const userExpanded = localStorage.getItem(this._storageKey()) === "0"
+    if (!userExpanded) {
       this.header.classList.add("page__header--collapsed")
       this._updateIcon(true)
     }

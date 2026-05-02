@@ -118,7 +118,7 @@ body {
   transform: translateY(-100%);
 }
 
-.nav__left  { display: flex; align-items: center; flex-shrink: 0; }
+.nav__left  { display: flex; align-items: center; flex-shrink: 0; gap: 8px; }
 .nav__center { display: flex; align-items: center; flex: 1; max-width: 420px; }
 .nav__right { display: flex; align-items: center; gap: 6px; margin-left: auto; flex-shrink: 0; }
 
