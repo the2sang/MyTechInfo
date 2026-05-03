@@ -12,6 +12,7 @@ export default class extends Controller {
   }
 
   disconnect() {
+    clearTimeout(this._closeTimer)
     document.removeEventListener("click", this._onOutsideClick)
     document.removeEventListener("turbo:before-visit", this._onVisit)
     document.removeEventListener("navgroup:open", this._onOtherOpen)
@@ -19,12 +20,13 @@ export default class extends Controller {
 
   hover() {
     if (!this._isDesktop) return
+    clearTimeout(this._closeTimer)
     this._open()
   }
 
   hoverOut() {
     if (!this._isDesktop) return
-    this._close()
+    this._closeTimer = setTimeout(() => this._close(), 120)
   }
 
   tap(event) {

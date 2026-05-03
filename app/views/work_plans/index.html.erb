@@ -7,7 +7,7 @@
     </h1>
     <div class="page__header-actions">
       <%= link_to new_work_plan_path, class: "btn btn--primary" do %>
-        <i class="fa-solid fa-plus"></i>
+        <iconify-icon icon="lucide:plus"></iconify-icon>
         <span class="nav-hide-mobile">새 계획서</span>
       <% end %>
     </div>
@@ -32,7 +32,7 @@
         <%= link_to work_plans_path(year: prev_month.year, month: prev_month.month, member_id: member_id),
               class: "btn btn--secondary btn--sm calendar__nav-btn",
               data: { turbo_frame: "calendar_body" } do %>
-          <i class="fa-solid fa-chevron-left"></i>
+          <iconify-icon icon="lucide:chevron-left"></iconify-icon>
         <% end %>
 
         <h2 class="calendar__month-title">
@@ -46,13 +46,13 @@
               class: "btn btn--ghost btn--sm",
               title: "오늘",
               data: { turbo_frame: "calendar_body" } do %>
-          <i class="fa-solid fa-calendar-day"></i> Today
+          <iconify-icon icon="lucide:calendar-days"></iconify-icon> Today
         <% end %>
 
         <%= link_to work_plans_path(year: next_month.year, month: next_month.month, member_id: member_id),
               class: "btn btn--secondary btn--sm calendar__nav-btn",
               data: { turbo_frame: "calendar_body" } do %>
-          <i class="fa-solid fa-chevron-right"></i>
+          <iconify-icon icon="lucide:chevron-right"></iconify-icon>
         <% end %>
       </div>
       <div class="calendar__grid">
@@ -96,7 +96,7 @@
                         class: "calendar__plan-icon",
                         title: plan.work_name,
                         data: { turbo_frame: "_top" } do %>
-                    <i class="fa-solid fa-file-lines"></i>
+                    <iconify-icon icon="lucide:file-text"></iconify-icon>
                   <% end %>
                 <% end %>
                 <% if plans.size > 3 %>

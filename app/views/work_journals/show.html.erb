@@ -3,17 +3,17 @@
 <div class="page page--narrow">
   <div class="page__header">
     <%= link_to work_journals_path, class: "btn btn--ghost btn--sm" do %>
-      <i class="fa-solid fa-arrow-left"></i> 캘린더로
+      <iconify-icon icon="lucide:arrow-left"></iconify-icon> 캘린더로
     <% end %>
     <div class="page__header-actions">
       <%= link_to edit_work_journal_path(@work_journal), class: "btn btn--secondary btn--sm" do %>
-        <i class="fa-solid fa-pen"></i> 수정
+        <iconify-icon icon="lucide:pen"></iconify-icon> 수정
       <% end %>
       <%= button_to work_journal_path(@work_journal),
             method: :delete,
             class: "btn btn--danger btn--sm",
             data: { turbo_confirm: "이 업무일지를 삭제하시겠습니까?" } do %>
-        <i class="fa-solid fa-trash"></i> 삭제
+        <iconify-icon icon="lucide:trash"></iconify-icon> 삭제
       <% end %>
     </div>
   </div>
@@ -23,7 +23,7 @@
       <h1 class="work-journal__title"><%= @work_journal.title %></h1>
       <div class="work-journal__meta">
         <span class="work-journal__date">
-          <i class="fa-solid fa-calendar-day"></i>
+          <iconify-icon icon="lucide:calendar-days"></iconify-icon>
           <%= @work_journal.work_date.strftime("%Y년 %-m월 %-d일") %>
         </span>
         <span class="work-journal__badge work-journal__badge--category">

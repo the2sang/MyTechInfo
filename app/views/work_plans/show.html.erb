@@ -3,20 +3,20 @@
 <div class="page page--narrow">
   <div class="page__header">
     <%= link_to work_plans_path, class: "btn btn--ghost btn--sm" do %>
-      <i class="fa-solid fa-arrow-left"></i> 캘린더로
+      <iconify-icon icon="lucide:arrow-left"></iconify-icon> 캘린더로
     <% end %>
     <div class="page__header-actions">
       <%= link_to hwpx_work_plan_path(@work_plan), class: "btn btn--secondary btn--sm", title: "HWPX 다운로드", data: { turbo: false } do %>
-        <i class="fa-solid fa-file-word"></i> HWPX
+        <iconify-icon icon="lucide:file-text"></iconify-icon> HWPX
       <% end %>
       <%= link_to edit_work_plan_path(@work_plan), class: "btn btn--secondary btn--sm" do %>
-        <i class="fa-solid fa-pen"></i> 수정
+        <iconify-icon icon="lucide:pen"></iconify-icon> 수정
       <% end %>
       <%= button_to work_plan_path(@work_plan),
             method: :delete,
             class: "btn btn--danger btn--sm",
             data: { turbo_confirm: "이 작업계획서를 삭제하시겠습니까?" } do %>
-        <i class="fa-solid fa-trash"></i> 삭제
+        <iconify-icon icon="lucide:trash"></iconify-icon> 삭제
       <% end %>
     </div>
   </div>

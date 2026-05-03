@@ -15,7 +15,7 @@
 <div class="page page--narrow">
   <div class="page__header">
     <%= link_to work_journals_path, class: "btn btn--ghost btn--sm" do %>
-      <i class="fa-solid fa-arrow-left"></i> 캘린더로
+      <iconify-icon icon="lucide:arrow-left"></iconify-icon> 캘린더로
     <% end %>
   </div>
 
@@ -30,7 +30,7 @@
               data-tab="result"
               data-action="click->work-journal-tab#switch"
               aria-selected="<%= active_tab == 'result' %>">
-        <i class="fa-solid fa-circle-check"></i> 전주실적
+        <iconify-icon icon="lucide:circle-check"></iconify-icon> 전주실적
       </button>
       <button class="wj-tab"
               role="tab"
@@ -38,7 +38,7 @@
               data-tab="plan"
               data-action="click->work-journal-tab#switch"
               aria-selected="<%= active_tab == 'plan' %>">
-        <i class="fa-solid fa-list-check"></i> 금주계획
+        <iconify-icon icon="lucide:list-checks"></iconify-icon> 금주계획
       </button>
     </div>
 

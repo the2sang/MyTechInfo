@@ -2,13 +2,13 @@
   <div class="member-picker">
     <%= link_to work_plans_path(year: calendar_date.year, month: calendar_date.month),
           class: "member-picker__item #{"member-picker__item--active" if viewed_user == current_user}" do %>
-      <i class="fa-solid fa-user"></i>
+      <iconify-icon icon="lucide:user"></iconify-icon>
       <span>나</span>
     <% end %>
     <% group_members.each do |member| %>
       <%= link_to work_plans_path(year: calendar_date.year, month: calendar_date.month, member_id: member.id),
             class: "member-picker__item #{"member-picker__item--active" if viewed_user == member}" do %>
-        <i class="fa-solid fa-user"></i>
+        <iconify-icon icon="lucide:user"></iconify-icon>
         <span><%= member.nickname %></span>
       <% end %>
     <% end %>

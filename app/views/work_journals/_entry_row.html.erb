@@ -12,14 +12,14 @@
     <%= link_to edit_work_journal_path(work_journal),
           class: "btn btn--xs btn--ghost",
           title: "수정" do %>
-      <i class="fa-solid fa-pen"></i>
+      <iconify-icon icon="lucide:pen"></iconify-icon>
     <% end %>
     <%= button_to work_journal_path(work_journal),
           method: :delete,
           class: "btn btn--xs btn--danger",
           form: { data: { turbo_confirm: "이 항목을 삭제하시겠습니까?" } },
           title: "삭제" do %>
-      <i class="fa-solid fa-trash"></i>
+      <iconify-icon icon="lucide:trash"></iconify-icon>
     <% end %>
   </div>
 </div>

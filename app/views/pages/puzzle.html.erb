@@ -22,11 +22,11 @@
         <button class="btn btn--primary pz-btn-start"
                 data-action="click->puzzle#startGame"
                 data-puzzle-target="startBtn">
-          <i class="fa-solid fa-play"></i> 시작
+          <iconify-icon icon="lucide:play"></iconify-icon> 시작
         </button>
         <button class="btn btn--ghost pz-btn-reset"
                 data-action="click->puzzle#resetGame">
-          <i class="fa-solid fa-rotate-left"></i>
+          <iconify-icon icon="lucide:rotate-ccw"></iconify-icon>
         </button>
       </div>
     </div>
@@ -43,13 +43,13 @@
   <div class="pz-game-area">
     <%# Scatter area %>
     <div class="pz-scatter-wrap">
-      <p class="pz-area-label"><i class="fa-solid fa-shuffle"></i> 조각 모음</p>
+      <p class="pz-area-label"><iconify-icon icon="lucide:shuffle"></iconify-icon> 조각 모음</p>
       <div class="pz-scatter" data-puzzle-target="scatter"></div>
     </div>
 
     <%# Grid area %>
     <div class="pz-grid-wrap">
-      <p class="pz-area-label"><i class="fa-solid fa-border-all"></i> 퍼즐판</p>
+      <p class="pz-area-label"><iconify-icon icon="lucide:grid-3x3"></iconify-icon> 퍼즐판</p>
       <div class="pz-grid" data-puzzle-target="grid"></div>
     </div>
   </div>

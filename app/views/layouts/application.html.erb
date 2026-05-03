@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Ultra&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js" defer></script>
 
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="shortcut icon" href="/icon.svg">
@@ -43,13 +43,13 @@
       <div class="pwa-ios-modal__backdrop" data-action="click->pwa-install#hideIosModal"></div>
       <div class="pwa-ios-modal__box">
         <button class="pwa-ios-modal__close" data-action="click->pwa-install#hideIosModal" aria-label="닫기">
-          <i class="fa-solid fa-xmark"></i>
+          <iconify-icon icon="lucide:x"></iconify-icon>
         </button>
         <p class="pwa-ios-modal__title">
-          <i class="fa-solid fa-mobile-screen-button"></i> 홈 화면에 추가 (iOS)
+          <iconify-icon icon="lucide:smartphone"></iconify-icon> 홈 화면에 추가 (iOS)
         </p>
         <ol class="pwa-ios-modal__steps">
-          <li>하단 <strong>공유 버튼</strong> <i class="fa-solid fa-arrow-up-from-bracket"></i> 탭</li>
+          <li>하단 <strong>공유 버튼</strong> <iconify-icon icon="lucide:share"></iconify-icon> 탭</li>
           <li><strong>홈 화면에 추가</strong> 선택</li>
           <li><strong>추가</strong> 버튼 탭</li>
         </ol>
@@ -82,21 +82,21 @@
                     aria-expanded="false"
                     aria-haspopup="true">
               <span class="nav__group-label">Information</span>
-              <i class="fa-solid fa-circle-info nav__group-icon"></i>
-              <i class="fa-solid fa-chevron-down nav__group-chevron"></i>
+              <iconify-icon icon="lucide:info" class="nav__group-icon"></iconify-icon>
+              <iconify-icon icon="lucide:chevron-down" class="nav__group-chevron"></iconify-icon>
             </button>
             <div class="nav__dropdown" data-nav-group-target="dropdown">
               <%= link_to tech_infos_path, class: "nav__dropdown-item" do %>
-                <i class="fa-solid fa-database"></i><span>기술정보</span>
+                <iconify-icon icon="lucide:database"></iconify-icon><span>기술정보</span>
               <% end %>
               <%= link_to life_infos_path, class: "nav__dropdown-item" do %>
-                <i class="fa-solid fa-seedling"></i><span>생활정보</span>
+                <iconify-icon icon="lucide:sprout"></iconify-icon><span>생활정보</span>
               <% end %>
               <%= link_to stock_infos_path, class: "nav__dropdown-item" do %>
-                <i class="fa-solid fa-chart-line"></i><span>주식전망</span>
+                <iconify-icon icon="lucide:trending-up"></iconify-icon><span>주식전망</span>
               <% end %>
               <%= link_to memos_path, class: "nav__dropdown-item" do %>
-                <i class="fa-solid fa-note-sticky"></i><span>메모</span>
+                <iconify-icon icon="lucide:sticky-note"></iconify-icon><span>메모</span>
               <% end %>
             </div>
           </div>
@@ -112,18 +112,18 @@
                       aria-expanded="false"
                       aria-haspopup="true">
                 <span class="nav__group-label">Working</span>
-                <i class="fa-solid fa-list-check nav__group-icon"></i>
-                <i class="fa-solid fa-chevron-down nav__group-chevron"></i>
+                <iconify-icon icon="lucide:list-checks" class="nav__group-icon"></iconify-icon>
+                <iconify-icon icon="lucide:chevron-down" class="nav__group-chevron"></iconify-icon>
               </button>
               <div class="nav__dropdown" data-nav-group-target="dropdown">
                 <%= link_to work_plans_path, class: "nav__dropdown-item" do %>
-                  <i class="fa-solid fa-calendar-check"></i><span>작업계획서</span>
+                  <iconify-icon icon="lucide:calendar-check"></iconify-icon><span>작업계획서</span>
                 <% end %>
                 <%= link_to work_journals_path, class: "nav__dropdown-item" do %>
-                  <i class="fa-solid fa-pen-to-square"></i><span>업무일지</span>
+                  <iconify-icon icon="lucide:square-pen"></iconify-icon><span>업무일지</span>
                 <% end %>
                 <%= link_to manpower_records_path, class: "nav__dropdown-item" do %>
-                  <i class="fa-solid fa-users-gear"></i><span>인력지원수행내역</span>
+                  <iconify-icon icon="lucide:users-cog"></iconify-icon><span>인력지원수행내역</span>
                 <% end %>
               </div>
             </div>
@@ -139,15 +139,15 @@
                     aria-expanded="false"
                     aria-haspopup="true">
               <span class="nav__group-label">Utils</span>
-              <i class="fa-solid fa-wrench nav__group-icon"></i>
-              <i class="fa-solid fa-chevron-down nav__group-chevron"></i>
+              <iconify-icon icon="lucide:wrench" class="nav__group-icon"></iconify-icon>
+              <iconify-icon icon="lucide:chevron-down" class="nav__group-chevron"></iconify-icon>
             </button>
             <div class="nav__dropdown" data-nav-group-target="dropdown">
               <%= link_to focus_path, class: "nav__dropdown-item" do %>
-                <i class="fa-solid fa-stopwatch"></i><span>포모도로</span>
+                <iconify-icon icon="lucide:timer"></iconify-icon><span>포모도로</span>
               <% end %>
               <%= link_to puzzle_path, class: "nav__dropdown-item" do %>
-                <i class="fa-solid fa-puzzle-piece"></i><span>퍼즐조각맞추기</span>
+                <iconify-icon icon="lucide:puzzle"></iconify-icon><span>퍼즐조각맞추기</span>
               <% end %>
             </div>
           </div>
@@ -159,11 +159,11 @@
                     aria-label="검색 열기"
                     data-nav-search-target="toggle"
                     data-action="click->nav-search#open">
-              <i class="fa-solid fa-magnifying-glass"></i>
+              <iconify-icon icon="lucide:search"></iconify-icon>
             </button>
             <%= form_with url: tech_infos_path, method: :get, class: "nav-search",
                   data: { "nav-search-target": "form" } do |f| %>
-              <i class="fa-solid fa-magnifying-glass nav-search__icon"></i>
+              <iconify-icon icon="lucide:search" class="nav-search__icon"></iconify-icon>
               <%= f.text_field :q,
                   class: "nav-search__input",
                   placeholder: "기술정보 검색...",
@@ -176,13 +176,13 @@
 
           <% if current_user&.admin? %>
             <%= link_to admin_root_path, class: "nav__icon-btn nav__icon-btn--admin", title: "관리자" do %>
-              <i class="fa-solid fa-shield-halved"></i>
+              <iconify-icon icon="lucide:shield-half"></iconify-icon>
             <% end %>
           <% end %>
           <a href="https://github.com/the2sang/MyTechInfo"
              class="nav__icon-btn nav-hide-xs" title="GitHub"
              target="_blank" rel="noopener noreferrer">
-            <i class="fa-brands fa-github"></i>
+            <iconify-icon icon="mdi:github"></iconify-icon>
           </a>
 
           <div class="nav__divider"></div>
@@ -190,16 +190,16 @@
           <% if authenticated? %>
             <span class="nav__nickname nav-hide-mobile"><%= Current.session.user.nickname %></span>
             <%= button_to session_path, method: :delete, class: "btn btn--logout btn--sm" do %>
-              <i class="fa-solid fa-right-from-bracket nav-only-mobile"></i>
+              <iconify-icon icon="lucide:log-out" class="nav-only-mobile"></iconify-icon>
               <span class="nav-hide-mobile">Log out</span>
             <% end %>
           <% else %>
             <%= link_to new_session_path, class: "btn btn--secondary btn--sm" do %>
-              <i class="fa-solid fa-right-to-bracket nav-only-mobile"></i>
+              <iconify-icon icon="lucide:log-in" class="nav-only-mobile"></iconify-icon>
               <span class="nav-hide-mobile">Log in</span>
             <% end %>
             <%= link_to new_registration_path, class: "btn btn--primary btn--sm" do %>
-              <i class="fa-solid fa-user-plus nav-only-mobile"></i>
+              <iconify-icon icon="lucide:user-plus" class="nav-only-mobile"></iconify-icon>
               <span class="nav-hide-mobile">Join</span>
             <% end %>
           <% end %>
@@ -221,7 +221,7 @@
                 data-pwa-install-target="footerBtn"
                 data-action="click->pwa-install#install"
                 aria-label="홈 화면에 추가">
-          <i class="fa-solid fa-mobile-screen-button"></i>
+          <iconify-icon icon="lucide:smartphone"></iconify-icon>
           <span>홈 화면에 추가</span>
         </button>
       </div>

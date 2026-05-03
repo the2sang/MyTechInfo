@@ -13,16 +13,16 @@
                 data-export-select-target="exportBtn"
                 data-base-url="<%= export_tech_infos_path %>"
                 data-action="click->export-select#exportSelected">
-          <i class="fa-solid fa-file-export"></i>
+          <iconify-icon icon="lucide:file-output"></iconify-icon>
           선택 Exp <span data-export-select-target="count">0</span>
         </button>
         <%= link_to export_tech_infos_path, class: "btn btn--secondary" do %>
-          <i class="fa-solid fa-download"></i> Exp JSON
+          <iconify-icon icon="lucide:download"></iconify-icon> Exp JSON
         <% end %>
         <%= form_with url: import_tech_infos_path, multipart: true, class: "import-form",
                       data: { controller: "import-form" } do |f| %>
           <%= f.label :import_file, class: "btn btn--secondary import-form__label" do %>
-            <i class="fa-solid fa-upload"></i> Imp JSON
+            <iconify-icon icon="lucide:upload"></iconify-icon> Imp JSON
           <% end %>
           <%= f.file_field :import_file, accept: ".json", class: "import-form__file",
                            data: { action: "change->import-form#submit" } %>
@@ -80,7 +80,7 @@
                 <button class="export-toggle-btn"
                         title="익스포트 선택"
                         data-action="click->export-select#toggle">
-                  <i class="fa-regular fa-square"></i>
+                  <iconify-icon icon="lucide:square"></iconify-icon>
                 </button>
               <% end %>
             </div>

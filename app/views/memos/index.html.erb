@@ -10,14 +10,14 @@
               data-controller="toggle"
               data-action="click->toggle#toggle"
               data-toggle-target="trigger">
-        <i class="fa-solid fa-plus"></i> 메모추가
+        <iconify-icon icon="lucide:plus"></iconify-icon> 메모추가
       </button>
     <% end %>
   </div>
 
   <% unless authenticated? %>
     <div class="memo-auth-notice">
-      <i class="fa-solid fa-lock memo-auth-notice__icon"></i>
+      <iconify-icon icon="lucide:lock" class="memo-auth-notice__icon"></iconify-icon>
       <p class="memo-auth-notice__text">로그인 후 확인 가능합니다.</p>
       <%= link_to "로그인", new_session_path, class: "btn btn--primary btn--sm" %>
     </div>

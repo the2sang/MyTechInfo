@@ -1,5 +1,5 @@
 /*
- * HashiCorp-inspired Design System
+ * better-auth inspired Design System
  */
 
 @font-face {
@@ -15,41 +15,39 @@
 
 /* ── Design Tokens ─────────────────────────────────────── */
 :root {
-  /* Brand */
-  --hcp-black:        #000000;
-  --hcp-dark:         #15181e;
-  --hcp-darkest:      #0d0e12;
+  /* Neutrals (zinc scale) */
+  --hcp-black:        #09090b;
+  --hcp-dark:         #18181b;
+  --hcp-darkest:      #09090b;
 
-  /* Neutrals */
-  --hcp-light-bg:     #f1f2f3;
-  --hcp-border-light: rgba(178, 182, 189, 0.4);
-  --hcp-border-mid:   rgb(97, 104, 117);
-  --hcp-mid-gray:     #d5d7db;
-  --hcp-cool-gray:    #b2b6bd;
-  --hcp-helper:       #656a76;
-  --hcp-charcoal:     #3b3d45;
-  --hcp-near-white:   #efeff1;
+  --hcp-light-bg:     #f4f4f5;
+  --hcp-border-light: #e4e4e7;
+  --hcp-border-mid:   #a1a1aa;
+  --hcp-mid-gray:     #71717a;
+  --hcp-cool-gray:    #a1a1aa;
+  --hcp-helper:       #71717a;
+  --hcp-charcoal:     #3f3f46;
+  --hcp-near-white:   #f4f4f5;
 
-  /* Product colors */
-  --hcp-terraform:    #7b42bc;
-  --hcp-vault:        #ffcf25;
-  --hcp-waypoint:     #14c6cb;
-  --hcp-vagrant:      #1868f2;
+  /* Accent (kept for colored elements) */
+  --hcp-terraform:    #18181b;
+  --hcp-vault:        #f4f4f5;
+  --hcp-waypoint:     #0ea5e9;
+  --hcp-vagrant:      #3b82f6;
 
   /* Semantic */
-  --hcp-link-light:   #2264d6;
-  --hcp-link-dark:    #2b89ff;
-  --hcp-danger:       #731e25;
+  --hcp-link-light:   #2563eb;
+  --hcp-link-dark:    #3b82f6;
+  --hcp-danger:       #dc2626;
   --hcp-danger-bg:    #fef2f2;
   --hcp-success:      #16a34a;
 
   /* Shadow */
-  --hcp-shadow:       rgba(97, 104, 117, 0.05) 0px 1px 1px,
-                      rgba(97, 104, 117, 0.05) 0px 2px 2px;
+  --hcp-shadow:       0 1px 2px 0 rgba(0,0,0,0.05);
 
   /* Typography */
   --font-brand: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  --font-body:  system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-body:  "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono:  "Fira Code", "Cascadia Code", "Geist Mono", monospace;
 
   /* Layout */
@@ -57,6 +55,25 @@
   --content-max-width: 1150px;
   --content-narrow:    720px;
   --content-editor:    810px;
+
+  /* better-auth nav tokens */
+  --nav-bg:       #ffffff;
+  --nav-border:   #e4e4e7;
+  --nav-text:     #18181b;
+  --nav-muted:    #71717a;
+  --nav-hover-bg: #f4f4f5;
+  --nav-icon-color: #71717a;
+}
+
+/* ── Iconify Icon Base ──────────────────────────────────── */
+iconify-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
 }
 
 /* ── Reset & Base ──────────────────────────────────────── */
@@ -82,11 +99,11 @@ body {
   flex-direction: column;
 }
 
-/* ── Navigation (Dark Mode) ────────────────────────────── */
+/* ── Navigation ─────────────────────────────────────────── */
 .nav {
   height: var(--nav-height);
-  background-color: var(--hcp-dark);
-  border-bottom: 1px solid rgba(97, 104, 117, 0.3);
+  background-color: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
   display: flex;
   align-items: center;
   padding: 0 24px;
@@ -127,7 +144,7 @@ body {
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  color: var(--hcp-near-white);
+  color: var(--nav-text);
   font-family: var(--font-brand);
   font-weight: 700;
   font-size: 15px;
@@ -135,12 +152,12 @@ body {
   white-space: nowrap;
 }
 
-.nav__logo:hover { color: #ffffff; text-decoration: none; }
+.nav__logo:hover { color: var(--hcp-black); text-decoration: none; }
 
 .nav__logo-mark {
   width: 22px;
   height: 22px;
-  background-color: var(--hcp-terraform);
+  background-color: var(--hcp-dark);
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -155,7 +172,7 @@ body {
 .nav__logo-text {
   font-family: 'Press Start 2P', monospace;
   font-size: 12px;
-  color: #ffffff;
+  color: var(--nav-text);
   letter-spacing: 0.04em;
   line-height: 1;
   white-space: nowrap;
@@ -166,7 +183,7 @@ body {
   font-family: var(--font-brand);
   font-size: 12px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.60);
+  color: var(--nav-muted);
   letter-spacing: 0;
   line-height: 1;
   white-space: nowrap;
@@ -211,7 +228,7 @@ body {
 .nav-search__icon {
   position: absolute;
   left: 10px;
-  color: var(--hcp-cool-gray);
+  color: var(--nav-icon-color);
   font-size: 12px;
   pointer-events: none;
 }
@@ -219,21 +236,21 @@ body {
 .nav-search__input {
   width: 100%;
   height: 32px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--hcp-light-bg);
+  border: 1px solid var(--nav-border);
   border-radius: 6px;
   padding: 0 60px 0 30px;
   font-size: 13px;
-  color: var(--hcp-near-white);
+  color: var(--nav-text);
   transition: border-color 0.15s, background 0.15s;
   outline: none;
 }
 
-.nav-search__input::placeholder { color: var(--hcp-cool-gray); }
+.nav-search__input::placeholder { color: var(--nav-muted); }
 
 .nav-search__input:focus {
   border-color: var(--hcp-vagrant);
-  background: rgba(255, 255, 255, 0.1);
+  background: #ffffff;
 }
 
 .nav-search__hint {
@@ -250,9 +267,9 @@ body {
   padding: 1px 5px;
   font-size: 10px;
   font-family: var(--font-mono);
-  color: var(--hcp-cool-gray);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--nav-muted);
+  background: #ffffff;
+  border: 1px solid var(--nav-border);
   border-radius: 3px;
   line-height: 1.4;
 }
@@ -286,29 +303,29 @@ body {
   width: 30px;
   height: 30px;
   border-radius: 6px;
-  color: var(--hcp-mid-gray);
+  color: var(--nav-icon-color);
   text-decoration: none;
   transition: color 0.12s, background 0.12s;
   font-size: 14px;
 }
 
 .nav__icon-btn:hover {
-  color: var(--hcp-near-white);
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--nav-text);
+  background: var(--nav-hover-bg);
   text-decoration: none;
 }
 
 .nav__divider {
   width: 1px;
   height: 20px;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--nav-border);
   margin: 0 4px;
 }
 
 .nav__nickname {
   font-size: 12px;
   font-weight: 600;
-  color: var(--hcp-near-white);
+  color: var(--nav-text);
   padding: 0 4px;
   white-space: nowrap;
 }
@@ -336,7 +353,7 @@ body {
   background: transparent;
   border: none;
   border-radius: 6px;
-  color: var(--hcp-mid-gray);
+  color: var(--nav-muted);
   font-size: 13px;
   font-weight: 500;
   font-family: var(--font-body);
@@ -347,8 +364,8 @@ body {
 
 .nav__group-btn:hover,
 .nav__group-btn[aria-expanded="true"] {
-  color: var(--hcp-near-white);
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--nav-text);
+  background: var(--nav-hover-bg);
 }
 
 .nav__group-label { display: inline; }
@@ -370,8 +387,8 @@ body {
   top: calc(100% + 6px);
   left: 0;
   min-width: 164px;
-  background: var(--hcp-dark);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #ffffff;
+  border: 1px solid var(--nav-border);
   border-radius: 8px;
   padding: 4px;
   opacity: 0;
@@ -379,7 +396,7 @@ body {
   pointer-events: none;
   transition: opacity 0.15s ease, transform 0.15s ease;
   z-index: 200;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
 }
 
 .nav__dropdown--open {
@@ -394,19 +411,20 @@ body {
   gap: 10px;
   padding: 8px 10px;
   border-radius: 6px;
-  color: var(--hcp-mid-gray);
+  color: var(--hcp-charcoal);
   text-decoration: none;
   font-size: 13px;
   transition: color 0.12s, background 0.12s;
 }
 
 .nav__dropdown-item:hover {
-  color: var(--hcp-near-white);
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--nav-text);
+  background: var(--nav-hover-bg);
   text-decoration: none;
 }
 
-.nav__dropdown-item i {
+.nav__dropdown-item i,
+.nav__dropdown-item iconify-icon {
   width: 16px;
   text-align: center;
   font-size: 13px;
@@ -665,13 +683,13 @@ body {
 /* Primary Dark */
 .btn--primary {
   background-color: var(--hcp-dark);
-  color: var(--hcp-mid-gray);
-  border-color: var(--hcp-border-light);
+  color: #ffffff;
+  border-color: var(--hcp-dark);
 }
 
 .btn--primary:hover {
-  background-color: #1e2229;
-  color: var(--hcp-near-white);
+  background-color: var(--hcp-charcoal);
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -691,14 +709,14 @@ body {
 /* Ghost */
 .btn--ghost {
   background-color: transparent;
-  color: var(--hcp-mid-gray);
+  color: var(--hcp-helper);
   border-color: transparent;
   box-shadow: none;
 }
 
 .btn--ghost:hover {
-  background-color: rgba(255,255,255,0.08);
-  color: var(--hcp-near-white);
+  background-color: var(--hcp-light-bg);
+  color: var(--hcp-charcoal);
   text-decoration: none;
 }
 
@@ -771,8 +789,8 @@ a:hover {
 
 /* ── Footer ────────────────────────────────────────────── */
 .footer {
-  background-color: var(--hcp-dark);
-  border-top: 1px solid rgba(97, 104, 117, 0.3);
+  background-color: #ffffff;
+  border-top: 1px solid var(--nav-border);
   padding: 24px 24px;
   overflow: hidden;
   max-height: 200px;
@@ -832,7 +850,7 @@ a:hover {
   align-items: center;
   gap: 6px;
   background: none;
-  border: 1px solid rgba(97, 104, 117, 0.4);
+  border: 1px solid var(--nav-border);
   border-radius: 6px;
   padding: 5px 10px;
   font-size: 12px;
@@ -843,8 +861,8 @@ a:hover {
 }
 
 .footer__install-btn:hover {
-  color: var(--hcp-mid-gray);
-  border-color: rgba(97, 104, 117, 0.7);
+  color: var(--hcp-charcoal);
+  border-color: var(--hcp-border-mid);
 }
 
 /* ── iOS 설치 안내 모달 ─────────────────────────────── */
@@ -4170,7 +4188,8 @@ lexxy-editor.lexxy-editor-field {
   gap: 5px;
 }
 
-.mp-day-summary i {
+.mp-day-summary i,
+.mp-day-summary iconify-icon {
   color: var(--hcp-terraform);
   font-size: 11px;
 }
@@ -4240,7 +4259,9 @@ lexxy-editor.lexxy-editor-field {
 }
 
 .mp-record__dates i,
-.mp-record__minutes i {
+.mp-record__minutes i,
+.mp-record__dates iconify-icon,
+.mp-record__minutes iconify-icon {
   color: var(--hcp-terraform);
   font-size: 11px;
 }

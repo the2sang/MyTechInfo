@@ -13,11 +13,11 @@
       <div class="memo-card__actions">
         <%= link_to edit_memo_path(memo), class: "memo-card__btn",
             data: { turbo_frame: "memo_#{memo.id}" } do %>
-          <i class="fa-solid fa-pen-to-square"></i> 수정
+          <iconify-icon icon="lucide:square-pen"></iconify-icon> 수정
         <% end %>
         <%= button_to memo, method: :delete, class: "memo-card__btn memo-card__btn--danger",
             form: { data: { turbo_confirm: "이 메모를 삭제하시겠습니까?" } } do %>
-          <i class="fa-solid fa-trash"></i> 삭제
+          <iconify-icon icon="lucide:trash"></iconify-icon> 삭제
         <% end %>
       </div>
     <% end %>

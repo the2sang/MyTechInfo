@@ -10,7 +10,7 @@
         <%= button_to stock_infos_path, method: :get,
               class: "btn btn--ghost btn--sm",
               title: "새로고침" do %>
-          <i class="fa-solid fa-rotate-right"></i>
+          <iconify-icon icon="lucide:rotate-cw"></iconify-icon>
         <% end %>
       </div>
     <% end %>
@@ -28,7 +28,7 @@
 
   <% if @stock_infos.empty? %>
     <div class="empty-state">
-      <i class="fa-solid fa-chart-line" style="font-size:48px;color:var(--hcp-border-mid);margin-bottom:12px;display:block;"></i>
+      <iconify-icon icon="lucide:trending-up" style="font-size:48px;color:var(--hcp-border-mid);margin-bottom:12px;display:block;"></iconify-icon>
       <p class="empty-state__text">등록된 주식 전망이 없습니다.</p>
       <p style="font-size:13px;color:var(--hcp-cool-gray);margin-top:8px;">
         <code>bin/rails stock_infos:fetch</code> 를 실행하면 오늘의 전망이 등록됩니다.
@@ -40,7 +40,7 @@
         <div class="memo-card" style="border-left: 4px solid <%= stock_info.id.even? ? '#22c55e' : '#3b82f6' %>; position: relative;">
           <div class="memo-card__header">
             <span class="memo-card__date">
-              <i class="fa-solid fa-chart-line" style="margin-right:4px;"></i>
+              <iconify-icon icon="lucide:trending-up" style="margin-right:4px;"></iconify-icon>
               <%= stock_info.queried_at.strftime("%Y.%m.%d %H:%M") %>
             </span>
           </div>
@@ -57,7 +57,7 @@
               <%= button_to stock_info_path(stock_info), method: :delete,
                     class: "memo-card__btn memo-card__btn--danger stock-info-card__delete",
                     form: { data: { turbo_confirm: "이 전망을 삭제하시겠습니까?" } } do %>
-                <i class="fa-solid fa-trash"></i>
+                <iconify-icon icon="lucide:trash"></iconify-icon>
               <% end %>
             </div>
           <% end %>

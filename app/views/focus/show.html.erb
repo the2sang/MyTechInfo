@@ -10,7 +10,7 @@
 
   <div class="pomodoro-header">
     <%= link_to focus_settings_path, class: "pomodoro-header__settings", title: "설정" do %>
-      <i class="fa-solid fa-gear"></i>
+      <iconify-icon icon="lucide:settings"></iconify-icon>
     <% end %>
   </div>
 
@@ -32,10 +32,10 @@
       시작
     </button>
     <button class="btn btn--ghost" data-action="click->pomodoro#reset" title="리셋">
-      <i class="fa-solid fa-rotate-left"></i>
+      <iconify-icon icon="lucide:rotate-ccw"></iconify-icon>
     </button>
     <button class="btn btn--ghost" data-action="click->pomodoro#skipMode" title="모드 전환">
-      <i class="fa-solid fa-forward-step"></i>
+      <iconify-icon icon="lucide:skip-forward"></iconify-icon>
     </button>
   </div>
 

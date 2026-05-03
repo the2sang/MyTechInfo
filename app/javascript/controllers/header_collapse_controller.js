@@ -34,8 +34,8 @@ export default class extends Controller {
     btn.setAttribute("aria-label", "헤더 접기/펼치기")
     btn.setAttribute("data-action", "click->header-collapse#toggle")
 
-    const icon = document.createElement("i")
-    icon.className = "fa-solid fa-chevron-up"
+    const icon = document.createElement("iconify-icon")
+    icon.setAttribute("icon", "lucide:chevron-up")
     btn.appendChild(icon)
 
     this.toggleBtn = btn
@@ -44,8 +44,8 @@ export default class extends Controller {
 
   _updateIcon(collapsed) {
     if (!this.toggleBtn) return
-    this.toggleBtn.querySelector("i").className =
-      collapsed ? "fa-solid fa-chevron-down" : "fa-solid fa-chevron-up"
+    const icon = this.toggleBtn.querySelector("iconify-icon")
+    if (icon) icon.setAttribute("icon", collapsed ? "lucide:chevron-down" : "lucide:chevron-up")
   }
 
   _storageKey() {

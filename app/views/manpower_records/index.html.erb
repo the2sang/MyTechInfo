@@ -73,12 +73,12 @@
             <span id="mp-summary-<%= date.iso8601 %>" class="mp-day-summary-wrap">
               <% if records.any? %>
                 <span class="mp-day-summary">
-                  <i class="fa-solid fa-clipboard-check"></i>
+                  <iconify-icon icon="lucide:clipboard-check"></iconify-icon>
                   <%= records.size %>건 · <%= records.sum(&:work_minutes) %>분
                 </span>
               <% end %>
             </span>
-            <i class="fa-solid fa-chevron-down mp-day-chevron"></i>
+            <iconify-icon icon="lucide:chevron-down" class="mp-day-chevron"></iconify-icon>
           </span>
         </button>
 

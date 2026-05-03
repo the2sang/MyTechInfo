@@ -5,7 +5,7 @@
   <% if manpower_record.errors.any? %>
     <div class="mp-form__errors">
       <% manpower_record.errors.each do |e| %>
-        <p class="mp-form__error-msg"><i class="fa-solid fa-circle-exclamation"></i> <%= e.full_message %></p>
+        <p class="mp-form__error-msg"><iconify-icon icon="lucide:circle-alert"></iconify-icon> <%= e.full_message %></p>
       <% end %>
     </div>
   <% end %>
