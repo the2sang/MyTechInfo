@@ -74,7 +74,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "lexxy", "~> 0.9.9.beta"
+gem "lexxy", "~> 0.9.11.beta"
 gem "rubyzip"
 gem "faw_toast"
 
