@@ -12,6 +12,7 @@ class WorkPlansController < ApplicationController
     plans = policy_scope(WorkPlan).where(user: @viewed_user).for_month(year, month)
     @plans_by_date = plans.group_by { |wp| wp.work_at.to_date }
     @department_names = @viewed_user.work_plans.distinct.pluck(:department_name)
+    @holidays = KoreanHolidays.for_month(year, month)
   end
 
   def show

@@ -9,6 +9,7 @@ class ManpowerRecordsController < ApplicationController
 
     records = policy_scope(ManpowerRecord).for_month(@year, @month)
     @records_by_date = records.by_request_date.group_by(&:request_date)
+    @holidays = KoreanHolidays.for_month(@year, @month)
   rescue Date::Error
     redirect_to manpower_records_path
   end

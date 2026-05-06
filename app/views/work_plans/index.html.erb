@@ -72,14 +72,17 @@
         <%# 날짜 셀 %>
         <% (@calendar_date..@calendar_date.end_of_month).each do |date| %>
           <%
-            plans      = @plans_by_date[date] || []
-            is_today   = date == today
-            is_sun     = date.wday == 0
-            is_sat     = date.wday == 6
-            cell_class = ["calendar__cell"]
-            cell_class << "calendar__cell--today"   if is_today
-            cell_class << "calendar__cell--sun"     if is_sun
-            cell_class << "calendar__cell--sat"     if is_sat
+            plans        = @plans_by_date[date] || []
+            holiday_name = @holidays[date]
+            is_today     = date == today
+            is_sun       = date.wday == 0
+            is_sat       = date.wday == 6
+            is_holiday   = holiday_name.present?
+            cell_class   = ["calendar__cell"]
+            cell_class << "calendar__cell--today"    if is_today
+            cell_class << "calendar__cell--sun"      if is_sun
+            cell_class << "calendar__cell--sat"      if is_sat
+            cell_class << "calendar__cell--holiday"  if is_holiday && !is_sun
             cell_class << "calendar__cell--has-plan" if plans.any?
           %>
           <div class="<%= cell_class.join(" ") %>">
@@ -87,6 +90,9 @@
                   class: "calendar__date-link",
                   data: { turbo_frame: "_top" } do %>
               <span class="calendar__date-num"><%= date.day %></span>
+            <% end %>
+            <% if is_holiday %>
+              <span class="calendar__holiday-name"><%= holiday_name %></span>
             <% end %>
 
             <% if plans.any? %>

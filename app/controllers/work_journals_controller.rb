@@ -11,6 +11,7 @@ class WorkJournalsController < ApplicationController
     @group_members = Current.session.user.group_members.order(:nickname)
     journals = policy_scope(WorkJournal).where(user: @viewed_user).for_month(year, month)
     @journals_by_date = journals.group_by(&:work_date)
+    @holidays = KoreanHolidays.for_month(year, month)
   rescue Date::Error
     redirect_to work_journals_path
   end

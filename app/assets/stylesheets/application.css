@@ -2858,6 +2858,19 @@ lexxy-editor.lexxy-editor-field {
 
 .calendar__cell--sun .calendar__date-num { color: #dc2626; }
 .calendar__cell--sat .calendar__date-num { color: var(--hcp-vagrant); }
+.calendar__cell--holiday .calendar__date-num { color: #dc2626; }
+
+.calendar__holiday-name {
+  display: block;
+  font-size: 10px;
+  color: #dc2626;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  padding: 1px 2px 0;
+}
 
 .calendar__date-link {
   display: flex;
@@ -4118,6 +4131,10 @@ lexxy-editor.lexxy-editor-field {
   color: #e03e3e;
 }
 
+.mp-day-item--holiday .mp-day-num {
+  color: #dc2626;
+}
+
 .mp-day-item--has-records {
   background: #fafafa;
 }
@@ -4178,6 +4195,11 @@ lexxy-editor.lexxy-editor-field {
 .mp-day-badge--today {
   background: var(--hcp-terraform);
   color: #ffffff;
+}
+
+.mp-day-badge--holiday {
+  background: #fee2e2;
+  color: #dc2626;
 }
 
 .mp-day-summary {

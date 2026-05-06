@@ -51,12 +51,14 @@
       <%
         date         = Date.new(@year, @month, day)
         records      = @records_by_date[date] || []
+        holiday_name = @holidays[date]
         is_today     = date == today
         is_weekend   = date.saturday? || date.sunday?
+        is_holiday   = holiday_name.present?
         new_record   = ManpowerRecord.new(request_date: date)
       %>
 
-      <div class="mp-day-item <%= 'mp-day-item--today' if is_today %> <%= 'mp-day-item--weekend' if is_weekend %> <%= 'mp-day-item--has-records' if records.any? %>">
+      <div class="mp-day-item <%= 'mp-day-item--today' if is_today %> <%= 'mp-day-item--weekend' if is_weekend %> <%= 'mp-day-item--holiday' if is_holiday && !is_weekend %> <%= 'mp-day-item--has-records' if records.any? %>">
 
         <%# Day trigger row %>
         <button class="mp-day-trigger"
@@ -68,6 +70,7 @@
             <span class="mp-day-num"><%= day %></span>
             <span class="mp-day-weekday"><%= %w[일 월 화 수 목 금 토][date.wday] %></span>
             <% if is_today %><span class="mp-day-badge mp-day-badge--today">오늘</span><% end %>
+            <% if is_holiday %><span class="mp-day-badge mp-day-badge--holiday"><%= holiday_name %></span><% end %>
           </span>
           <span class="mp-day-trigger__right">
             <span id="mp-summary-<%= date.iso8601 %>" class="mp-day-summary-wrap">
