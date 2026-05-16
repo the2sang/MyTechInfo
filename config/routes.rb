@@ -30,11 +30,22 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :clubs do
+    resources :club_memberships, only: %i[index create update destroy], shallow: false
+  end
+  resources :game_sessions, only: %i[index show new create edit update destroy] do
+    resources :participations, only: %i[new create], shallow: false
+  end
+  namespace :my do
+    resources :participations, only: %i[index destroy]
+  end
+
   namespace :admin do
     root "dashboards#index"
     resources :users, only: %i[index show update]
     resources :sessions, only: %i[index]
     resources :groups
+    resources :clubs, only: %i[index show update]
   end
 
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

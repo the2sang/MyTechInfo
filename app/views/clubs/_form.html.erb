@@ -1,0 +1,18 @@
+<%= form_with model: club, class: "space-y-4" do |f| %>
+  <% if club.errors.any? %>
+    <div class="bg-red-50 border border-red-200 rounded p-3">
+      <% club.errors.full_messages.each do |msg| %>
+        <p class="text-red-600 text-sm"><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+  <div>
+    <%= f.label :name, "동호회 이름", class: "block text-sm font-medium mb-1" %>
+    <%= f.text_field :name, class: "w-full border rounded-lg px-3 py-2" %>
+  </div>
+  <div>
+    <%= f.label :description, "소개", class: "block text-sm font-medium mb-1" %>
+    <%= f.text_area :description, rows: 4, class: "w-full border rounded-lg px-3 py-2" %>
+  </div>
+  <%= f.submit "저장", class: "px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer" %>
+<% end %>
