@@ -1,4 +1,6 @@
 class GameSessionsController < ApplicationController
+  allow_unauthenticated_access only: %i[index show]
+  before_action :resume_session,   only: %i[index show]
   before_action :set_club,         only: %i[new create]
   before_action :set_game_session, only: %i[show edit update destroy]
 
@@ -8,6 +10,16 @@ class GameSessionsController < ApplicationController
 
   def show
     authorize @game_session
+
+    participant_user_ids = @game_session.participations.map(&:user_id).compact
+    memberships = ClubMembership.where(club: @game_session.club, user_id: participant_user_ids)
+    @membership_map = memberships.index_by(&:user_id)
+
+    if Current.user
+      my_membership = @membership_map[Current.user.id] ||
+                      Current.user.club_memberships.find_by(club: @game_session.club)
+      @is_manager = (my_membership&.manager? && my_membership&.approved?) || Current.user.admin?
+    end
   end
 
   def new
@@ -48,13 +60,21 @@ class GameSessionsController < ApplicationController
   private
 
   def set_club = @club = Club.find(params[:club_id])
-  def set_game_session = @game_session = GameSession.find(params[:id])
+  def set_game_session
+    @game_session = GameSession.includes(participations: :user).find(params[:id])
+  end
 
   def game_session_params
-    params.require(:game_session).permit(
+    p = params.require(:game_session).permit(
       :title, :venue_name, :address, :scheduled_date,
       :start_time, :end_time, :court_count, :fee, :notes,
-      :max_participants, :visibility, :status
+      :max_participants, :visibility, :status,
+      :repeat_type, :repeat_ends_on, repeat_days: []
     )
+    # 체크박스 배열을 쉼표 구분 문자열로 변환
+    if p[:repeat_days].present?
+      p[:repeat_days] = p[:repeat_days].map(&:to_s).join(",")
+    end
+    p
   end
 end

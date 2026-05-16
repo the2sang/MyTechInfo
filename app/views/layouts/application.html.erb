@@ -3,11 +3,10 @@
   <head>
     <%= toast_css_variables %>
 
-    <% site_identity = authenticated? ? Current.session.user.email_address.split("@").first : "Public" %>
-    <title><%= authenticated? ? [content_for(:title), site_identity].compact_blank.join(" — ") : site_identity %></title>
+    <title><%= [content_for(:title), "Pickleball Playground"].compact_blank.join(" — ") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="MyTechInfo">
+    <meta name="application-name" content="피클볼">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -16,14 +15,14 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Ultra&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Ultra&family=Press+Start+2P&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js" defer></script>
 
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="shortcut icon" href="/icon.svg">
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="MyTechInfo">
+    <meta name="apple-mobile-web-app-title" content="피클볼">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "lexxy", "data-turbo-track": "reload" %>
@@ -61,18 +60,14 @@
       <div class="nav__inner">
         <div class="nav__left">
           <%= link_to root_path, class: "nav__logo" do %>
-            <span class="nav__logo-mark">T</span>
-            <span class="nav__logo-text nav-hide-mobile">
-              <%= authenticated? ? Current.session.user.email_address.split("@").first : "Public" %>
-            </span>
-          <% end %>
-          <% if content_for?(:title) %>
-            <span class="nav__page-title nav-hide-mobile"><%= content_for(:title) %></span>
+            <span class="nav__logo-mark">P</span>
+            <span class="nav__logo-text nav-hide-mobile">PICKLEBALL PLAYGROUND</span>
           <% end %>
         </div>
 
         <div class="nav__menu">
-          <%# PB동호회 %>
+          <%# PB동호회 — 로그인 + (동호회 관리자 or 사이트 관리자)만 표시 %>
+          <% if authenticated? && (current_user&.admin? || managed_clubs.any?) %>
           <div class="nav__group"
                data-controller="nav-group"
                data-action="mouseenter->nav-group#hover mouseleave->nav-group#hoverOut">
@@ -81,7 +76,7 @@
                     data-nav-group-target="trigger"
                     aria-expanded="false"
                     aria-haspopup="true">
-              <span class="nav__group-label">동호회</span>
+              <span class="nav__group-label">동호회관리</span>
               <iconify-icon icon="lucide:users" class="nav__group-icon"></iconify-icon>
               <iconify-icon icon="lucide:chevron-down" class="nav__group-chevron"></iconify-icon>
             </button>
@@ -92,13 +87,17 @@
               <%= link_to game_sessions_path, class: "nav__dropdown-item" do %>
                 <iconify-icon icon="lucide:calendar-days"></iconify-icon><span>운동 세션</span>
               <% end %>
-              <% if authenticated? %>
-                <%= link_to my_participations_path, class: "nav__dropdown-item" do %>
-                  <iconify-icon icon="lucide:clipboard-list"></iconify-icon><span>내 신청</span>
+              <%= link_to my_participations_path, class: "nav__dropdown-item" do %>
+                <iconify-icon icon="lucide:clipboard-list"></iconify-icon><span>내 신청</span>
+              <% end %>
+              <% managed_clubs.each do |club| %>
+                <%= link_to manage_club_path(club), class: "nav__dropdown-item nav__dropdown-item--manage" do %>
+                  <iconify-icon icon="lucide:settings-2"></iconify-icon><span><%= club.name %> 관리</span>
                 <% end %>
               <% end %>
             </div>
           </div>
+          <% end %>
 
           <%# Utils %>
           <div class="nav__group"
@@ -150,11 +149,7 @@
               <iconify-icon icon="lucide:shield-half"></iconify-icon>
             <% end %>
           <% end %>
-          <a href="https://github.com/the2sang/MyTechInfo"
-             class="nav__icon-btn nav-hide-xs" title="GitHub"
-             target="_blank" rel="noopener noreferrer">
-            <iconify-icon icon="mdi:github"></iconify-icon>
-          </a>
+
 
           <div class="nav__divider"></div>
 
@@ -187,7 +182,7 @@
 
     <footer class="footer">
       <div class="footer__inner">
-        <span class="footer__copy">&copy; <%= Time.current.year %> <%= site_identity %></span>
+        <span class="footer__copy">&copy; <%= Time.current.year %> Pickleball Playground</span>
         <button class="footer__install-btn"
                 data-pwa-install-target="footerBtn"
                 data-action="click->pwa-install#install"

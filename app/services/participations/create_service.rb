@@ -4,12 +4,10 @@ module Participations
 
     def self.call(**args) = new(**args).call
 
-    def initialize(game_session:, user: nil, guest_name: nil, guest_sport_level: nil, guest_region: nil)
-      @game_session      = game_session
-      @user              = user
-      @guest_name        = guest_name
-      @guest_sport_level = guest_sport_level
-      @guest_region      = guest_region
+    def initialize(game_session:, user:, participation_type: :as_member)
+      @game_session       = game_session
+      @user               = user
+      @participation_type = participation_type
     end
 
     def call
@@ -17,11 +15,9 @@ module Participations
 
       status = @game_session.full? ? :waitlisted : :confirmed
       participation = @game_session.participations.build(
-        user:              @user,
-        guest_name:        @guest_name,
-        guest_sport_level: @guest_sport_level || 0,
-        guest_region:      @guest_region,
-        status:            status
+        user:               @user,
+        participation_type: @participation_type,
+        status:             status
       )
 
       if participation.save

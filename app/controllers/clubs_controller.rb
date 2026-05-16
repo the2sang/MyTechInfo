@@ -1,6 +1,7 @@
 class ClubsController < ApplicationController
-  before_action :set_club,      only: %i[show edit update destroy]
-  before_action :require_login, only: %i[new create edit update destroy]
+  allow_unauthenticated_access only: %i[index show]
+  before_action :resume_session,  only: %i[index show]
+  before_action :set_club,        only: %i[show edit update destroy manage]
 
   def index
     @clubs = policy_scope(Club).order(:name)
@@ -17,14 +18,23 @@ class ClubsController < ApplicationController
   end
 
   def create
-    @club = Club.new(club_params.merge(owner: Current.user, status: :pending))
+    @club = Club.new(club_params.merge(owner: Current.user, status: :approved))
     authorize @club
     if @club.save
       @club.club_memberships.create!(user: Current.user, role: :manager, status: :approved)
-      redirect_to @club, notice: "동호회 개설 신청이 완료되었습니다. 관리자 승인 후 활성화됩니다."
+      Clubs::AssignManagerByEmailService.call(club: @club)
+      redirect_to @club, notice: "동호회가 개설되었습니다."
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def manage
+    authorize @club, :manage?
+    @pending_memberships  = @club.club_memberships.pending.includes(:user)
+    @approved_memberships = @club.club_memberships.approved.includes(:user).order("role DESC")
+    @game_sessions        = @club.game_sessions.order(scheduled_date: :desc).limit(20)
+    @guest_applications   = @club.guest_applications.order(created_at: :desc)
   end
 
   def edit
@@ -49,6 +59,5 @@ class ClubsController < ApplicationController
   private
 
   def set_club = @club = Club.find(params[:id])
-  def club_params = params.require(:club).permit(:name, :description)
-  def require_login = redirect_to(new_session_path) unless Current.user
+  def club_params = params.require(:club).permit(:name, :description, :contact_phone, :contact_email)
 end

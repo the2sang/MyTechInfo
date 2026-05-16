@@ -1,21 +1,50 @@
-<div class="max-w-lg mx-auto px-4 py-8">
-  <h1 class="text-xl font-bold mb-2">참가 신청</h1>
-  <p class="text-gray-600 mb-6"><%= @game_session.title %> — <%= @game_session.scheduled_date.strftime("%Y-%m-%d") %></p>
-  <%= form_with url: game_session_participations_path(@game_session), method: :post, class: "space-y-4" do |f| %>
-    <% if Current.user %>
-      <div class="bg-blue-50 rounded-lg p-4">
-        <p class="text-sm text-blue-800"><strong><%= Current.user.nickname %></strong> 으로 신청합니다.</p>
-      </div>
-    <% else %>
-      <div class="space-y-3">
-        <div><label class="block text-sm font-medium mb-1">이름 <span class="text-red-500">*</span></label><%= f.text_field :guest_name, class: "w-full border rounded-lg px-3 py-2", required: true %></div>
-        <div><label class="block text-sm font-medium mb-1">운동 레벨</label><%= f.select :guest_sport_level, [["입문", "beginner"], ["중급", "intermediate"], ["고급", "advanced"], ["프로", "pro"]], {}, class: "w-full border rounded-lg px-3 py-2" %></div>
-        <div><label class="block text-sm font-medium mb-1">거주지역</label><%= f.text_field :guest_region, class: "w-full border rounded-lg px-3 py-2" %></div>
+<% content_for :title, "참가 신청" %>
+
+<div class="cl-page">
+  <div class="cl-content cl-content--narrow">
+    <div style="margin-bottom:32px;">
+      <p class="cl-hero__eyebrow">
+        <%= link_to @game_session.club.name, club_path(@game_session.club) %>
+        <span class="sep">/</span>
+        <%= link_to @game_session.title, game_session_path(@game_session) %>
+        <span class="sep">/</span> 참가 신청
+      </p>
+      <h1 class="cl-hero__title">참가 신청</h1>
+      <p class="cl-hero__subtitle">
+        <%= @game_session.scheduled_date.strftime("%Y년 %m월 %d일") %> &middot; <%= @game_session.venue_name %>
+      </p>
+    </div>
+
+    <% if @membership&.pending? %>
+      <div class="cl-alert cl-alert--warning" style="margin-bottom:16px;display:flex;align-items:flex-start;gap:8px;padding:12px 16px;border-radius:8px;background:var(--hcp-warning-soft,#fff8e1);border:1px solid var(--hcp-warning,#f59e0b);">
+        <iconify-icon icon="lucide:alert-triangle" width="16" style="margin-top:2px;flex-shrink:0;"></iconify-icon>
+        <span>동호회 관리자의 승인이 완료되지 않았습니다. <strong>게스트</strong>로 참가신청합니다.</span>
       </div>
     <% end %>
-    <div class="flex gap-3">
-      <%= f.submit "신청하기", class: "px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer" %>
-      <%= link_to "취소", game_session_path(@game_session), class: "px-6 py-2 border rounded-lg hover:bg-gray-50" %>
+
+    <div class="cl-form-card">
+      <%= form_with url: game_session_participations_path(@game_session), method: :post, class: "cl-form" do |f| %>
+        <%= hidden_field_tag "participation[participation_type]", @participation_type %>
+
+        <div class="cl-confirm-card">
+          <span class="cl-confirm-card__icon"><iconify-icon icon="lucide:user-check" width="16"></iconify-icon></span>
+          <div>
+            <p><strong><%= Current.user.display_name.presence || Current.user.nickname %></strong> 으로 신청합니다.</p>
+            <p style="font-size:12px;color:var(--hcp-cool-gray);margin-top:2px;">
+              <% if @participation_type.to_s == "as_member" %>
+                <iconify-icon icon="lucide:users" width="12"></iconify-icon> 동호회 회원
+              <% else %>
+                <iconify-icon icon="lucide:user" width="12"></iconify-icon> 게스트
+              <% end %>
+            </p>
+          </div>
+        </div>
+
+        <div class="cl-form__actions">
+          <%= f.submit "신청하기", class: "cl-form__submit" %>
+          <%= link_to "취소", game_session_path(@game_session), class: "btn btn--secondary btn--sm", style: "flex:1; justify-content:center;" %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+  </div>
 </div>

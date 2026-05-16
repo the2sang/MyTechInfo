@@ -1,18 +1,297 @@
-<div class="max-w-2xl mx-auto px-4 py-8">
-  <p class="text-sm text-gray-500 mb-1"><%= link_to @game_session.club.name, club_path(@game_session.club) %></p>
-  <h1 class="text-2xl font-bold mb-4"><%= @game_session.title %></h1>
-  <div class="bg-gray-50 rounded-lg p-4 mb-6 space-y-2 text-sm">
-    <p><strong>날짜:</strong> <%= @game_session.scheduled_date.strftime("%Y년 %m월 %d일") %></p>
-    <p><strong>시간:</strong> <%= @game_session.start_time.strftime("%H:%M") %> ~ <%= @game_session.end_time.strftime("%H:%M") %></p>
-    <p><strong>장소:</strong> <%= @game_session.venue_name %><% if @game_session.address.present? %> (<%= @game_session.address %>)<% end %></p>
-    <p><strong>코트:</strong> <%= @game_session.court_count %>면</p>
-    <p><strong>참가비:</strong> <%= @game_session.fee > 0 ? "#{@game_session.fee}원" : "무료" %></p>
-    <p><strong>정원:</strong> <%= @game_session.max_participants.present? ? "#{@game_session.max_participants}명" : "제한 없음" %></p>
-    <p><strong>현재 참가:</strong> <%= @game_session.confirmed_count %>명<% if @game_session.full? %> <span class="text-red-500 font-semibold">(마감)</span><% end %></p>
-    <% if @game_session.notes.present? %><p><strong>메모:</strong> <%= @game_session.notes %></p><% end %>
+<% content_for :title, @game_session.title %>
+
+<div class="cl-page">
+  <div class="cl-hero">
+    <div class="cl-hero__inner">
+      <p class="cl-hero__eyebrow">
+        <%= link_to @game_session.club.name, club_path(@game_session.club) %>
+        <span class="sep">/</span>
+      </p>
+      <h1 class="cl-hero__title"><%= @game_session.title %></h1>
+    </div>
   </div>
-  <% if @game_session.open? %>
-    <%= link_to "참가 신청", new_game_session_participation_path(@game_session),
-          class: "inline-block px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold" %>
-  <% end %>
+
+  <div class="cl-content" style="max-width:720px;">
+    <div class="cl-info-card">
+      <div class="cl-info-card__header">
+        <p class="cl-info-card__header-label">세션 정보</p>
+      </div>
+
+      <div class="cl-info-row">
+        <span class="cl-info-row__icon"><iconify-icon icon="lucide:calendar" width="14"></iconify-icon></span>
+        <span class="cl-info-row__label">날짜</span>
+        <span class="cl-info-row__value"><%= @game_session.scheduled_date.strftime("%Y년 %m월 %d일") %></span>
+      </div>
+
+      <div class="cl-info-row">
+        <span class="cl-info-row__icon"><iconify-icon icon="lucide:clock" width="14"></iconify-icon></span>
+        <span class="cl-info-row__label">시간</span>
+        <span class="cl-info-row__value"><%= @game_session.start_time.strftime("%H:%M") %> ~ <%= @game_session.end_time.strftime("%H:%M") %></span>
+      </div>
+
+      <div class="cl-info-row">
+        <span class="cl-info-row__icon"><iconify-icon icon="lucide:map-pin" width="14"></iconify-icon></span>
+        <span class="cl-info-row__label">장소</span>
+        <span class="cl-info-row__value">
+          <%= @game_session.venue_name %>
+          <% if @game_session.address.present? %>
+            <span class="cl-info-row__muted">&nbsp;(<%= @game_session.address %>)</span>
+          <% end %>
+        </span>
+      </div>
+
+      <div class="cl-info-row">
+        <span class="cl-info-row__icon"><iconify-icon icon="lucide:grid-3x3" width="14"></iconify-icon></span>
+        <span class="cl-info-row__label">코트</span>
+        <span class="cl-info-row__value"><%= @game_session.court_count %>면</span>
+      </div>
+
+      <div class="cl-info-row">
+        <span class="cl-info-row__icon"><iconify-icon icon="lucide:banknote" width="14"></iconify-icon></span>
+        <span class="cl-info-row__label">게스트 참가비</span>
+        <span class="cl-info-row__value">
+          <% if @game_session.fee > 0 %>
+            <span class="cl-badge cl-badge--dark"><%= number_with_delimiter(@game_session.fee) %>원</span>
+          <% else %>
+            <span class="cl-badge cl-badge--neutral">무료</span>
+          <% end %>
+        </span>
+      </div>
+
+      <div class="cl-info-row">
+        <span class="cl-info-row__icon"><iconify-icon icon="lucide:users" width="14"></iconify-icon></span>
+        <span class="cl-info-row__label">참가 현황</span>
+        <span class="cl-info-row__value">
+          <%= @game_session.confirmed_count %>명
+          <% if @game_session.max_participants.present? %>
+            <span class="cl-info-row__muted">/ 정원 <%= @game_session.max_participants %>명</span>
+          <% end %>
+          <% if @game_session.full? %>
+            &nbsp;<span class="cl-badge cl-badge--neutral">마감</span>
+          <% end %>
+        </span>
+      </div>
+
+      <% if @game_session.notes.present? %>
+        <div class="cl-info-row">
+          <span class="cl-info-row__icon"><iconify-icon icon="lucide:file-text" width="14"></iconify-icon></span>
+          <span class="cl-info-row__label">메모</span>
+          <span class="cl-info-row__value"><%= @game_session.notes %></span>
+        </div>
+      <% end %>
+    </div>
+
+    <%
+      confirmed  = @game_session.participations.select(&:confirmed?)
+      waitlisted = @game_session.participations.select(&:waitlisted?)
+      sport_level_labels = { "beginner" => "초급", "beginner_intermediate" => "초중급",
+                              "intermediate" => "중급", "intermediate_advanced" => "중상급", "advanced" => "상급" }
+      gender_labels      = { "unspecified" => "미설정", "male" => "남성", "female" => "여성" }
+      age_group_labels   = { "teens" => "10대", "twenties" => "20대", "thirties" => "30대",
+                              "forties" => "40대", "fifties" => "50대", "sixties_plus" => "60대 이상" }
+
+      member_label = ->(p) {
+        m = @membership_map[p.user_id]
+        if m&.approved?
+          { text: "정회원", icon: "lucide:shield-check", style: "color:#16a34a;" }
+        elsif m&.pending?
+          { text: "준회원", icon: "lucide:clock-4", style: "color:#d97706;" }
+        else
+          { text: "게스트", icon: "lucide:user", style: "color:#6b7280;" }
+        end
+      }
+    %>
+
+    <%
+      session_label = @game_session.session_ended? ? "참가 확정" : "참가 신청자"
+    %>
+
+    <%
+      member_type = ->(p) {
+        m = @membership_map[p.user_id]
+        if m&.approved?   then :regular
+        elsif m&.pending? then :associate
+        else                   :guest
+        end
+      }
+
+      sections = [
+        { key: :regular,   label: "정회원", icon: "lucide:shield-check", color: "#16a34a", bg: "#f0fdf4", border: "#bbf7d0" },
+        { key: :associate, label: "준회원", icon: "lucide:clock-4",      color: "#d97706", bg: "#fffbeb", border: "#fde68a" },
+        { key: :guest,     label: "게스트", icon: "lucide:user",         color: "#6b7280", bg: "#f9fafb", border: "#e5e7eb" },
+      ]
+
+      gender_badge = ->(u) {
+        case u.gender
+        when "male"   then { icon: "lucide:mars",        icon_color: "#fff", bg: "#1e90ff", text_color: "#fff" }
+        when "female" then { icon: "lucide:venus",       icon_color: "#fff", bg: "#ff6347", text_color: "#fff" }
+        else               { icon: "lucide:circle-help", icon_color: "#9ca3af", bg: nil,    text_color: nil    }
+        end
+      }
+    %>
+
+    <% if confirmed.any? || waitlisted.any? %>
+      <div class="cl-info-card" style="margin-top:16px;">
+        <div class="cl-info-card__header">
+          <p class="cl-info-card__header-label">
+            <%= session_label %> (<%= confirmed.size %>명)
+            <% if waitlisted.any? %>
+              &nbsp;·&nbsp;<span style="color:var(--hcp-cool-gray);">대기 <%= waitlisted.size %>명</span>
+            <% end %>
+          </p>
+        </div>
+
+        <%
+          grouped_confirmed  = confirmed.group_by  { |p| member_type.call(p) }
+          grouped_waitlisted = waitlisted.group_by { |p| member_type.call(p) }
+        %>
+
+        <% sections.each do |sec| %>
+          <%
+            sec_confirmed  = grouped_confirmed[sec[:key]]  || []
+            sec_waitlisted = grouped_waitlisted[sec[:key]] || []
+            next if sec_confirmed.empty? && sec_waitlisted.empty?
+          %>
+          <div style="border-top:1px solid var(--hcp-border,#f4f4f5);">
+            <div style="display:flex;align-items:center;gap:6px;padding:8px 16px 4px;background:<%= sec[:bg] %>;">
+              <iconify-icon icon="<%= sec[:icon] %>" width="13" style="color:<%= sec[:color] %>;flex-shrink:0;"></iconify-icon>
+              <span style="font-size:11px;font-weight:600;color:<%= sec[:color] %>;">
+                <%= sec[:label] %>
+                (<%= sec_confirmed.size + sec_waitlisted.size %>명)
+              </span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px 12px;">
+              <% sec_confirmed.each do |p| %>
+                <% pname = p.display_name; u = p.user; gb = gender_badge.call(u) %>
+                <% badge_style = "font-size:13px;cursor:pointer;#{gb[:bg] ? "background:#{gb[:bg]};border-color:#{gb[:bg]};color:#{gb[:text_color]};" : ""}" %>
+                <span class="cl-badge cl-badge--neutral"
+                      style="<%= badge_style %>"
+                      data-controller="participant-popover"
+                      data-participant-popover-name-value="<%= pname %>"
+                      data-participant-popover-sport-level-value="<%= sport_level_labels[u.sport_level] %>"
+                      data-participant-popover-gender-value="<%= gender_labels[u.gender] %>"
+                      data-participant-popover-age-group-value="<%= age_group_labels[u.age_group] %>"
+                      data-participant-popover-region-value="<%= u.region.presence || '—' %>"
+                      data-participant-popover-type-value="<%= sec[:label] %>"
+                      data-action="click->participant-popover#show">
+                  <iconify-icon icon="<%= gb[:icon] %>" width="11" style="margin-right:3px;color:<%= gb[:icon_color] %>;flex-shrink:0;"></iconify-icon>
+                  <%= pname %>
+                </span>
+              <% end %>
+              <% sec_waitlisted.each do |p| %>
+                <% pname = p.display_name; u = p.user; gb = gender_badge.call(u) %>
+                <% badge_style = "font-size:13px;opacity:0.7;cursor:pointer;#{gb[:bg] ? "background:#{gb[:bg]};border-color:#{gb[:bg]};color:#{gb[:text_color]};" : ""}" %>
+                <span class="cl-badge cl-badge--neutral"
+                      style="<%= badge_style %>"
+                      data-controller="participant-popover"
+                      data-participant-popover-name-value="<%= pname %>"
+                      data-participant-popover-sport-level-value="<%= sport_level_labels[u.sport_level] %>"
+                      data-participant-popover-gender-value="<%= gender_labels[u.gender] %>"
+                      data-participant-popover-age-group-value="<%= age_group_labels[u.age_group] %>"
+                      data-participant-popover-region-value="<%= u.region.presence || '—' %>"
+                      data-participant-popover-type-value="<%= sec[:label] %> (대기)"
+                      data-action="click->participant-popover#show">
+                  <iconify-icon icon="<%= gb[:icon] %>" width="11" style="margin-right:3px;color:<%= gb[:icon_color] %>;flex-shrink:0;"></iconify-icon>
+                  <iconify-icon icon="lucide:clock" width="10" style="margin-right:2px;opacity:0.8;"></iconify-icon>
+                  <%= pname %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if @is_manager %>
+      <%
+        active_participations = @game_session.participations.select { |p| !p.cancelled? }
+      %>
+      <div class="cl-info-card" style="margin-top:16px;border:1px solid var(--hcp-accent,#4f46e5);">
+        <div class="cl-info-card__header" style="background:var(--hcp-accent-soft,#eef2ff);">
+          <p class="cl-info-card__header-label" style="color:var(--hcp-accent,#4f46e5);">
+            <iconify-icon icon="lucide:shield-check" width="14" style="margin-right:4px;"></iconify-icon>
+            관리자 — 참가자 관리
+          </p>
+        </div>
+        <% if active_participations.any? %>
+          <table style="width:100%;border-collapse:collapse;font-size:13px;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--hcp-border,#e5e7eb);text-align:left;">
+                <th style="padding:8px 16px;font-weight:600;color:var(--hcp-cool-gray);">이름</th>
+                <th style="padding:8px 16px;font-weight:600;color:var(--hcp-cool-gray);">구분</th>
+                <th style="padding:8px 16px;font-weight:600;color:var(--hcp-cool-gray);">상태</th>
+                <th style="padding:8px 16px;font-weight:600;color:var(--hcp-cool-gray);">운동레벨</th>
+                <th style="padding:8px 16px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% active_participations.each do |p| %>
+                <% ml = member_label.call(p) %>
+                <tr style="border-bottom:1px solid var(--hcp-border,#e5e7eb);">
+                  <td style="padding:10px 16px;font-weight:500;"><%= p.display_name %></td>
+                  <td style="padding:10px 16px;">
+                    <span class="cl-badge cl-badge--neutral" style="<%= ml[:style] %>">
+                      <iconify-icon icon="<%= ml[:icon] %>" width="11" style="margin-right:2px;"></iconify-icon>
+                      <%= ml[:text] %>
+                    </span>
+                  </td>
+                  <td style="padding:10px 16px;">
+                    <% if p.waitlisted? %>
+                      <span class="cl-badge cl-badge--neutral" style="opacity:0.7;">대기</span>
+                    <% else %>
+                      <span class="cl-badge cl-badge--neutral"><%= session_label %></span>
+                    <% end %>
+                  </td>
+                  <td style="padding:10px 16px;color:var(--hcp-cool-gray);">
+                    <%= sport_level_labels[p.user.sport_level] %>
+                  </td>
+                  <td style="padding:10px 16px;text-align:right;">
+                    <%= button_to game_session_participation_path(@game_session, p),
+                          method: :delete,
+                          form: { data: { turbo_confirm: "#{p.display_name}님의 참가를 취소하시겠습니까?" } },
+                          class: "btn btn--secondary btn--sm",
+                          style: "padding:4px 10px;font-size:12px;" do %>
+                      <iconify-icon icon="lucide:x" width="11"></iconify-icon>
+                      취소 대행
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p style="padding:16px;color:var(--hcp-cool-gray);font-size:13px;">신청자가 없습니다.</p>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%
+      my_participation = Current.user &&
+        @game_session.participations.find { |p| p.user_id == Current.user.id && !p.cancelled? }
+    %>
+    <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <% if my_participation %>
+        <% if policy(my_participation).destroy? %>
+          <%= button_to game_session_participation_path(@game_session, my_participation),
+                method: :delete,
+                form: { data: { turbo_confirm: "참가 신청을 취소하시겠습니까?" } },
+                class: "btn btn--secondary btn--sm" do %>
+            <iconify-icon icon="lucide:x-circle" width="13"></iconify-icon>
+            참가 취소하기
+          <% end %>
+        <% else %>
+          <span class="btn btn--secondary btn--sm" style="opacity:0.5;cursor:not-allowed;">
+            <iconify-icon icon="lucide:check-circle" width="13"></iconify-icon>
+            참가 신청됨
+          </span>
+          <span style="font-size:12px;color:var(--hcp-cool-gray);">운동 종료 후 취소 불가</span>
+        <% end %>
+      <% elsif @game_session.open? %>
+        <%= link_to new_game_session_participation_path(@game_session), class: "btn btn--primary btn--sm" do %>
+          <iconify-icon icon="lucide:check-circle" width="13"></iconify-icon>
+          참가 신청하기
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 </div>

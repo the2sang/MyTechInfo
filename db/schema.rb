@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_16_004536) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_16_113237) do
   create_table "club_memberships", force: :cascade do |t|
     t.integer "club_id", null: false
     t.datetime "created_at", null: false
@@ -24,6 +24,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_004536) do
   end
 
   create_table "clubs", force: :cascade do |t|
+    t.string "contact_email"
+    t.string "contact_phone"
     t.datetime "created_at", null: false
     t.text "description"
     t.string "name", null: false
@@ -54,16 +56,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_004536) do
     t.integer "fee", default: 0, null: false
     t.integer "max_participants"
     t.text "notes"
+    t.string "repeat_days"
+    t.date "repeat_ends_on"
+    t.integer "repeat_type", default: 0, null: false
     t.date "scheduled_date", null: false
     t.time "start_time", null: false
     t.integer "status", default: 0, null: false
+    t.integer "template_id"
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.string "venue_name", null: false
     t.integer "visibility", default: 0, null: false
     t.index ["club_id", "scheduled_date"], name: "index_game_sessions_on_club_id_and_scheduled_date"
     t.index ["club_id"], name: "index_game_sessions_on_club_id"
+    t.index ["repeat_type"], name: "index_game_sessions_on_repeat_type"
     t.index ["scheduled_date"], name: "index_game_sessions_on_scheduled_date"
+    t.index ["template_id"], name: "index_game_sessions_on_template_id"
   end
 
   create_table "group_memberships", force: :cascade do |t|
@@ -84,6 +92,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_004536) do
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_groups_on_name"
     t.index ["owner_id"], name: "index_groups_on_owner_id"
+  end
+
+  create_table "guest_applications", force: :cascade do |t|
+    t.integer "club_id", null: false
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.text "message"
+    t.string "name", null: false
+    t.string "phone", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["club_id", "status"], name: "index_guest_applications_on_club_id_and_status"
+    t.index ["club_id"], name: "index_guest_applications_on_club_id"
   end
 
   create_table "identities", force: :cascade do |t|
@@ -134,12 +155,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_004536) do
   create_table "participations", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "game_session_id", null: false
-    t.string "guest_name"
-    t.string "guest_region"
-    t.integer "guest_sport_level", default: 0
+    t.integer "participation_type", default: 0, null: false
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
+    t.integer "user_id", null: false
     t.index ["game_session_id", "user_id"], name: "index_participations_on_session_and_member", unique: true, where: "user_id IS NOT NULL"
     t.index ["game_session_id"], name: "index_participations_on_game_session_id"
     t.index ["user_id"], name: "index_participations_on_user_id"
@@ -230,14 +249,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_004536) do
     t.integer "age_group", default: 0, null: false
     t.datetime "created_at", null: false
     t.string "display_name"
+    t.string "dupr_id"
+    t.datetime "dupr_last_synced_at"
+    t.decimal "dupr_rating", precision: 4, scale: 2
     t.string "email_address", null: false
     t.integer "gender", default: 0, null: false
     t.string "nickname", null: false
     t.string "password_digest"
+    t.datetime "profile_completed_at"
     t.string "region"
     t.integer "role", default: 0, null: false
     t.integer "sport_level", default: 0, null: false
     t.datetime "updated_at", null: false
+    t.index ["dupr_id"], name: "index_users_on_dupr_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["nickname"], name: "index_users_on_nickname", unique: true
     t.index ["role"], name: "index_users_on_role"
@@ -289,6 +313,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_004536) do
   add_foreign_key "group_memberships", "groups"
   add_foreign_key "group_memberships", "users"
   add_foreign_key "groups", "users", column: "owner_id"
+  add_foreign_key "guest_applications", "clubs"
   add_foreign_key "identities", "users"
   add_foreign_key "life_infos", "users"
   add_foreign_key "manpower_records", "users"

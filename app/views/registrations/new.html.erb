@@ -1,13 +1,13 @@
-<% content_for :title, "Sign Up" %>
+<% content_for :title, "회원가입" %>
 
 <div class="page page--narrow">
   <div class="auth-card">
     <div class="auth-card__header">
       <div style="display:flex;align-items:center;gap:10px;">
-        <div class="nav__logo-mark" style="width:32px;height:32px;font-size:14px;flex-shrink:0;">T</div>
-        <h1 class="page__title" style="margin:0;">Create your account</h1>
+        <div class="nav__logo-mark" style="width:32px;height:32px;font-size:14px;flex-shrink:0;">P</div>
+        <h1 class="page__title" style="margin:0;">사이트 회원가입</h1>
       </div>
-      <p style="font-size:13px;color:var(--color-text-muted);margin-top:6px;">Join my site today.</p>
+      <p style="font-size:13px;color:var(--color-text-muted);margin-top:6px;">지금 바로 가입하고 시작해보세요.</p>
     </div>
 
     <%= form_with model: @user, url: registration_path, class: "form" do |form| %>
@@ -25,7 +25,7 @@
       <% end %>
 
       <div class="form__field">
-        <%= form.label :email_address, "Email address", class: "form__label" %>
+        <%= form.label :email_address, "이메일", class: "form__label" %>
         <%= form.email_field :email_address, class: "form__input",
             placeholder: "you@example.com",
             autocomplete: "email",
@@ -33,31 +33,31 @@
       </div>
 
       <div class="form__field">
-        <%= form.label :nickname, "Nickname", class: "form__label" %>
+        <%= form.label :nickname, "닉네임", class: "form__label" %>
         <%= form.text_field :nickname, class: "form__input",
-            placeholder: "Nickname (2~30자)",
+            placeholder: "닉네임 (2~30자)",
             autocomplete: "nickname",
             maxlength: 30 %>
       </div>
 
       <div class="form__field">
-        <%= form.label :password, "Password", class: "form__label" %>
+        <%= form.label :password, "패스워드", class: "form__label" %>
         <%= form.password_field :password, class: "form__input",
-            placeholder: "Minimum 8 characters",
+            placeholder: "최소 8자 이상",
             autocomplete: "new-password" %>
       </div>
 
       <div class="form__field">
-        <%= form.label :password_confirmation, "Confirm password", class: "form__label" %>
+        <%= form.label :password_confirmation, "패스워드 확인", class: "form__label" %>
         <%= form.password_field :password_confirmation, class: "form__input",
-            placeholder: "Repeat your password",
+            placeholder: "패스워드를 한 번 더 입력해 주세요",
             autocomplete: "new-password" %>
       </div>
 
       <div class="form__actions" style="flex-direction:column;gap:12px;">
-        <%= form.submit "Create account", class: "btn btn--primary", style: "width:100%;justify-content:center;" %>
+        <%= form.submit "회원가입", class: "btn btn--primary", style: "width:100%;justify-content:center;" %>
         <p style="font-size:12px;color:var(--color-text-muted);text-align:center;">
-          Already have an account? <%= link_to "Sign in", new_session_path %>
+          이미 계정이 있으신가요? <%= link_to "로그인", new_session_path %>
         </p>
       </div>
     <% end %>
