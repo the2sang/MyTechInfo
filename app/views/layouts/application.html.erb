@@ -72,7 +72,7 @@
         </div>
 
         <div class="nav__menu">
-          <%# Information %>
+          <%# PB동호회 %>
           <div class="nav__group"
                data-controller="nav-group"
                data-action="mouseenter->nav-group#hover mouseleave->nav-group#hoverOut">
@@ -81,53 +81,24 @@
                     data-nav-group-target="trigger"
                     aria-expanded="false"
                     aria-haspopup="true">
-              <span class="nav__group-label">Information</span>
-              <iconify-icon icon="lucide:info" class="nav__group-icon"></iconify-icon>
+              <span class="nav__group-label">동호회</span>
+              <iconify-icon icon="lucide:users" class="nav__group-icon"></iconify-icon>
               <iconify-icon icon="lucide:chevron-down" class="nav__group-chevron"></iconify-icon>
             </button>
             <div class="nav__dropdown" data-nav-group-target="dropdown">
-              <%= link_to tech_infos_path, class: "nav__dropdown-item" do %>
-                <iconify-icon icon="lucide:database"></iconify-icon><span>기술정보</span>
+              <%= link_to clubs_path, class: "nav__dropdown-item" do %>
+                <iconify-icon icon="lucide:flag"></iconify-icon><span>동호회</span>
               <% end %>
-              <%= link_to life_infos_path, class: "nav__dropdown-item" do %>
-                <iconify-icon icon="lucide:sprout"></iconify-icon><span>생활정보</span>
+              <%= link_to game_sessions_path, class: "nav__dropdown-item" do %>
+                <iconify-icon icon="lucide:calendar-days"></iconify-icon><span>운동 세션</span>
               <% end %>
-              <%= link_to stock_infos_path, class: "nav__dropdown-item" do %>
-                <iconify-icon icon="lucide:trending-up"></iconify-icon><span>주식전망</span>
-              <% end %>
-              <%= link_to memos_path, class: "nav__dropdown-item" do %>
-                <iconify-icon icon="lucide:sticky-note"></iconify-icon><span>메모</span>
+              <% if authenticated? %>
+                <%= link_to my_participations_path, class: "nav__dropdown-item" do %>
+                  <iconify-icon icon="lucide:clipboard-list"></iconify-icon><span>내 신청</span>
+                <% end %>
               <% end %>
             </div>
           </div>
-
-          <%# Working (인증 필요) %>
-          <% if authenticated? %>
-            <div class="nav__group"
-                 data-controller="nav-group"
-                 data-action="mouseenter->nav-group#hover mouseleave->nav-group#hoverOut">
-              <button class="nav__group-btn"
-                      data-action="click->nav-group#tap"
-                      data-nav-group-target="trigger"
-                      aria-expanded="false"
-                      aria-haspopup="true">
-                <span class="nav__group-label">Working</span>
-                <iconify-icon icon="lucide:list-checks" class="nav__group-icon"></iconify-icon>
-                <iconify-icon icon="lucide:chevron-down" class="nav__group-chevron"></iconify-icon>
-              </button>
-              <div class="nav__dropdown" data-nav-group-target="dropdown">
-                <%= link_to work_plans_path, class: "nav__dropdown-item" do %>
-                  <iconify-icon icon="lucide:calendar-check"></iconify-icon><span>작업계획서</span>
-                <% end %>
-                <%= link_to work_journals_path, class: "nav__dropdown-item" do %>
-                  <iconify-icon icon="lucide:square-pen"></iconify-icon><span>업무일지</span>
-                <% end %>
-                <%= link_to manpower_records_path, class: "nav__dropdown-item" do %>
-                  <iconify-icon icon="lucide:square-pen"></iconify-icon><span>인력지원수행내역</span>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
 
           <%# Utils %>
           <div class="nav__group"
