@@ -25,7 +25,10 @@ class User < ApplicationRecord
     User.where(id: group_member_ids).where.not(id: id)
   end
 
-  enum :role, { user: 0, admin: 1 }, default: :user
+  enum :role,        { user: 0, admin: 1 },                                                     default: :user
+  enum :sport_level, { beginner: 0, intermediate: 1, advanced: 2, pro: 3 },                   default: :beginner
+  enum :age_group,   { twenties: 0, thirties: 1, forties: 2, fifties: 3, sixties_plus: 4 },   default: :twenties
+  enum :gender,      { unspecified: 0, male: 1, female: 2, other: 3 },                        default: :unspecified
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   normalizes :nickname, with: ->(n) { n.strip }

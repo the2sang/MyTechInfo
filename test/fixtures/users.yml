@@ -5,15 +5,24 @@ one:
   nickname: one_user
   password_digest: <%= password_digest %>
   role: 0
+  sport_level: 0
+  age_group: 0
+  gender: 0
 
 two:
   email_address: two@example.com
   nickname: two_user
   password_digest: <%= password_digest %>
   role: 0
+  sport_level: 0
+  age_group: 0
+  gender: 0
 
 admin:
   email_address: admin@example.com
   nickname: admin_user
   password_digest: <%= password_digest %>
   role: 1
+  sport_level: 0
+  age_group: 0
+  gender: 0
