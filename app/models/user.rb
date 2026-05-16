@@ -28,10 +28,10 @@ class User < ApplicationRecord
     User.where(id: group_member_ids).where.not(id: id)
   end
 
-  enum :role,        { user: 0, admin: 1 },                                                     default: :user
-  enum :sport_level, { beginner: 0, intermediate: 1, advanced: 2, pro: 3 },                   default: :beginner
-  enum :age_group,   { twenties: 0, thirties: 1, forties: 2, fifties: 3, sixties_plus: 4 },   default: :twenties
-  enum :gender,      { unspecified: 0, male: 1, female: 2, other: 3 },                        default: :unspecified
+  enum :role,        { user: 0, admin: 1 },                                                                                   default: :user
+  enum :sport_level, { beginner: 0, beginner_intermediate: 1, intermediate: 2, intermediate_advanced: 3, advanced: 4 },     default: :beginner
+  enum :age_group,   { twenties: 0, thirties: 1, forties: 2, fifties: 3, sixties_plus: 4, teens: 5 },                       default: :twenties
+  enum :gender,      { unspecified: 0, male: 1, female: 2, other: 3 },                                                      default: :unspecified
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   normalizes :nickname, with: ->(n) { n.strip }
@@ -43,6 +43,11 @@ class User < ApplicationRecord
                        uniqueness: { case_sensitive: false },
                        length: { minimum: 2, maximum: 30 }
   validates :password, length: { minimum: 8 }, allow_nil: true
+  validates :display_name, length: { maximum: 30 }, allow_blank: true
+
+  def profile_complete?
+    profile_completed_at.present?
+  end
 
   def self.find_or_create_by_oauth(auth)
     identity = Identity.find_by(provider: auth.provider, uid: auth.uid)

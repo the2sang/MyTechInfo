@@ -17,6 +17,11 @@ module ApplicationHelper
     superscript: true
   )
 
+  def format_ip_address(ip)
+    return "-" if ip.blank?
+    ip.include?(":") ? "IPv6" : ip
+  end
+
   def highlight_search(text, query)
     return h(text) if query.blank? || text.blank?
     safe_text = h(text)
@@ -43,5 +48,13 @@ module ApplicationHelper
       result = render_markdown(tech_info.content)
       strip_tags(result).strip.blank? ? nil : result
     end
+  end
+
+  def managed_clubs
+    return [] unless current_user
+    current_user.club_memberships.approved
+                .where(role: :manager)
+                .includes(:club)
+                .map(&:club)
   end
 end

@@ -1,0 +1,90 @@
+<% content_for :title, @club.name %>
+
+<div class="page">
+  <div class="page__header">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <%= link_to admin_clubs_path, class: "btn btn--ghost btn--sm" do %>
+        <iconify-icon icon="lucide:arrow-left"></iconify-icon>
+      <% end %>
+      <h1 style="font-size: 20px; font-weight: 700; color: var(--hcp-black); margin: 0;">
+        <%= @club.name %>
+      </h1>
+      <% if @club.approved? %>
+        <span class="admin-badge" style="background: #dcfce7; color: #15803d;">ACTIVE</span>
+      <% elsif @club.suspended? %>
+        <span class="admin-badge" style="background: #fee2e2; color: var(--hcp-danger);">SUSPENDED</span>
+      <% else %>
+        <span class="admin-badge">PENDING</span>
+      <% end %>
+    </div>
+    <div class="page__header-actions">
+      <% if @club.approved? %>
+        <%= button_to admin_club_path(@club), method: :patch, params: { status: "suspended" },
+            class: "btn btn--ghost btn--sm",
+            style: "color: var(--hcp-danger); border-color: var(--hcp-danger);",
+            data: { turbo_confirm: "#{@club.name} 동호회를 정지하시겠습니까?" } do %>
+          <iconify-icon icon="lucide:pause-circle"></iconify-icon> 정지
+        <% end %>
+      <% else %>
+        <%= button_to admin_club_path(@club), method: :patch, params: { status: "approved" },
+            class: "btn btn--primary btn--sm" do %>
+          <iconify-icon icon="lucide:play-circle"></iconify-icon> 활성화
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="admin-grid">
+    <section class="admin-panel">
+      <div class="admin-panel__header">
+        <h2 class="admin-panel__title">기본 정보</h2>
+      </div>
+      <dl class="admin-dl">
+        <dt>개설자</dt>
+        <dd><%= @club.owner.nickname %> <span class="admin-table__mono" style="color: var(--hcp-helper);">(<%= @club.owner.email_address %>)</span></dd>
+        <dt>개설일</dt>
+        <dd class="admin-table__mono"><%= @club.created_at.strftime("%Y-%m-%d %H:%M") %></dd>
+        <% if @club.contact_phone.present? %>
+          <dt>연락처</dt>
+          <dd class="admin-table__mono"><%= @club.contact_phone %></dd>
+        <% end %>
+        <% if @club.contact_email.present? %>
+          <dt>이메일</dt>
+          <dd class="admin-table__mono"><%= @club.contact_email %></dd>
+        <% end %>
+        <% if @club.description.present? %>
+          <dt>소개</dt>
+          <dd><%= @club.description %></dd>
+        <% end %>
+      </dl>
+    </section>
+
+    <section class="admin-panel">
+      <div class="admin-panel__header">
+        <h2 class="admin-panel__title">멤버 (<%= @memberships.count %>)</h2>
+      </div>
+      <% if @memberships.any? %>
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>닉네임</th>
+              <th>역할</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @memberships.each do |m| %>
+              <tr>
+                <td><%= link_to m.user.nickname, admin_user_path(m.user) %></td>
+                <td><span class="admin-badge <%= m.manager? ? 'admin-badge--admin' : '' %>"><%= m.role.upcase %></span></td>
+                <td class="admin-table__mono"><%= m.status %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p class="empty-state">멤버가 없습니다.</p>
+      <% end %>
+    </section>
+  </div>
+</div>

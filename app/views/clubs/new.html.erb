@@ -1,4 +1,17 @@
-<div class="max-w-lg mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold mb-6">동호회 개설 신청</h1>
-  <%= render "form", club: @club %>
+<% content_for :title, "동호회 개설 신청" %>
+
+<div class="cl-page">
+  <div class="cl-content cl-content--form">
+    <div style="margin-bottom:32px;">
+      <p class="cl-hero__eyebrow">
+        <%= link_to "동호회", clubs_path %>
+        <span class="sep">/</span> 개설 신청
+      </p>
+      <h1 class="cl-hero__title">동호회 개설 신청</h1>
+      <p class="cl-hero__subtitle">관리자 승인 후 동호회가 활성화됩니다.</p>
+    </div>
+    <div class="cl-form-card">
+      <%= render "form", club: @club %>
+    </div>
+  </div>
 </div>

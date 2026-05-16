@@ -1,20 +1,45 @@
-<div class="max-w-4xl mx-auto px-4 py-8">
-  <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-bold">동호회 목록</h1>
-    <% if Current.user %>
-      <%= link_to "동호회 개설 신청", new_club_path, class: "px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700" %>
-    <% end %>
-  </div>
-  <div class="grid gap-4">
-    <% @clubs.each do |club| %>
-      <div class="border rounded-lg p-4 hover:shadow-md transition-shadow">
-        <%= link_to club.name, club_path(club), class: "text-lg font-semibold text-green-700 hover:underline" %>
-        <p class="text-gray-600 mt-1 text-sm"><%= club.description %></p>
-        <p class="text-xs text-gray-400 mt-2">회원 <%= club.club_memberships.approved.count %>명</p>
+<% content_for :title, "동호회" %>
+
+<div class="cl-page">
+  <div class="cl-hero">
+    <div class="cl-hero__inner">
+      <div class="cl-hero__row">
+        <div>
+          <p class="cl-hero__eyebrow">Club</p>
+          <h1 class="cl-hero__title">동호회 목록</h1>
+          <p class="cl-hero__subtitle">함께 운동하고 성장하는 커뮤니티를 찾아보세요.</p>
+        </div>
+        <%= link_to new_club_path, class: "btn btn--primary btn--sm" do %>
+          <iconify-icon icon="lucide:plus" width="13"></iconify-icon>
+          동호회 개설 신청
+        <% end %>
       </div>
-    <% end %>
+    </div>
+  </div>
+
+  <div class="cl-content">
     <% if @clubs.empty? %>
-      <p class="text-gray-500 text-center py-12">등록된 동호회가 없습니다.</p>
+      <div class="cl-empty">
+        <div class="cl-empty__icon">
+          <iconify-icon icon="lucide:users" width="20"></iconify-icon>
+        </div>
+        <p class="cl-empty__text">아직 등록된 동호회가 없습니다.</p>
+      </div>
+    <% else %>
+      <div class="cl-grid">
+        <% @clubs.each do |club| %>
+          <%= link_to club_path(club), class: "cl-card" do %>
+            <div class="cl-card__top">
+              <div class="cl-card__icon">
+                <iconify-icon icon="lucide:users" width="16"></iconify-icon>
+              </div>
+              <span class="cl-badge cl-badge--neutral">회원 <%= club.club_memberships.approved.count %>명</span>
+            </div>
+            <p class="cl-card__name"><%= club.name %></p>
+            <p class="cl-card__desc"><%= club.description.presence || "소개가 없습니다." %></p>
+          <% end %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>

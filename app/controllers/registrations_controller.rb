@@ -9,6 +9,7 @@ class RegistrationsController < ApplicationController
     @user = User.new(registration_params)
 
     if @user.save
+      Clubs::AssignManagerByEmailService.call(user: @user)
       start_new_session_for @user
       redirect_to root_path, notice: "Welcome! Your account has been created."
     else

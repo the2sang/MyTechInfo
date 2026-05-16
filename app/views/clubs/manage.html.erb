@@ -1,0 +1,219 @@
+<% content_for :title, "#{@club.name} 관리" %>
+
+<div class="page">
+  <div class="page__header">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <%= link_to @club, class: "btn btn--ghost btn--sm" do %>
+        <iconify-icon icon="lucide:arrow-left"></iconify-icon>
+      <% end %>
+      <h1 style="font-size:20px; font-weight:700; margin:0;"><%= @club.name %> 관리</h1>
+    </div>
+    <div class="page__header-actions">
+      <%= link_to edit_club_path(@club), class: "btn btn--secondary btn--sm" do %>
+        <iconify-icon icon="lucide:pencil"></iconify-icon> 기본정보 수정
+      <% end %>
+      <%= link_to new_game_session_path(club_id: @club.id), class: "btn btn--primary btn--sm" do %>
+        <iconify-icon icon="lucide:plus"></iconify-icon> 세션 추가
+      <% end %>
+    </div>
+  </div>
+
+  <%# ── 기본 정보 요약 ───────────────────────────────── %>
+  <section class="admin-panel" style="margin-bottom:16px;">
+    <div class="admin-panel__header">
+      <h2 class="admin-panel__title"><iconify-icon icon="lucide:info" style="vertical-align:-2px;"></iconify-icon> 동호회 기본정보</h2>
+      <%= link_to edit_club_path(@club), class: "admin-panel__link" do %>수정<% end %>
+    </div>
+    <dl class="admin-dl">
+      <dt>동호회명</dt><dd><%= @club.name %></dd>
+      <% if @club.description.present? %>
+        <dt>소개</dt><dd><%= @club.description %></dd>
+      <% end %>
+      <% if @club.contact_phone.present? %>
+        <dt>연락처</dt><dd class="admin-table__mono"><%= @club.contact_phone %></dd>
+      <% end %>
+      <% if @club.contact_email.present? %>
+        <dt>이메일</dt><dd class="admin-table__mono"><%= @club.contact_email %></dd>
+      <% end %>
+    </dl>
+  </section>
+
+  <%# ── 게스트 신청 ─────────────────────────────────── %>
+  <% if @guest_applications.any? %>
+    <section class="admin-panel" style="border-color:#a5b4fc; margin-bottom:16px;">
+      <div class="admin-panel__header">
+        <h2 class="admin-panel__title">
+          <iconify-icon icon="lucide:user-round-plus" style="color:#6366f1; vertical-align:-2px;"></iconify-icon>
+          게스트 신청 (<%= @guest_applications.count %>)
+        </h2>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr><th>이름</th><th>연락처</th><th>이메일</th><th>메시지</th><th>신청일</th><th>상태</th></tr>
+        </thead>
+        <tbody>
+          <% @guest_applications.each do |ga| %>
+            <tr>
+              <td style="font-weight:600;"><%= ga.name %></td>
+              <td class="admin-table__mono"><%= ga.phone %></td>
+              <td class="admin-table__mono"><%= ga.email.presence || "-" %></td>
+              <td style="max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"><%= ga.message.presence || "-" %></td>
+              <td class="admin-table__mono"><%= ga.created_at.strftime("%m/%d") %></td>
+              <td><span class="admin-badge" style="background:#ede9fe;color:#6d28d9;"><%= ga.status %></span></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </section>
+  <% end %>
+
+  <%# ── 가입 신청 대기 ──────────────────────────────── %>
+  <% if @pending_memberships.any? %>
+    <section class="admin-panel" style="border-color:#fbbf24; margin-bottom:16px;">
+      <div class="admin-panel__header">
+        <h2 class="admin-panel__title">
+          <iconify-icon icon="lucide:user-check" style="color:#d97706; vertical-align:-2px;"></iconify-icon>
+          가입 신청 대기
+        </h2>
+        <span class="admin-badge" style="background:#fef3c7; color:#92400e;"><%= @pending_memberships.count %></span>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr><th>닉네임</th><th>이메일</th><th>신청일</th><th></th></tr>
+        </thead>
+        <tbody>
+          <% @pending_memberships.each do |m| %>
+            <tr>
+              <td style="font-weight:600;"><%= m.user.nickname %></td>
+              <td class="admin-table__mono"><%= m.user.email_address %></td>
+              <td class="admin-table__mono"><%= m.created_at.strftime("%Y-%m-%d") %></td>
+              <td style="text-align:right; display:flex; gap:6px; justify-content:flex-end;">
+                <%= button_to club_club_membership_path(@club, m),
+                    method: :patch, params: { status: "approved" },
+                    class: "btn btn--primary btn--sm" do %>
+                  <iconify-icon icon="lucide:check"></iconify-icon> 승인
+                <% end %>
+                <%= button_to club_club_membership_path(@club, m),
+                    method: :patch, params: { status: "rejected" },
+                    class: "btn btn--ghost btn--sm",
+                    style: "color:var(--hcp-danger); border-color:var(--hcp-danger);" do %>
+                  <iconify-icon icon="lucide:x"></iconify-icon> 거절
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </section>
+  <% end %>
+
+  <%# ── 회원 관리 ─────────────────────────────────── %>
+  <section class="admin-panel" style="margin-bottom:16px;">
+    <div class="admin-panel__header">
+      <h2 class="admin-panel__title">
+        <iconify-icon icon="lucide:users" style="vertical-align:-2px;"></iconify-icon>
+        회원 목록 (<%= @approved_memberships.count %>)
+      </h2>
+    </div>
+    <% if @approved_memberships.any? %>
+      <table class="admin-table">
+        <thead>
+          <tr><th>닉네임</th><th>이메일</th><th>역할</th><th>가입일</th><th></th></tr>
+        </thead>
+        <tbody>
+          <% @approved_memberships.each do |m| %>
+            <tr>
+              <td style="font-weight:600;"><%= m.user.nickname %></td>
+              <td class="admin-table__mono"><%= m.user.email_address %></td>
+              <td>
+                <% if m.manager? %>
+                  <span class="admin-badge admin-badge--admin">관리자</span>
+                <% else %>
+                  <span class="admin-badge">회원</span>
+                <% end %>
+              </td>
+              <td class="admin-table__mono"><%= m.created_at.strftime("%Y-%m-%d") %></td>
+              <td style="text-align:right; display:flex; gap:6px; justify-content:flex-end;">
+                <% unless m.user == @club.owner %>
+                  <% if m.member? %>
+                    <%= button_to club_club_membership_path(@club, m),
+                        method: :patch, params: { status: m.status, role: "manager" },
+                        class: "btn btn--ghost btn--sm",
+                        title: "관리자로 승격" do %>
+                      <iconify-icon icon="lucide:shield-plus"></iconify-icon>
+                    <% end %>
+                  <% end %>
+                  <%= button_to club_club_membership_path(@club, m),
+                      method: :delete,
+                      class: "btn btn--ghost btn--sm",
+                      style: "color:var(--hcp-danger);",
+                      data: { turbo_confirm: "#{m.user.nickname}님을 탈퇴 처리하시겠습니까?" } do %>
+                    <iconify-icon icon="lucide:user-minus"></iconify-icon>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="empty-state">승인된 회원이 없습니다.</p>
+    <% end %>
+  </section>
+
+  <%# ── 운동 세션 관리 ──────────────────────────────── %>
+  <section class="admin-panel">
+    <div class="admin-panel__header">
+      <h2 class="admin-panel__title">
+        <iconify-icon icon="lucide:calendar-days" style="vertical-align:-2px;"></iconify-icon>
+        운동 세션 관리
+      </h2>
+      <%= link_to new_game_session_path(club_id: @club.id), class: "btn btn--primary btn--sm" do %>
+        <iconify-icon icon="lucide:plus"></iconify-icon> 세션 추가
+      <% end %>
+    </div>
+    <% if @game_sessions.any? %>
+      <table class="admin-table">
+        <thead>
+          <tr><th>제목</th><th>날짜</th><th>장소</th><th>상태</th><th>반복</th><th></th></tr>
+        </thead>
+        <tbody>
+          <% @game_sessions.each do |gs| %>
+            <tr>
+              <td style="font-weight:600;">
+                <%= link_to gs.title, gs, style:"color:var(--hcp-black); text-decoration:none;" %>
+              </td>
+              <td class="admin-table__mono"><%= gs.scheduled_date.strftime("%m/%d(%a)") %></td>
+              <td><%= gs.venue_name %></td>
+              <td>
+                <span class="admin-badge" style="<%= gs.open? ? 'background:#dcfce7;color:#15803d;' : 'background:#fee2e2;color:#b91c1c;' %>">
+                  <%= gs.open? ? "모집중" : gs.status %>
+                </span>
+              </td>
+              <td>
+                <% if gs.repeating? %>
+                  <span class="admin-badge" style="background:#ede9fe;color:#6d28d9;" title="<%= gs.repeat_days_label %>">
+                    <iconify-icon icon="lucide:repeat" style="font-size:10px;"></iconify-icon> <%= gs.repeat_days_label %>
+                  </span>
+                <% end %>
+              </td>
+              <td style="text-align:right; display:flex; gap:6px; justify-content:flex-end;">
+                <%= link_to edit_game_session_path(gs), class: "btn btn--ghost btn--sm" do %>
+                  <iconify-icon icon="lucide:pencil"></iconify-icon>
+                <% end %>
+                <%= button_to gs, method: :delete,
+                    class: "btn btn--ghost btn--sm",
+                    style: "color:var(--hcp-danger);",
+                    data: { turbo_confirm: "\"#{gs.title}\" 세션을 삭제하시겠습니까?" } do %>
+                  <iconify-icon icon="lucide:trash-2"></iconify-icon>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="empty-state">등록된 운동 세션이 없습니다.</p>
+    <% end %>
+  </section>
+</div>

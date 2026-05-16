@@ -18,6 +18,7 @@ class OmniauthCallbacksController < ApplicationController
   def oauth_login(auth, provider_name)
     user = User.find_or_create_by_oauth(auth)
     if user
+      Clubs::AssignManagerByEmailService.call(user: user)
       start_new_session_for user
       redirect_to after_authentication_url, notice: "#{provider_name} 계정으로 로그인됐습니다."
     else

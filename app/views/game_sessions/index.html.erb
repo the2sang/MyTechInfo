@@ -1,15 +1,52 @@
-<div class="max-w-4xl mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold mb-6">운동 세션 목록</h1>
-  <div class="grid gap-4">
-    <% @game_sessions.each do |gs| %>
-      <div class="border rounded-lg p-4">
-        <p class="text-xs text-gray-400"><%= gs.club.name %></p>
-        <%= link_to gs.title, game_session_path(gs), class: "font-semibold text-green-700 hover:underline" %>
-        <p class="text-sm text-gray-500"><%= gs.scheduled_date.strftime("%Y-%m-%d") %> | <%= gs.venue_name %> | 참가 <%= gs.confirmed_count %>명<% if gs.max_participants %> / <%= gs.max_participants %>명<% end %></p>
-      </div>
-    <% end %>
+<% content_for :title, "운동 세션" %>
+
+<div class="cl-page">
+  <div class="cl-hero">
+    <div class="cl-hero__inner">
+      <p class="cl-hero__eyebrow">Sessions</p>
+      <h1 class="cl-hero__title">운동 세션</h1>
+      <p class="cl-hero__subtitle">참가 가능한 모든 운동 세션을 확인하세요.</p>
+    </div>
+  </div>
+
+  <div class="cl-content">
     <% if @game_sessions.empty? %>
-      <p class="text-gray-500 text-center py-12">등록된 운동 세션이 없습니다.</p>
+      <div class="cl-empty">
+        <div class="cl-empty__icon">
+          <iconify-icon icon="lucide:calendar" width="20"></iconify-icon>
+        </div>
+        <p class="cl-empty__text">등록된 운동 세션이 없습니다.</p>
+      </div>
+    <% else %>
+      <div class="cl-list">
+        <% @game_sessions.each do |gs| %>
+          <%= link_to game_session_path(gs), class: "cl-list-item" do %>
+            <div class="cl-list-item__left">
+              <div class="cl-list-item__icon">
+                <iconify-icon icon="lucide:dumbbell" width="15"></iconify-icon>
+              </div>
+              <div style="min-width:0;">
+                <p class="cl-list-item__club"><%= gs.club.name %></p>
+                <p class="cl-list-item__title"><%= gs.title %></p>
+                <p class="cl-list-item__meta">
+                  <%= gs.scheduled_date.strftime("%Y.%m.%d") %> &middot;
+                  <%= gs.venue_name %> &middot;
+                  참가 <%= gs.confirmed_count %><% if gs.max_participants %>/<%= gs.max_participants %><% end %>명
+                </p>
+              </div>
+            </div>
+            <div class="cl-list-item__right">
+              <% if gs.full? %>
+                <span class="cl-badge cl-badge--neutral">마감</span>
+              <% elsif gs.fee > 0 %>
+                <span class="cl-badge cl-badge--dark"><%= number_with_delimiter(gs.fee) %>원</span>
+              <% else %>
+                <span class="cl-badge cl-badge--neutral">무료</span>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>

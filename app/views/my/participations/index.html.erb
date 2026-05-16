@@ -1,25 +1,53 @@
-<div class="max-w-3xl mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold mb-6">내 신청 내역</h1>
-  <% if @participations.empty? %>
-    <p class="text-gray-500 text-center py-12">신청한 세션이 없습니다.</p>
-  <% else %>
-    <div class="space-y-3">
-      <% @participations.each do |p| %>
-        <div class="border rounded-lg p-4 flex items-center justify-between">
-          <div>
-            <%= link_to p.game_session.title, game_session_path(p.game_session), class: "font-semibold text-green-700 hover:underline" %>
-            <p class="text-sm text-gray-500"><%= p.game_session.scheduled_date.strftime("%Y-%m-%d") %> | <%= p.game_session.venue_name %></p>
-            <span class="text-xs px-2 py-0.5 rounded-full <%= p.confirmed? ? 'bg-green-100 text-green-700' : p.waitlisted? ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-500' %>">
-              <%= { "confirmed" => "확정", "waitlisted" => "대기", "cancelled" => "취소" }[p.status] %>
-            </span>
-          </div>
-          <% unless p.cancelled? %>
-            <%= button_to "취소", my_participation_path(p), method: :delete,
-                  class: "text-sm text-red-500 hover:underline",
-                  data: { turbo_confirm: "참가를 취소하시겠습니까?" } %>
-          <% end %>
-        </div>
-      <% end %>
+<% content_for :title, "내 신청 내역" %>
+
+<div class="cl-page">
+  <div class="cl-hero">
+    <div class="cl-hero__inner">
+      <p class="cl-hero__eyebrow">My</p>
+      <h1 class="cl-hero__title">내 신청 내역</h1>
+      <p class="cl-hero__subtitle">참가 신청한 운동 세션 목록입니다.</p>
     </div>
-  <% end %>
+  </div>
+
+  <div class="cl-content" style="max-width:720px;">
+    <% if @participations.empty? %>
+      <div class="cl-empty">
+        <div class="cl-empty__icon">
+          <iconify-icon icon="lucide:clipboard-list" width="20"></iconify-icon>
+        </div>
+        <p class="cl-empty__text">신청한 세션이 없습니다.</p>
+        <%= link_to "운동 세션 둘러보기", game_sessions_path, class: "cl-empty__link" %>
+      </div>
+    <% else %>
+      <div class="cl-list">
+        <% @participations.each do |p| %>
+          <div class="cl-participation-item">
+            <div style="display:flex; align-items:center; gap:14px; min-width:0; flex:1;">
+              <div class="cl-list-item__icon">
+                <iconify-icon icon="lucide:dumbbell" width="14"></iconify-icon>
+              </div>
+              <div style="min-width:0;">
+                <%= link_to p.game_session.title, game_session_path(p.game_session),
+                      class: "cl-participation-item__title" %>
+                <p class="cl-participation-item__meta">
+                  <%= p.game_session.scheduled_date.strftime("%Y.%m.%d") %> &middot;
+                  <%= p.game_session.venue_name %>
+                </p>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
+              <span class="cl-badge cl-badge--<%= p.confirmed? ? 'confirmed' : p.waitlisted? ? 'waiting' : 'cancelled' %>">
+                <%= { "confirmed" => "확정", "waitlisted" => "대기", "cancelled" => "취소" }[p.status] %>
+              </span>
+              <% unless p.cancelled? %>
+                <%= button_to "취소", my_participation_path(p), method: :delete,
+                      class: "cl-participation-item__cancel",
+                      data: { turbo_confirm: "참가를 취소하시겠습니까?" } %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

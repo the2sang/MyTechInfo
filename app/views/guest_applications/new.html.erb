@@ -1,0 +1,66 @@
+<% content_for :title, "게스트 참가 신청" %>
+
+<div class="cl-page">
+  <div class="cl-content cl-content--form">
+    <div style="margin-bottom:32px;">
+      <p class="cl-hero__eyebrow">
+        <%= link_to "동호회", clubs_path %>
+        <span class="sep">/</span>
+        <%= link_to @club.name, club_path(@club) %>
+        <span class="sep">/</span> 게스트 신청
+      </p>
+      <h1 class="cl-hero__title">게스트 참가 신청</h1>
+      <p style="font-size:13px; color:var(--hcp-helper); margin-top:8px;">
+        회원 가입 없이 참가 신청이 가능합니다. 신청 후 담당자가 연락드립니다.
+      </p>
+    </div>
+
+    <div class="cl-form-card">
+      <%= form_with model: [@club, @guest_application],
+                    url: club_guest_applications_path(@club),
+                    class: "cl-form" do |f| %>
+        <%= hidden_field_tag :game_session_id, params[:game_session_id] if params[:game_session_id] %>
+        <% if @guest_application.errors.any? %>
+          <div class="cl-form__error">
+            <% @guest_application.errors.full_messages.each do |msg| %>
+              <p><%= msg %></p>
+            <% end %>
+          </div>
+        <% end %>
+
+        <div class="cl-form__field">
+          <%= f.label :name, "이름 *", class: "cl-form__label" %>
+          <%= f.text_field :name, class: "cl-form__input", placeholder: "홍길동", autocomplete: "name" %>
+        </div>
+
+        <div class="cl-form__field">
+          <%= f.label :phone, "연락처 *", class: "cl-form__label" %>
+          <%= f.telephone_field :phone, class: "cl-form__input", placeholder: "010-0000-0000", autocomplete: "tel" %>
+        </div>
+
+        <div class="cl-form__field">
+          <%= f.label :email, "이메일 (선택)", class: "cl-form__label" %>
+          <%= f.email_field :email, class: "cl-form__input", placeholder: "example@email.com", autocomplete: "email" %>
+        </div>
+
+        <div class="cl-form__field">
+          <%= f.label :message, "메시지 (선택)", class: "cl-form__label" %>
+          <%= f.text_area :message, rows: 3, class: "cl-form__textarea",
+                placeholder: "참가 목적이나 문의사항을 남겨주세요." %>
+        </div>
+
+        <div class="cl-form__notice" style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:12px; font-size:13px; color:#166534; margin-bottom:16px;">
+          <iconify-icon icon="lucide:shield-check" style="vertical-align:-2px; margin-right:6px;"></iconify-icon>
+          입력하신 정보는 동호회 담당자에게만 전달되며, 참가 연락 목적 외에 사용되지 않습니다.
+        </div>
+
+        <%= f.submit "신청하기", class: "cl-form__submit" %>
+      <% end %>
+    </div>
+
+    <div style="text-align:center; margin-top:20px;">
+      <%= link_to "회원으로 가입하기 →", new_registration_path,
+            style: "font-size:13px; color:var(--hcp-vagrant); text-decoration:none;" %>
+    </div>
+  </div>
+</div>

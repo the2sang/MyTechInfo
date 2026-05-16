@@ -1,4 +1,44 @@
 ko:
+  errors:
+    messages:
+      taken: "이미 사용 중입니다"
+      blank: "을(를) 입력해 주세요"
+      too_short: "%{count}자 이상 입력해 주세요"
+      too_long: "%{count}자 이하로 입력해 주세요"
+      invalid: "형식이 올바르지 않습니다"
+      not_a_number: "숫자를 입력해 주세요"
+  activerecord:
+    errors:
+      messages:
+        taken: "이미 사용 중입니다"
+        blank: "을(를) 입력해 주세요"
+    attributes:
+      user:
+        display_name: 이름
+        nickname: 닉네임
+        sport_level: 운동 레벨
+        gender: 성별
+        age_group: 연령대
+  enums:
+    user:
+      sport_level:
+        beginner: 초급
+        beginner_intermediate: 초중급
+        intermediate: 중급
+        intermediate_advanced: 중상급
+        advanced: 상급
+      age_group:
+        teens: 10대
+        twenties: 20대
+        thirties: 30대
+        forties: 40대
+        fifties: 50대
+        sixties_plus: 60대 이상
+      gender:
+        unspecified: 미설정
+        male: 남성
+        female: 여성
+        other: 기타
   work_journals:
     category:
       task: "작업"

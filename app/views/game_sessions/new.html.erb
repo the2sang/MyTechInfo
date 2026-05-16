@@ -1,4 +1,16 @@
-<div class="max-w-2xl mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold mb-6">운동 세션 등록</h1>
-  <%= render "form", game_session: @game_session %>
+<% content_for :title, "운동 세션 등록" %>
+
+<div class="cl-page">
+  <div class="cl-content cl-content--form">
+    <div style="margin-bottom:32px;">
+      <p class="cl-hero__eyebrow">
+        <%= link_to "운동 세션", game_sessions_path %>
+        <span class="sep">/</span> 등록
+      </p>
+      <h1 class="cl-hero__title">운동 세션 등록</h1>
+    </div>
+    <div class="cl-form-card">
+      <%= render "form", game_session: @game_session %>
+    </div>
+  </div>
 </div>

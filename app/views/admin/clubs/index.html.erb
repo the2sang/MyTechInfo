@@ -1,31 +1,119 @@
-<div class="max-w-4xl mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold mb-6">동호회 관리</h1>
-  <h2 class="text-lg font-semibold mb-3">승인 대기 (<%= @pending_clubs.count %>)</h2>
-  <div class="space-y-2 mb-8">
-    <% @pending_clubs.each do |club| %>
-      <div class="border rounded-lg p-4 flex items-center justify-between bg-yellow-50">
-        <div>
-          <p class="font-semibold"><%= club.name %></p>
-          <p class="text-sm text-gray-500">개설자: <%= club.owner.nickname %> | <%= club.created_at.strftime("%Y-%m-%d") %></p>
-        </div>
-        <div class="flex gap-2">
-          <%= button_to "승인", admin_club_path(club), method: :patch, params: { status: "approved" }, class: "px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700" %>
-          <%= button_to "거절", admin_club_path(club), method: :patch, params: { status: "suspended" }, class: "px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600" %>
-        </div>
-      </div>
-    <% end %>
-    <% if @pending_clubs.empty? %><p class="text-gray-400 text-sm">대기 중인 동호회가 없습니다.</p><% end %>
+<% content_for :title, "동호회 관리" %>
+
+<div class="page">
+  <div class="page__header">
+    <h1 class="title-collage" aria-label="Clubs">
+      <span class="tc-letter tc-1">C</span><span class="tc-letter tc-2">l</span><span class="tc-letter tc-3">u</span><span class="tc-letter tc-4">b</span><span class="tc-letter tc-5">s</span>
+    </h1>
+    <div class="page__header-actions">
+      <%= link_to admin_root_path, class: "btn btn--ghost btn--sm" do %>
+        <iconify-icon icon="lucide:arrow-left"></iconify-icon> 대시보드
+      <% end %>
+    </div>
   </div>
-  <h2 class="text-lg font-semibold mb-3">승인된 동호회 (<%= @approved_clubs.count %>)</h2>
-  <div class="space-y-2">
-    <% @approved_clubs.each do |club| %>
-      <div class="border rounded-lg p-4 flex items-center justify-between">
-        <div>
-          <p class="font-semibold"><%= link_to club.name, admin_club_path(club), class: "hover:underline" %></p>
-          <p class="text-sm text-gray-500">개설자: <%= club.owner.nickname %></p>
-        </div>
-        <%= button_to "정지", admin_club_path(club), method: :patch, params: { status: "suspended" }, class: "px-3 py-1 bg-gray-400 text-white text-sm rounded hover:bg-gray-500" %>
-      </div>
-    <% end %>
+
+  <div class="admin-stats">
+    <div class="admin-stats__card">
+      <div class="admin-stats__label">활성 동호회</div>
+      <div class="admin-stats__value"><%= @approved_clubs.count %></div>
+    </div>
+    <div class="admin-stats__card">
+      <div class="admin-stats__label">정지된 동호회</div>
+      <div class="admin-stats__value" style="color: var(--hcp-danger)"><%= @suspended_clubs.count %></div>
+    </div>
+    <div class="admin-stats__card">
+      <div class="admin-stats__label">전체</div>
+      <div class="admin-stats__value"><%= @approved_clubs.count + @suspended_clubs.count %></div>
+    </div>
   </div>
+
+  <section class="admin-panel">
+    <div class="admin-panel__header">
+      <h2 class="admin-panel__title">
+        <iconify-icon icon="lucide:check-circle" style="color: var(--hcp-success); vertical-align: -2px;"></iconify-icon>
+        활성 동호회
+      </h2>
+      <span class="admin-badge" style="background: var(--hcp-success); color: #fff;"><%= @approved_clubs.count %></span>
+    </div>
+
+    <% if @approved_clubs.any? %>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>동호회명</th>
+            <th>개설자</th>
+            <th>개설일</th>
+            <th>상태</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @approved_clubs.each do |club| %>
+            <tr>
+              <td>
+                <%= link_to admin_club_path(club), style: "font-weight: 600; color: var(--hcp-black); text-decoration: none;" do %>
+                  <%= club.name %>
+                <% end %>
+              </td>
+              <td class="admin-table__mono"><%= club.owner.nickname %></td>
+              <td class="admin-table__mono"><%= club.created_at.strftime("%Y-%m-%d") %></td>
+              <td><span class="admin-badge" style="background: #dcfce7; color: #15803d;">ACTIVE</span></td>
+              <td style="text-align: right;">
+                <%= button_to admin_club_path(club), method: :patch, params: { status: "suspended" },
+                    class: "btn btn--ghost btn--sm",
+                    style: "color: var(--hcp-danger); border-color: var(--hcp-danger);",
+                    data: { turbo_confirm: "#{club.name} 동호회를 정지하시겠습니까?" } do %>
+                  <iconify-icon icon="lucide:pause-circle"></iconify-icon> 정지
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="empty-state">활성 동호회가 없습니다.</p>
+    <% end %>
+  </section>
+
+  <section class="admin-panel" style="border-color: #fecaca;">
+    <div class="admin-panel__header">
+      <h2 class="admin-panel__title">
+        <iconify-icon icon="lucide:pause-circle" style="color: var(--hcp-danger); vertical-align: -2px;"></iconify-icon>
+        정지된 동호회
+      </h2>
+      <span class="admin-badge" style="background: var(--hcp-danger-bg); color: var(--hcp-danger);"><%= @suspended_clubs.count %></span>
+    </div>
+
+    <% if @suspended_clubs.any? %>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>동호회명</th>
+            <th>개설자</th>
+            <th>개설일</th>
+            <th>상태</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @suspended_clubs.each do |club| %>
+            <tr style="background: var(--hcp-danger-bg);">
+              <td style="font-weight: 600;"><%= club.name %></td>
+              <td class="admin-table__mono"><%= club.owner.nickname %></td>
+              <td class="admin-table__mono"><%= club.created_at.strftime("%Y-%m-%d") %></td>
+              <td><span class="admin-badge" style="background: #fee2e2; color: var(--hcp-danger);">SUSPENDED</span></td>
+              <td style="text-align: right;">
+                <%= button_to admin_club_path(club), method: :patch, params: { status: "approved" },
+                    class: "btn btn--primary btn--sm" do %>
+                  <iconify-icon icon="lucide:play-circle"></iconify-icon> 활성화
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="empty-state">정지된 동호회가 없습니다.</p>
+    <% end %>
+  </section>
 </div>

@@ -1,6 +1,6 @@
-# MyTechInfo
+# 피클볼 플레이그라운드
 
-개인 기술정보 관리 시스템. Ruby on Rails 8 기반의 Solid Stack 애플리케이션.
+피클볼 플레이그라운드 포털. Ruby on Rails 8 기반의 Solid Stack 애플리케이션.
 
 ---
 

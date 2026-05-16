@@ -1,17 +1,88 @@
-<div class="max-w-4xl mx-auto px-4 py-8">
-  <h1 class="text-2xl font-bold mb-2"><%= @club.name %></h1>
-  <p class="text-gray-600 mb-4"><%= @club.description %></p>
-  <% if Current.user && !Current.user.club_memberships.exists?(club: @club) %>
-    <%= button_to "가입 신청", club_club_memberships_path(@club), method: :post,
-          class: "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 mb-6" %>
-  <% end %>
-  <h2 class="text-xl font-semibold mb-4">운동 세션</h2>
-  <div class="grid gap-4">
-    <% @game_sessions.each do |gs| %>
-      <div class="border rounded-lg p-4">
-        <%= link_to gs.title, game_session_path(gs), class: "font-semibold text-green-700 hover:underline" %>
-        <p class="text-sm text-gray-500"><%= gs.scheduled_date.strftime("%Y-%m-%d") %> <%= gs.start_time.strftime("%H:%M") %>~<%= gs.end_time.strftime("%H:%M") %> | <%= gs.venue_name %></p>
-        <p class="text-xs text-gray-400">참가 <%= gs.confirmed_count %>명<% if gs.max_participants %> / 정원 <%= gs.max_participants %>명<% end %> | <%= gs.fee > 0 ? "#{gs.fee}원" : "무료" %></p>
+<% content_for :title, @club.name %>
+
+<div class="cl-page">
+  <div class="cl-hero">
+    <div class="cl-hero__inner">
+      <p class="cl-hero__eyebrow">
+        <%= link_to "동호회", clubs_path %>
+        <span class="sep">/</span>
+      </p>
+      <div class="cl-hero__row">
+        <div>
+          <h1 class="cl-hero__title"><%= @club.name %></h1>
+          <p class="cl-hero__subtitle"><%= @club.description %></p>
+          <div style="margin-top:10px; display:flex; align-items:center; gap:6px;">
+            <iconify-icon icon="lucide:users" width="13" style="color:var(--hcp-cool-gray)"></iconify-icon>
+            <span style="font-size:12px; color:var(--hcp-mid-gray);">회원 <%= @club.club_memberships.approved.count %>명</span>
+          </div>
+          <% unless Current.user&.club_memberships&.exists?(club: @club) %>
+            <div style="margin-top:12px;">
+              <% if Current.user %>
+                <%= button_to club_club_memberships_path(@club), method: :post, class: "btn btn--primary btn--sm" do %>
+                  <iconify-icon icon="lucide:user-plus" width="13"></iconify-icon>
+                  회원가입
+                <% end %>
+              <% else %>
+                <%= link_to new_session_path(return_to: club_path(@club)), class: "btn btn--primary btn--sm" do %>
+                  <iconify-icon icon="lucide:user-plus" width="13"></iconify-icon>
+                  회원가입
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cl-content">
+    <div class="cl-section-header">
+      <p class="cl-section-label">운동 세션</p>
+      <% if policy(@club).update? %>
+        <%= link_to new_game_session_path(club_id: @club.id),
+              style: "font-size:12px; color:var(--hcp-mid-gray); display:inline-flex; align-items:center; gap:4px;" do %>
+          <iconify-icon icon="lucide:plus" width="12"></iconify-icon> 세션 추가
+        <% end %>
+      <% end %>
+    </div>
+
+    <% if @game_sessions.empty? %>
+      <div class="cl-empty">
+        <div class="cl-empty__icon">
+          <iconify-icon icon="lucide:calendar" width="18"></iconify-icon>
+        </div>
+        <p class="cl-empty__text">등록된 운동 세션이 없습니다.</p>
+      </div>
+    <% else %>
+      <div class="cl-list">
+        <% @game_sessions.each do |gs| %>
+          <div class="cl-list-item" style="display:flex; align-items:center; justify-content:space-between;">
+            <%= link_to game_session_path(gs), style:"flex:1; display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; min-width:0;" do %>
+              <div class="cl-list-item__icon">
+                <iconify-icon icon="lucide:dumbbell" width="14"></iconify-icon>
+              </div>
+              <div style="min-width:0;">
+                <p class="cl-list-item__title"><%= gs.title %></p>
+                <p class="cl-list-item__meta">
+                  <%= gs.scheduled_date.strftime("%Y.%m.%d") %> &middot;
+                  <%= gs.start_time.strftime("%H:%M") %>~<%= gs.end_time.strftime("%H:%M") %> &middot;
+                  <%= gs.venue_name %>
+                </p>
+              </div>
+            <% end %>
+            <div class="cl-list-item__right" style="flex-shrink:0; display:flex; align-items:center; gap:8px;">
+              <span class="cl-list-item__count"><%= gs.confirmed_count %><% if gs.max_participants %>/<%= gs.max_participants %><% end %>명</span>
+              <% if gs.full? %>
+                <span class="cl-badge cl-badge--neutral">마감</span>
+              <% elsif !Current.user || !Current.user.club_memberships.exists?(club: @club) %>
+                <%= link_to new_club_guest_application_path(@club, game_session_id: gs.id),
+                      class: "btn btn--primary btn--sm" do %>
+                  <iconify-icon icon="lucide:user-plus" width="12"></iconify-icon> 게스트 신청
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>

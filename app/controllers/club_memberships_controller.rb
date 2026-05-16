@@ -21,8 +21,11 @@ class ClubMembershipsController < ApplicationController
   def update
     @membership = ClubMembership.find(params[:id])
     authorize @membership
-    @membership.update!(status: params[:status])
-    redirect_back_or_to club_club_memberships_path(@membership.club), notice: "가입 상태가 변경되었습니다."
+    attrs = {}
+    attrs[:status] = params[:status] if params[:status].present?
+    attrs[:role]   = params[:role]   if params[:role].present?
+    @membership.update!(attrs)
+    redirect_back_or_to manage_club_path(@membership.club), notice: "변경되었습니다."
   end
 
   def destroy

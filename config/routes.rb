@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get "/auth/failure",                to: "omniauth_callbacks#failure"
   resources :passwords, param: :token, only: %i[ new create edit update ]
   resource :registration, only: %i[ new create ]
+  resource :profile, only: %i[ edit update ]
 
   resource :focus, only: %i[show] do
     resource :settings, controller: "focus/settings", only: %i[show update]
@@ -31,10 +32,12 @@ Rails.application.routes.draw do
   end
 
   resources :clubs do
+    member { get :manage }
     resources :club_memberships, only: %i[index create update destroy], shallow: false
+    resources :guest_applications, only: %i[new create], path: "guest"
   end
   resources :game_sessions, only: %i[index show new create edit update destroy] do
-    resources :participations, only: %i[new create], shallow: false
+    resources :participations, only: %i[new create destroy], shallow: false
   end
   namespace :my do
     resources :participations, only: %i[index destroy]
@@ -54,5 +57,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   get "puzzle", to: "pages#puzzle"
-  root "tech_infos#index"
+  root "clubs#index"
 end
