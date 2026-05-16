@@ -1,0 +1,5 @@
+manager_membership:
+  club: approved_club
+  user: two
+  role: 1
+  status: 1
