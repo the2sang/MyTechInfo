@@ -35,6 +35,11 @@
       <div class="admin-stats__label">접속 (24h)</div>
       <div class="admin-stats__value"><%= @sessions_today %></div>
     </div>
+    <div class="admin-stats__card bg-yellow-50 border border-yellow-200">
+      <div class="admin-stats__label text-yellow-800">동호회 승인 대기</div>
+      <div class="admin-stats__value text-yellow-600"><%= Club.pending.count %></div>
+      <%= link_to "관리하기 →", admin_clubs_path, class: "text-sm text-yellow-700 hover:underline" %>
+    </div>
   </div>
 
   <div class="admin-grid">
@@ -93,7 +98,7 @@
             <% @recent_sessions.each do |session| %>
               <tr>
                 <td><%= link_to session.user.nickname, admin_user_path(session.user) %></td>
-                <td class="admin-table__mono"><%= session.ip_address %></td>
+                <td class="admin-table__mono"><%= format_ip_address(session.ip_address) %></td>
                 <td><%= session.created_at.strftime("%Y-%m-%d %H:%M") %></td>
               </tr>
             <% end %>

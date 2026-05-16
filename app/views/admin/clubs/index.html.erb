@@ -1,0 +1,31 @@
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">동호회 관리</h1>
+  <h2 class="text-lg font-semibold mb-3">승인 대기 (<%= @pending_clubs.count %>)</h2>
+  <div class="space-y-2 mb-8">
+    <% @pending_clubs.each do |club| %>
+      <div class="border rounded-lg p-4 flex items-center justify-between bg-yellow-50">
+        <div>
+          <p class="font-semibold"><%= club.name %></p>
+          <p class="text-sm text-gray-500">개설자: <%= club.owner.nickname %> | <%= club.created_at.strftime("%Y-%m-%d") %></p>
+        </div>
+        <div class="flex gap-2">
+          <%= button_to "승인", admin_club_path(club), method: :patch, params: { status: "approved" }, class: "px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700" %>
+          <%= button_to "거절", admin_club_path(club), method: :patch, params: { status: "suspended" }, class: "px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600" %>
+        </div>
+      </div>
+    <% end %>
+    <% if @pending_clubs.empty? %><p class="text-gray-400 text-sm">대기 중인 동호회가 없습니다.</p><% end %>
+  </div>
+  <h2 class="text-lg font-semibold mb-3">승인된 동호회 (<%= @approved_clubs.count %>)</h2>
+  <div class="space-y-2">
+    <% @approved_clubs.each do |club| %>
+      <div class="border rounded-lg p-4 flex items-center justify-between">
+        <div>
+          <p class="font-semibold"><%= link_to club.name, admin_club_path(club), class: "hover:underline" %></p>
+          <p class="text-sm text-gray-500">개설자: <%= club.owner.nickname %></p>
+        </div>
+        <%= button_to "정지", admin_club_path(club), method: :patch, params: { status: "suspended" }, class: "px-3 py-1 bg-gray-400 text-white text-sm rounded hover:bg-gray-500" %>
+      </div>
+    <% end %>
+  </div>
+</div>
