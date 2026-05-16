@@ -1,0 +1,21 @@
+<%= form_with model: [@club, game_session].compact, class: "space-y-4" do |f| %>
+  <% if game_session.errors.any? %>
+    <div class="bg-red-50 border border-red-200 rounded p-3">
+      <% game_session.errors.full_messages.each do |msg| %><p class="text-red-600 text-sm"><%= msg %></p><% end %>
+    </div>
+  <% end %>
+  <div><%= f.label :title, "세션 제목", class: "block text-sm font-medium mb-1" %><%= f.text_field :title, class: "w-full border rounded-lg px-3 py-2" %></div>
+  <div><%= f.label :venue_name, "장소명", class: "block text-sm font-medium mb-1" %><%= f.text_field :venue_name, class: "w-full border rounded-lg px-3 py-2" %></div>
+  <div><%= f.label :address, "주소", class: "block text-sm font-medium mb-1" %><%= f.text_field :address, class: "w-full border rounded-lg px-3 py-2" %></div>
+  <div class="grid grid-cols-2 gap-4">
+    <div><%= f.label :scheduled_date, "날짜", class: "block text-sm font-medium mb-1" %><%= f.date_field :scheduled_date, class: "w-full border rounded-lg px-3 py-2" %></div>
+    <div><%= f.label :court_count, "코트 수", class: "block text-sm font-medium mb-1" %><%= f.number_field :court_count, min: 1, class: "w-full border rounded-lg px-3 py-2" %></div>
+    <div><%= f.label :start_time, "시작 시간", class: "block text-sm font-medium mb-1" %><%= f.time_field :start_time, class: "w-full border rounded-lg px-3 py-2" %></div>
+    <div><%= f.label :end_time, "종료 시간", class: "block text-sm font-medium mb-1" %><%= f.time_field :end_time, class: "w-full border rounded-lg px-3 py-2" %></div>
+    <div><%= f.label :fee, "참가비 (원)", class: "block text-sm font-medium mb-1" %><%= f.number_field :fee, min: 0, class: "w-full border rounded-lg px-3 py-2" %></div>
+    <div><%= f.label :max_participants, "정원 (비워두면 무제한)", class: "block text-sm font-medium mb-1" %><%= f.number_field :max_participants, min: 1, class: "w-full border rounded-lg px-3 py-2" %></div>
+  </div>
+  <div><%= f.label :visibility, "공개 설정", class: "block text-sm font-medium mb-1" %><%= f.select :visibility, [["공개", "public_visibility"], ["회원 전용", "members_only"]], {}, class: "w-full border rounded-lg px-3 py-2" %></div>
+  <div><%= f.label :notes, "메모", class: "block text-sm font-medium mb-1" %><%= f.text_area :notes, rows: 3, class: "w-full border rounded-lg px-3 py-2" %></div>
+  <%= f.submit "저장", class: "px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer" %>
+<% end %>
