@@ -1,0 +1,11 @@
+approved_club:
+  name: "서울동호회"
+  description: "서울 지역 동호회"
+  owner: one
+  status: 1
+
+pending_club:
+  name: "신규동호회"
+  description: "승인 대기 중"
+  owner: one
+  status: 0

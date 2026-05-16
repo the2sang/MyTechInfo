@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_16_002746) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_16_003121) do
+  create_table "clubs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "name", null: false
+    t.integer "owner_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_clubs_on_name", unique: true
+    t.index ["owner_id"], name: "index_clubs_on_owner_id"
+    t.index ["status"], name: "index_clubs_on_status"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.datetime "created_at", null: false
@@ -221,6 +233,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_002746) do
     t.index ["user_id"], name: "index_work_plans_on_user_id"
   end
 
+  add_foreign_key "clubs", "users", column: "owner_id"
   add_foreign_key "comments", "tech_infos"
   add_foreign_key "comments", "users"
   add_foreign_key "group_memberships", "groups"
