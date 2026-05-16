@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_16_003522) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_16_004536) do
   create_table "club_memberships", force: :cascade do |t|
     t.integer "club_id", null: false
     t.datetime "created_at", null: false
@@ -43,6 +43,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_003522) do
     t.integer "user_id", null: false
     t.index ["tech_info_id"], name: "index_comments_on_tech_info_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "game_sessions", force: :cascade do |t|
+    t.string "address"
+    t.integer "club_id", null: false
+    t.integer "court_count", default: 1
+    t.datetime "created_at", null: false
+    t.time "end_time", null: false
+    t.integer "fee", default: 0, null: false
+    t.integer "max_participants"
+    t.text "notes"
+    t.date "scheduled_date", null: false
+    t.time "start_time", null: false
+    t.integer "status", default: 0, null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.string "venue_name", null: false
+    t.integer "visibility", default: 0, null: false
+    t.index ["club_id", "scheduled_date"], name: "index_game_sessions_on_club_id_and_scheduled_date"
+    t.index ["club_id"], name: "index_game_sessions_on_club_id"
+    t.index ["scheduled_date"], name: "index_game_sessions_on_scheduled_date"
   end
 
   create_table "group_memberships", force: :cascade do |t|
@@ -108,6 +129,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_003522) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_memos_on_user_id"
+  end
+
+  create_table "participations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "game_session_id", null: false
+    t.string "guest_name"
+    t.string "guest_region"
+    t.integer "guest_sport_level", default: 0
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["game_session_id", "user_id"], name: "index_participations_on_session_and_member", unique: true, where: "user_id IS NOT NULL"
+    t.index ["game_session_id"], name: "index_participations_on_game_session_id"
+    t.index ["user_id"], name: "index_participations_on_user_id"
   end
 
   create_table "pomodoro_settings", force: :cascade do |t|
@@ -250,6 +285,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_003522) do
   add_foreign_key "clubs", "users", column: "owner_id"
   add_foreign_key "comments", "tech_infos"
   add_foreign_key "comments", "users"
+  add_foreign_key "game_sessions", "clubs"
   add_foreign_key "group_memberships", "groups"
   add_foreign_key "group_memberships", "users"
   add_foreign_key "groups", "users", column: "owner_id"
@@ -257,6 +293,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_16_003522) do
   add_foreign_key "life_infos", "users"
   add_foreign_key "manpower_records", "users"
   add_foreign_key "memos", "users"
+  add_foreign_key "participations", "game_sessions"
+  add_foreign_key "participations", "users"
   add_foreign_key "pomodoro_settings", "users"
   add_foreign_key "posts", "users"
   add_foreign_key "sessions", "users"

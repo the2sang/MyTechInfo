@@ -1,0 +1,25 @@
+open_public_session:
+  club: approved_club
+  title: "토요 오픈 운동"
+  venue_name: "올림픽공원 코트 A"
+  address: "서울시 송파구 올림픽로 424"
+  scheduled_date: "2099-12-31"
+  start_time: "10:00:00"
+  end_time: "12:00:00"
+  court_count: 2
+  fee: 5000
+  max_participants: 20
+  visibility: 0
+  status: 0
+
+members_only_session:
+  club: approved_club
+  title: "회원 전용 세션"
+  venue_name: "강남 실내코트"
+  scheduled_date: "2099-12-31"
+  start_time: "14:00:00"
+  end_time: "16:00:00"
+  court_count: 1
+  fee: 0
+  visibility: 1
+  status: 0
